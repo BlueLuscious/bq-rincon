@@ -1,0 +1,221 @@
+name: BQ Discord Notifications
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - "feature/**"
+      - "bugfix/**"
+      - "fix/**"
+      - "enhancement/**"
+      - "test/**"
+  pull_request:
+    branches:
+      - master
+      - develop
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+  workflow_run:
+    workflows:
+      - Continuous Integration
+    types:
+      - completed
+  delete:
+
+permissions: {}
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.BQ_DISCORD_WEBHOOK }}
+
+    steps:
+      ### PUSH COMMIT ###
+      - name: Push Notification
+        if: github.event_name == 'push' && github.event.created == false
+        env:
+          REPOSITORY: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK is not configured; skipping notification."
+            exit 0
+          fi
+
+          if [[ "$BRANCH" == "master" ]]; then
+            ENVIRONMENT="Production"
+            COLOUR=15158332
+          elif [[ "$BRANCH" == "develop" ]]; then
+            ENVIRONMENT="Development"
+            COLOUR=3066993
+          else
+            ENVIRONMENT="Local"
+            COLOUR=15844367
+          fi
+
+          jq -n \
+            --arg repository "$REPOSITORY" \
+            --arg branch "$BRANCH" \
+            --arg url "$COMMIT_URL" \
+            --arg sha "$COMMIT_SHA" \
+            --arg environ "$ENVIRONMENT" \
+            --argjson colour $COLOUR \
+            '{
+              embeds: [
+                {
+                  title: "🟢 New commit",
+                  url: $url,
+                  color: $colour,
+                  fields: [
+                    { name: "🌿 Branch", value: "`\($branch)`", inline: true },
+                    { name: "⚙ Environment", value: "`\($environ)`", inline: true }
+                  ],
+                  "image": {
+                    "url": "https://opengraph.githubassets.com/\($sha)/\($repository)/commit/\($sha)"
+                  },
+                  footer: { text: "Repository · Commit Event" }
+                }
+              ]
+            }' \
+          | curl --fail-with-body --silent --show-error \
+              -H "Content-Type: application/json" \
+              -X POST \
+              -d @- \
+              "$DISCORD_WEBHOOK"
+
+      ### BRANCH LIFECYCLE ###
+      - name: Branch Lifecycle Notification
+        if: >
+          (github.event_name == 'push' && github.event.created == true) ||
+          (github.event_name == 'delete' && github.event.ref_type == 'branch')
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REPOSITORY: ${{ github.repository }}
+          AUTHOR: ${{ github.actor }}
+          BRANCH: ${{ github.event_name == 'delete' && github.event.ref || github.ref_name }}
+          BRANCH_URL: https://github.com/${{ github.repository }}/tree/${{ github.ref_name }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK is not configured; skipping notification."
+            exit 0
+          fi
+
+          if [ "$EVENT_NAME" = "delete" ]; then
+            TITLE="🧹 Branch deleted"
+            COLOUR=15158332
+            TARGET_URL=""
+          else
+            TITLE="🌱 Branch created"
+            COLOUR=15105570
+            TARGET_URL="$BRANCH_URL"
+          fi
+
+          jq -n \
+            --arg repository "$REPOSITORY" \
+            --arg author "$AUTHOR" \
+            --arg branch "$BRANCH" \
+            --arg title "$TITLE" \
+            --arg url "$TARGET_URL" \
+            --argjson colour "$COLOUR" \
+            '{
+              embeds: [
+                ({
+                  title: $title,
+                  description: "**\($repository)**",
+                  color: $colour,
+                  fields: [
+                    { name: "🌿 Branch", value: "`\($branch)`", inline: true },
+                    { name: "👤 Author", value: "`\($author)`", inline: true }
+                  ],
+                  footer: { text: "Repository · Branch Lifecycle" }
+                } + if $url == "" then {} else { url: $url } end)
+              ]
+            }' \
+          | curl --fail-with-body --silent --show-error \
+              -H "Content-Type: application/json" \
+              -X POST \
+              -d @- \
+              "$DISCORD_WEBHOOK"
+
+      ### PULL REQUEST ###
+      - name: Pull Request Notification
+        if: github.event_name == 'pull_request'
+        env:
+          REPOSITORY: ${{ github.repository }}
+          ACTION: ${{ github.event.action }}
+          NUMBER: ${{ github.event.pull_request.number }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+          AUTHOR: ${{ github.actor }}
+          MERGED: ${{ github.event.pull_request.merged }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK is not configured; skipping notification."
+            exit 0
+          fi
+
+          if [ "$ACTION" = "closed" ] && [ "$MERGED" = "true" ]; then
+            TITLE="🟣 Pull Request #$NUMBER Merged"
+            COLOUR=10181046
+            ICON="🚀"
+          elif [ "$ACTION" = "closed" ]; then
+            TITLE="🔴 Pull Request #$NUMBER Closed"
+            COLOUR=15158332
+            ICON="🚦"
+          elif [ "$ACTION" = "opened" ]; then
+            TITLE="🔵 Pull Request #$NUMBER Opened"
+            COLOUR=3447003
+            ICON="🚦"
+          elif [ "$ACTION" = "reopened" ]; then
+            TITLE="🟢 Pull Request #$NUMBER Reopened"
+            COLOUR=3066993
+            ICON="🚦"
+          else
+            TITLE="🟠 Pull Request #$NUMBER Updated"
+            COLOUR=15844367
+            ICON="🚦"
+          fi
+
+          jq -n \
+            --arg repository "$REPOSITORY" \
+            --arg base "$BASE_BRANCH" \
+            --arg head "$HEAD_BRANCH" \
+            --arg number "$NUMBER" \
+            --arg url "$PR_URL" \
+            --arg sha "$COMMIT_SHA" \
+            --arg title "$TITLE" \
+            --arg author "$AUTHOR" \
+            --arg icon "$ICON" \
+            --argjson colour "$COLOUR" \
+            '{
+              embeds: [
+                {
+                  title: $title,
+                  url: $url,
+                  color: $colour,
+                  description: "🌿 `\($head)` → \($icon) `\($base)`",
+                  fields: [
+                    { name: "🔢 PR", value: ("#" + $number), inline: true },
+                    { name: "👤 User", value: "`\($author)`", inline: true }
+                  ],
+                  image: {
+                    url: "https://opengraph.githubassets.com/\($sha)/\($repository)/pull/\($number)"
+                  },
+                  footer: { text: "Repository · Pull Request Event" }
+                }
+              ]
+            }' \
+          | curl --fail-with-body --silent --show-error \
+              -H "Content-Type: application/json" \
+              -X POST \
+              -d @- \
+              "$DISCORD_WEBHOOK"
