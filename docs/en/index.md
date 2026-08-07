@@ -51,6 +51,7 @@ bq-rincon/
 ├── astro.config.mjs
 ├── package.json
 ├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 └── tsconfig.json
 ```
 
@@ -83,6 +84,12 @@ Shared scripts belong in `src/scripts/`, but a global script is not required by 
 The foundation is complete only when the project can be installed reproducibly with `pnpm`, passes Astro and TypeScript checks, builds static output without errors and can be previewed locally. Formatting and linting must enforce the repository's naming, semicolon and documentation conventions.
 
 Every public page must provide an explicit title and description, a single clear primary heading, meaningful landmark structure and crawl directives appropriate to the target environment. Performance-sensitive assets should be optimised at build time, and unnecessary client JavaScript must not be shipped.
+
+## Automation
+
+Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript and Astro lint rules, Astro diagnostics and the static production build.
+
+Discord notifications cover configured push, branch lifecycle, pull request and completed continuous-integration events. The notification workflow remains inert when its webhook secret is unavailable. Its continuous-integration trigger depends on the workflow retaining the canonical `Continuous Integration` name.
 
 ## Content boundaries
 
