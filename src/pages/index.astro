@@ -1,0 +1,27 @@
+---
+/**
+ * @description Provides the temporary document title while approved public content is pending.
+ */
+const pageTitle = 'BQ Rincón';
+
+/**
+ * @description Provides an honest temporary summary without introducing unapproved business claims.
+ */
+const pageDescription = 'El sitio web de BQ Rincón está en preparación.';
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={pageDescription} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <main>
+      <h1>{pageTitle}</h1>
+      <p>Sitio en preparación.</p>
+    </main>
+  </body>
+</html>
