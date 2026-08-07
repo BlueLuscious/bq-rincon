@@ -5,11 +5,11 @@ on:
     branches:
       - master
       - develop
-      - "feature/**"
-      - "bugfix/**"
-      - "fix/**"
-      - "enhancement/**"
-      - "test/**"
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'fix/**'
+      - 'enhancement/**'
+      - 'test/**'
   pull_request:
     branches:
       - master
@@ -35,6 +35,73 @@ jobs:
       DISCORD_WEBHOOK: ${{ secrets.BQ_DISCORD_WEBHOOK }}
 
     steps:
+      ### CONTINUOUS INTEGRATION ###
+      - name: Continuous Integration Notification
+        if: github.event_name == 'workflow_run'
+        env:
+          REPOSITORY: ${{ github.repository }}
+          WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
+          AUTHOR: ${{ github.event.workflow_run.actor.login }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK is not configured; skipping notification."
+            exit 0
+          fi
+
+          if [ "$CONCLUSION" = "success" ]; then
+            TITLE="✅ Continuous Integration passed"
+            COLOUR=3066993
+          elif [ "$CONCLUSION" = "failure" ]; then
+            TITLE="❌ Continuous Integration failed"
+            COLOUR=15158332
+          elif [ "$CONCLUSION" = "cancelled" ]; then
+            TITLE="⚪ Continuous Integration cancelled"
+            COLOUR=9807270
+          else
+            TITLE="🟡 Continuous Integration $CONCLUSION"
+            COLOUR=15844367
+          fi
+
+          jq -n \
+            --arg repository "$REPOSITORY" \
+            --arg workflow "$WORKFLOW_NAME" \
+            --arg conclusion "$CONCLUSION" \
+            --arg branch "$BRANCH" \
+            --arg url "$RUN_URL" \
+            --arg sha "$COMMIT_SHA" \
+            --arg author "$AUTHOR" \
+            --arg title "$TITLE" \
+            --argjson colour "$COLOUR" \
+            '{
+              embeds: [
+                {
+                  title: $title,
+                  url: $url,
+                  color: $colour,
+                  description: "**\($repository)**",
+                  fields: [
+                    { name: "🌿 Branch", value: "`\($branch)`", inline: true },
+                    { name: "👤 User", value: "`\($author)`", inline: true },
+                    { name: "⚙ Workflow", value: "`\($workflow)`", inline: true },
+                    { name: "📋 Result", value: "`\($conclusion)`", inline: true }
+                  ],
+                  image: {
+                    url: "https://opengraph.githubassets.com/\($sha)/\($repository)/commit/\($sha)"
+                  },
+                  footer: { text: "Repository · Continuous Integration" }
+                }
+              ]
+            }' \
+          | curl --fail-with-body --silent --show-error \
+              -H "Content-Type: application/json" \
+              -X POST \
+              -d @- \
+              "$DISCORD_WEBHOOK"
+
       ### PUSH COMMIT ###
       - name: Push Notification
         if: github.event_name == 'push' && github.event.created == false
