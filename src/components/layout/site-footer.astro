@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import {
   ExternalLink,
   Mail,
@@ -7,6 +8,7 @@ import {
   Phone,
 } from '@lucide/astro';
 import brandMark from '../../assets/brand/bq-mark-primary.svg';
+import quinotoLogo from '../../assets/partners/quinoto-logo-positive.png';
 import Container from '../common/container.astro';
 
 /**
@@ -92,9 +94,29 @@ const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
       </section>
     </div>
 
-    <p class="site-footer-legal">
-      © {currentYear} BQ Baños Químicos. María Verónica Marinelli · CUIT 27-23047157-1.
-    </p>
+    <div class="site-footer-legal">
+      <p class="site-footer-copyright">
+        © {currentYear} BQ Baños Químicos. María Verónica Marinelli · CUIT 27-23047157-1.
+      </p>
+      <a
+        class="site-footer-credit"
+        href="https://quinoto.com.ar/"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Visitar el sitio web de Quinoto"
+      >
+        <span>Developed by Quinoto</span>
+        <Image
+          src={quinotoLogo}
+          alt=""
+          width={44}
+          height={44}
+          format="webp"
+          quality={90}
+          loading="lazy"
+        />
+      </a>
+    </div>
   </Container>
 </footer>
 
@@ -138,7 +160,7 @@ const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
   }
 
   .site-footer-brand p,
-  .site-footer-legal {
+  .site-footer-copyright {
     margin-block-end: 0;
     color: var(--colour-on-dark-muted);
     font-size: 0.875rem;
@@ -204,9 +226,55 @@ const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
   }
 
   .site-footer-legal {
+    display: grid;
+    gap: var(--space-4);
+    place-items: center;
     padding-block-start: var(--space-5);
     margin-block-start: var(--space-7);
     border-block-start: 0.0625rem solid rgb(209 220 222 / 24%);
+  }
+
+  .site-footer-credit {
+    display: inline-flex;
+    gap: var(--space-3);
+    align-items: center;
+    color: var(--colour-on-brand);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .site-footer-credit img {
+    width: 2.75rem;
+    height: 2.75rem;
+    object-fit: contain;
+    border-radius: var(--radius-small);
+    transition: transform var(--transition-duration) ease;
+  }
+
+  .site-footer-credit:hover img {
+    transform: translateY(-0.125rem);
+  }
+
+  .site-footer-copyright {
+    text-align: center;
+  }
+
+  @media (width >= 40rem) {
+    .site-footer-legal {
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: var(--space-6);
+      place-items: center stretch;
+    }
+
+    .site-footer-copyright {
+      text-align: start;
+    }
+
+    .site-footer-credit {
+      justify-self: end;
+    }
   }
 
   @media (width < 64rem) {
