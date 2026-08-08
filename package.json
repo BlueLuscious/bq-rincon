@@ -5,13 +5,13 @@
   "type": "module",
   "packageManager": "pnpm@11.20.0",
   "engines": {
-    "node": ">=24.10.0 <25",
+    "node": ">=24.16.0 <25",
     "pnpm": ">=11.20.0 <12"
   },
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "24.10.0",
+      "version": "24.16.0",
       "onFail": "download"
     }
   },
@@ -23,7 +23,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "verify": "prettier --check . && eslint . && astro check && astro build"
+    "lint:styles": "stylelint \"src/**/*.{astro,css}\"",
+    "verify": "prettier --check . && eslint . && stylelint \"src/**/*.{astro,css}\" && astro check && astro build"
   },
   "dependencies": {
     "astro": "7.2.0"
@@ -33,8 +34,12 @@
     "@eslint/js": "10.0.1",
     "eslint": "10.8.0",
     "eslint-plugin-astro": "3.1.0",
+    "postcss-html": "2.0.0",
     "prettier": "3.9.6",
     "prettier-plugin-astro": "0.14.1",
+    "stylelint": "17.14.1",
+    "stylelint-config-html": "2.0.0",
+    "stylelint-config-standard": "40.0.0",
     "typescript": "6.0.3",
     "typescript-eslint": "8.66.0"
   }

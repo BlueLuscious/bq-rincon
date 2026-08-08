@@ -6,7 +6,7 @@ See the [project documentation](docs/en/index.md) for the product scope and tech
 
 ## Requirements
 
-- Node.js 24.10.0
+- Node.js 24.16.0
 - pnpm 11.20.0 through Corepack
 
 ## Development
