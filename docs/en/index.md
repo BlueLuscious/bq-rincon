@@ -2,7 +2,9 @@
 
 ## Purpose
 
-`bq-rincon` is the source repository for a wholly informational website for a portable toilet company. The website presents the business, its services and the means to request further information or a quotation. Its public brand spelling, primary locale, final copy, service catalogue, contact details and service area remain content decisions to be confirmed before release.
+`bq-rincon` is the source repository for the informational website of BQ Baños Químicos, a family-run portable sanitation business established in 2017. The website presents the business, its services and the means to request further information or a quotation. Its primary public locale is Argentinian Spanish (`es-AR`). Final customer-facing copy, contact details and the precise service area remain content decisions to be confirmed before release.
+
+The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website.
 
 The first delivery is a static website. It has no application backend, user accounts, database, content management system or transactional workflow.
 
@@ -26,6 +28,7 @@ bq-rincon/
 │   └── robots.txt
 ├── src/
 │   ├── assets/
+│   │   ├── brand/
 │   │   ├── icons/
 │   │   └── images/
 │   ├── components/
@@ -81,13 +84,13 @@ Shared scripts belong in `src/scripts/`, but a global script is not required by 
 
 ## Quality baseline
 
-The foundation is complete only when the project can be installed reproducibly with `pnpm`, passes Astro and TypeScript checks, builds static output without errors and can be previewed locally. Formatting and linting must enforce the repository's naming, semicolon and documentation conventions.
+The foundation is complete only when the project can be installed reproducibly with `pnpm`, passes Astro and TypeScript checks, builds static output without errors and can be previewed locally. Formatting and linting must enforce the repository's naming, semicolon, stylesheet and documentation conventions.
 
 Every public page must provide an explicit title and description, a single clear primary heading, meaningful landmark structure and crawl directives appropriate to the target environment. Performance-sensitive assets should be optimised at build time, and unnecessary client JavaScript must not be shipped.
 
 ## Automation
 
-Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript and Astro lint rules, Astro diagnostics and the static production build.
+Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics and the static production build.
 
 Discord notifications cover configured push, branch lifecycle, pull request and completed continuous-integration events. The notification workflow remains inert when its webhook secret is unavailable. Its continuous-integration trigger depends on the workflow retaining the canonical `Continuous Integration` name.
 
@@ -104,8 +107,7 @@ The following websites are product and presentation references, not dependencies
 
 The following decisions are intentionally outside the current foundation and must be resolved before they become implementation constraints:
 
-- final public brand name and visual identity;
-- approved customer-facing copy, primary locale and service catalogue;
+- approved customer-facing copy and the exact public service area;
 - production domain, hosting provider and deployment workflow;
 - contact and quotation channel;
 - analytics, consent and privacy requirements;
