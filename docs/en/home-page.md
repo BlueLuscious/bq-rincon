@@ -13,7 +13,8 @@ The shared document layout renders, in order:
 1. a skip link for keyboard users;
 2. the site header and primary navigation;
 3. the page-owned main content;
-4. the site footer.
+4. the site footer;
+5. a progressively enhanced return-to-top action.
 
 The home page owns one primary heading. Its content then proceeds through:
 
@@ -35,7 +36,7 @@ When a contact channel is approved, the primary action may be updated without ch
 
 ## Images
 
-The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery adds rural, sporting and urban contexts without making geographic coverage claims. Every photograph contributes context and therefore uses descriptive alternative text.
+The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents five consistently cropped thumbnails covering rural, sporting, urban, residential and open-perimeter contexts without making geographic coverage claims. Images dominated by transport equipment, camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
 
 Photography is imported through the source asset boundary. Astro generates responsive WebP variants during the static build, supplies intrinsic dimensions and defers the below-the-fold photograph until it approaches the viewport. Source photographs remain the canonical inputs and generated variants are rebuildable.
 
@@ -46,6 +47,10 @@ The header remains visible while the document scrolls. Its fragment destinations
 On narrow viewports, the primary navigation is progressively enhanced into a disclosure controlled by a native button. The control exposes its state and relationship to assistive technology, supports Escape with focus restoration and closes after a destination is selected. Without browser-side JavaScript, the same navigation links remain visible and usable rather than becoming dependent on a hidden panel.
 
 An intersection observer tracks the content boundary currently crossing the persistent-header offset. The corresponding primary-navigation link receives `aria-current="location"` and a visible underline in addition to its colour change. Same-page navigation applies the matching state immediately while smooth fragment scrolling proceeds.
+
+The return-to-top action is a native fragment link fixed to the lower-left safe area. It is available without JavaScript; progressive enhancement conceals it while the hero remains useful and exposes it after the hero leaves the viewport. The footer reserves enough lower space to keep the action clear of its content.
+
+The footer contains business identity and approved positioning only. It does not duplicate primary section navigation or publish placeholder contact, location or social details while those authorities remain unconfirmed.
 
 ## Motion
 

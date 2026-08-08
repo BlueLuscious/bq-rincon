@@ -33,15 +33,20 @@ bq-rincon/
 │   │   └── images/
 │   ├── components/
 │   │   ├── common/
+│   │   │   ├── badge.astro
 │   │   │   ├── button.astro
 │   │   │   ├── container.astro
+│   │   │   ├── icon-button.astro
+│   │   │   ├── reveal.astro
 │   │   │   └── section.astro
 │   │   ├── layout/
+│   │   │   ├── floating-actions.astro
 │   │   │   ├── site-footer.astro
 │   │   │   ├── site-header.astro
 │   │   │   └── site-navigation.astro
 │   │   └── sections/
 │   │       ├── about.astro
+│   │       ├── client-carousel.astro
 │   │       ├── clients.astro
 │   │       ├── field-gallery.astro
 │   │       ├── hero.astro
@@ -53,7 +58,11 @@ bq-rincon/
 │   ├── pages/
 │   │   └── index.astro
 │   ├── scripts/
-│   │   └── main.ts
+│   │   ├── back-to-top.observer.ts
+│   │   ├── client-carousel.controller.ts
+│   │   ├── navigation-disclosure.controller.ts
+│   │   ├── reveal.observer.ts
+│   │   └── section-navigation.observer.ts
 │   └── styles/
 │       ├── global.css
 │       └── variables.css
