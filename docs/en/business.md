@@ -33,7 +33,7 @@ The website must not imply a certification, legal status or disposal process bey
 
 ## Referenced clients
 
-The following organisations are approved as text-only references to BQ's previous work:
+The following organisations are approved references to BQ's previous work:
 
 - Municipalidad de Villa Constitución;
 - SIDERSA;
@@ -49,7 +49,7 @@ The following organisations are approved as text-only references to BQ's previou
 - Chapa Naval;
 - Autódromo San Nicolás.
 
-These names provide historical evidence of the business's experience. Their publication must not imply a current contract, partnership or endorsement. Supplied logo artwork is approved for Bahisa, EDECA S.A., ESSESA S.A., Pose S.A. and SIDERSA; all remaining references stay text-only until equivalent artwork and authorisation are supplied.
+These names provide historical evidence of the business's experience. Their publication must not imply a current contract, partnership or endorsement. Supplied logo artwork is approved for every displayed reference. Chapa Naval remains an approved historical reference but is temporarily omitted from the carousel because equivalent artwork has not been supplied.
 
 ## Public contact details
 

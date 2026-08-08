@@ -36,13 +36,13 @@ When a contact channel is approved, the primary action may be updated without ch
 
 ## Images
 
-The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents five photographs in a varied mosaic covering rural, sporting, urban, residential and open-perimeter contexts without making geographic coverage claims. Tall and wide spans follow each image's useful composition instead of imposing one identical crop. Images dominated by transport equipment, camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
+The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents six photographs in a compact mosaic covering rural, sporting, urban-service, residential and open-perimeter contexts without making geographic coverage claims. Portrait and landscape slots follow each image's native composition so complete units remain legible. Images dominated by camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
 
 Photography is imported through the source asset boundary. Astro generates responsive WebP variants during the static build, supplies intrinsic dimensions and defers the below-the-fold photograph until it approaches the viewport. Source photographs remain the canonical inputs and generated variants are rebuildable.
 
 ## Interaction boundary
 
-The header remains visible while the document scrolls. Its fragment destinations follow the page order, and each semantic section boundary uses a sticky-header offset for fragment alignment. Active-location calculation adds a small viewport leeway so the new section becomes current as its leading content enters the usable area.
+The header remains visible while the document scrolls. Its fragment destinations follow the page order, and each semantic section boundary uses a sticky-header offset for fragment alignment. Active-location calculation uses that same alignment line so the destination and current-section state share one authority.
 
 On narrow viewports, the primary navigation is progressively enhanced into a compact disclosure controlled by a native button. The control exposes its state and relationship to assistive technology, supports Escape with focus restoration, and closes after a destination is selected or a pointer interaction begins outside the navigation boundary. Without browser-side JavaScript, the same navigation links remain visible and usable rather than becoming dependent on a hidden panel.
 
@@ -60,6 +60,6 @@ When reduced motion is requested, all reveal boundaries remain immediately visib
 
 ## Client carousel
 
-Approved client references are presented as a continuously moving multi-item carousel. Bahisa, EDECA S.A., ESSESA S.A., Pose S.A. and SIDERSA use supplied logo artwork without a repeated visible name; other references remain text-only. A second `aria-hidden` and inert visual sequence follows the semantic sequence so movement can wrap without a visible end or accessibility duplication.
+Approved client references are presented as a continuously moving multi-item carousel. Every displayed client uses supplied logo artwork without a repeated visible name; Chapa Naval remains omitted until its artwork is supplied. A second `aria-hidden` and inert visual sequence follows the semantic sequence so movement can wrap without a visible end or accessibility duplication.
 
-Pause, previous and next controls precede the moving content in keyboard order. Time-based animation advances by sub-pixel distances and stops during pointer hover, direct interaction, keyboard focus or a hidden document. Focus and manual movement create a persistent pause; movement resumes only through the explicit control. Reduced-motion preference disables that control and automatic movement altogether. Manual changes announce their resulting client without announcing continuous movement. Native horizontal scrolling and its scrollbar are a component option and are disabled for the home-page instance.
+Pause, previous and next controls precede the moving content in keyboard order. Each arrow advances exactly one client stride. Time-based animation advances by sub-pixel distances and stops during pointer hover, direct interaction, keyboard focus or a hidden document. Focus and manual movement create a persistent pause; movement resumes only through the explicit control. Reduced-motion preference disables that control and automatic movement altogether. Manual changes announce their resulting client without announcing continuous movement. Native horizontal scrolling and its scrollbar are a component option and are disabled for the home-page instance.
