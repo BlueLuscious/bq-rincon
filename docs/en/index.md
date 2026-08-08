@@ -42,8 +42,12 @@ bq-rincon/
 │   │   │   └── site-navigation.astro
 │   │   └── sections/
 │   │       ├── about.astro
+│   │       ├── clients.astro
+│   │       ├── field-gallery.astro
 │   │       ├── hero.astro
-│   │       └── services.astro
+│   │       ├── safety.astro
+│   │       ├── services.astro
+│   │       └── workflow.astro
 │   ├── layouts/
 │   │   └── base-layout.astro
 │   ├── pages/

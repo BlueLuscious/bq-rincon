@@ -31,13 +31,33 @@ Service delivery is expected to prioritise hygiene, safety and operational effic
 
 The website must not imply a certification, legal status or disposal process beyond evidence approved for publication.
 
+## Referenced clients
+
+The following organisations are approved as text-only references to BQ's previous work:
+
+- Municipalidad de Villa Constitución;
+- SIDERSA;
+- EDECA S.A.;
+- Grupo Ponce;
+- ESSESA S.A.;
+- Bahisa;
+- Pose S.A.;
+- Municipio de Arroyo Seco;
+- Municipio de San Nicolás;
+- Comuna de Pavón;
+- Comuna de Fighiera;
+- Chapa Naval;
+- Autódromo San Nicolás.
+
+These names provide historical evidence of the business's experience. Their publication must not imply a current contract, partnership or endorsement. Third-party logos remain excluded until their owners authorise a specific use.
+
 ## Publication boundaries
 
 The following information is deliberately excluded from the canonical public profile until it has an explicit owner and approval:
 
 - legal-person identifiers and registration records;
 - private or unselected telephone, messaging and email channels;
-- named clients or their logos;
+- unapproved third-party logos or endorsements;
 - fleet totals, growth forecasts and guaranteed response times;
 - exact coverage boundaries;
 - certificates and compliance claims;

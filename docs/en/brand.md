@@ -8,15 +8,21 @@ The primary mark uses teal and grey. A secondary teal-and-orange variant is avai
 
 ## Colour palette
 
-| Role         | Colour          | Value     | Usage                                                         |
-| ------------ | --------------- | --------- | ------------------------------------------------------------- |
-| Brand teal   | Deep teal       | `#02707a` | Primary brand fields, links and strong accents                |
-| Brand grey   | Mid grey        | `#9a9a9c` | Primary mark and decorative neutral details                   |
-| Brand orange | Warm orange     | `#ed9802` | Secondary mark, highlights and action surfaces with dark text |
-| Ink          | Near-black teal | `#142325` | Primary text and text on orange                               |
-| Surface      | White           | `#ffffff` | Main background and text on teal                              |
+| Family        | Role       | Value     | Usage                                                 |
+| ------------- | ---------- | --------- | ----------------------------------------------------- |
+| Core          | Brand teal | `#02707a` | Primary brand authority, links and unifying colour    |
+| Core          | Brand grey | `#9a9a9c` | Primary mark and non-text neutral decoration          |
+| Complementary | Text       | `#0b1b1d` | Primary copy and text on light or orange surfaces     |
+| Complementary | Shadow     | `#013d43` | Dark surfaces and the hue used by shadows             |
+| Complementary | Border     | `#d1dcde` | Dividers and component boundaries                     |
+| Complementary | Background | `#f3f7f8` | Subtle sections and pale card surfaces                |
+| Complementary | Accent     | `#ed9802` | Highlights and action accents carrying dark text      |
+| B2C           | Red        | `#c84347` | Reserved until its business meaning is confirmed      |
+| B2C           | Yellow     | `#e59b18` | Reserved until its business meaning is confirmed      |
+| B2C           | Sanitation | `#24a191` | Sanitation and hygiene identifiers combined with teal |
+| B2C           | Purple     | `#835ca3` | Reserved until its business meaning is confirmed      |
 
-Teal with white and orange with near-black teal meet WCAG AA contrast for normal text. Orange or mid grey must not carry white text. Brand colours used decoratively still need a separate visible focus treatment when attached to an interactive control.
+White on brand teal and dark text on orange meet WCAG AA contrast for normal text. Orange or brand grey must not carry white text. A saturated teal-to-sanitation gradient is decorative because no single text colour meets normal-text AA over its complete range; text-bearing sanitation surfaces use pale mixes with dark text. Brand colours used decoratively still need a separate visible focus treatment when attached to an interactive control.
 
 ## Typography
 
