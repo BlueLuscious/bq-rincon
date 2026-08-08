@@ -38,9 +38,8 @@ class SectionNavigationController {
       link.addEventListener('click', this.#handleLinkClick);
     });
 
-    if (!this.#applyHashLocation()) {
-      this.#updateCurrentLocation();
-    }
+    this.#applyHashLocation();
+    this.#scheduleUpdate();
   }
 
   /**
@@ -87,11 +86,8 @@ class SectionNavigationController {
 
     event.preventDefault();
     window.history.pushState(null, '', link.hash);
-    window.scrollTo({
-      top:
-        window.scrollY +
-        activeEntry.target.getBoundingClientRect().top -
-        this.#getFragmentOffset(),
+    activeEntry.target.scrollIntoView({
+      block: 'start',
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'auto'
         : 'smooth',
@@ -104,7 +100,7 @@ class SectionNavigationController {
    * @returns Nothing.
    */
   #updateCurrentLocation(): void {
-    const activationOffset = this.#getActivationOffset();
+    const activationOffset = this.#getFragmentOffset();
     let activeEntry: ISectionNavigationEntry | undefined;
 
     for (const entry of this.#entries) {
@@ -148,19 +144,6 @@ class SectionNavigationController {
         entry.link.removeAttribute('aria-current');
       }
     });
-  }
-
-  /**
-   * @description Reads the same alignment offset used by native fragment navigation.
-   * @returns Activation offset in CSS pixels.
-   */
-  #getActivationOffset(): number {
-    const activationLeeway = Math.min(
-      48,
-      Math.max(24, window.innerHeight * 0.06),
-    );
-
-    return Math.round(this.#getFragmentOffset() + activationLeeway);
   }
 
   /**
