@@ -15,26 +15,31 @@ const galleryItems = [
     image: ruralSiteImage,
     alt: 'Baño químico instalado en un proyecto rural',
     position: 'centre',
+    layout: 'tall-start',
   },
   {
     image: sportsSiteImage,
     alt: 'Cuatro baños químicos instalados junto a un campo deportivo',
     position: 'centre',
+    layout: 'wide-top',
   },
   {
     image: urbanSiteImage,
     alt: 'Dos baños químicos instalados en un entorno urbano',
     position: 'centre',
+    layout: 'tall-end',
   },
   {
     image: residentialSiteImage,
     alt: 'Dos baños químicos instalados en un espacio residencial arbolado',
     position: 'upper',
+    layout: 'wide-middle',
   },
   {
     image: perimeterSiteImage,
     alt: 'Baño químico instalado junto al perímetro de un proyecto abierto',
     position: 'upper',
+    layout: 'wide-bottom',
   },
 ] as const;
 ---
@@ -51,8 +56,8 @@ const galleryItems = [
 
   <div class="gallery-grid">
     {
-      galleryItems.map(({ image, alt, position }) => (
-        <figure class="gallery-item">
+      galleryItems.map(({ image, alt, position, layout }) => (
+        <figure class:list={['gallery-item', `gallery-item-${layout}`]}>
           <Image
             class:list={['gallery-image', `gallery-image-${position}`]}
             src={image}
@@ -100,6 +105,7 @@ const galleryItems = [
     display: grid;
     gap: var(--space-4);
     max-width: 68rem;
+    grid-auto-flow: dense;
   }
 
   .gallery-item {
@@ -108,6 +114,7 @@ const galleryItems = [
     overflow: hidden;
     background: var(--colour-border);
     border-radius: var(--radius-large);
+    box-shadow: 0 0.75rem 1.75rem rgb(1 61 67 / 9%);
   }
 
   .gallery-image {
@@ -133,7 +140,33 @@ const galleryItems = [
 
   @media (width >= 64rem) {
     .gallery-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-rows: repeat(3, clamp(12rem, 18vw, 14rem));
+    }
+
+    .gallery-item-tall-start {
+      grid-area: 1 / 1 / span 2 / span 1;
+    }
+
+    .gallery-item-wide-top {
+      grid-area: 1 / 2 / span 1 / span 2;
+    }
+
+    .gallery-item-tall-end {
+      grid-area: 1 / 4 / span 2 / span 1;
+    }
+
+    .gallery-item-wide-middle {
+      grid-area: 2 / 2 / span 1 / span 2;
+    }
+
+    .gallery-item-wide-bottom {
+      grid-area: 3 / 2 / span 1 / span 2;
+    }
+
+    .gallery-image {
+      height: 100%;
+      aspect-ratio: auto;
     }
   }
 </style>

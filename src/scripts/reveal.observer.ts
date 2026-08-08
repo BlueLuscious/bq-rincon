@@ -33,8 +33,8 @@ class RevealObserver {
     }
 
     this.#observer = new IntersectionObserver(this.#handleIntersection, {
-      rootMargin: '0px 0px -8% 0px',
-      threshold: 0.08,
+      rootMargin: '0px 0px -5% 0px',
+      threshold: 0.06,
     });
 
     this.#targets.forEach((target) => {

@@ -75,7 +75,7 @@
   --site-header-height: 4.75rem;
   --motion-duration-fast: 180ms;
   --motion-duration-base: 320ms;
-  --motion-duration-reveal: 520ms;
-  --motion-easing-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-duration-reveal: 720ms;
+  --motion-easing-standard: cubic-bezier(0.16, 1, 0.3, 1);
   --transition-duration: var(--motion-duration-fast);
 }

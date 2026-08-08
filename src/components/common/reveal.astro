@@ -5,6 +5,8 @@
 interface Props {
   /** @description Delays the entrance transition by the supplied number of milliseconds. */
   delay?: number;
+  /** @description Selects the direction from which concealed content enters. */
+  direction?: 'up' | 'left' | 'right';
   /** @description Adds a consumer-owned class without replacing the reveal class. */
   class?: string;
 }
@@ -12,12 +14,13 @@ interface Props {
 /**
  * @description Provides the reveal timing and consumer class forwarded to the boundary.
  */
-const { delay = 0, class: className } = Astro.props;
+const { delay = 0, direction = 'up', class: className } = Astro.props;
 ---
 
 <div
   class:list={['reveal', className]}
   data-reveal
+  data-reveal-direction={direction}
   style={`--reveal-delay: ${delay}ms;`}
 >
   <slot />
@@ -37,11 +40,19 @@ const { delay = 0, class: className } = Astro.props;
 
   .reveal[data-reveal-concealed] {
     opacity: 0;
-    transform: translateY(0.75rem);
+    transform: translateY(1.25rem);
     transition:
       opacity var(--motion-duration-reveal) var(--motion-easing-standard),
       transform var(--motion-duration-reveal) var(--motion-easing-standard);
     transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-reveal-concealed][data-reveal-direction='left'] {
+    transform: translateX(-1.5rem);
+  }
+
+  .reveal[data-reveal-concealed][data-reveal-direction='right'] {
+    transform: translateX(1.5rem);
   }
 
   .reveal[data-reveal-concealed][data-reveal-preparing] {
