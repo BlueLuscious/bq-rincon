@@ -44,3 +44,17 @@ Photography is imported through the source asset boundary. Astro generates respo
 The header remains visible while the document scrolls. Its fragment destinations follow the page order, and each section content boundary provides enough scroll margin to keep its heading visible below the persistent header.
 
 On narrow viewports, the primary navigation is progressively enhanced into a disclosure controlled by a native button. The control exposes its state and relationship to assistive technology, supports Escape with focus restoration and closes after a destination is selected. Without browser-side JavaScript, the same navigation links remain visible and usable rather than becoming dependent on a hidden panel.
+
+An intersection observer tracks the content boundary currently crossing the persistent-header offset. The corresponding primary-navigation link receives `aria-current="location"` and a visible underline in addition to its colour change. Same-page navigation applies the matching state immediately while smooth fragment scrolling proceeds.
+
+## Motion
+
+The hero introduces its text, actions and media through a short opacity-and-translation stagger. Remaining sections use one reveal boundary each and enter only once as they approach the viewport. Content is visible by default; JavaScript adds the concealed preparation state only after the document is available, so a missing or failed client runtime does not remove information.
+
+When reduced motion is requested, all reveal boundaries remain immediately visible, transforms and reveal transitions are absent, smooth scrolling is disabled and the client carousel cannot rotate automatically.
+
+## Client carousel
+
+Approved text-only client references are presented as a finite scroll-snap carousel without cloned slides. The responsive viewport exposes four clients on wide screens, two on intermediate screens and one on narrow screens while retaining native horizontal scrolling.
+
+Pause, previous and next controls precede the rotating content in keyboard order. Automatic movement uses a five-second interval and stops during pointer hover, direct interaction, keyboard focus or a hidden document. Focus and manual movement create a persistent pause; rotation resumes only through the explicit control. Reduced-motion preference disables that control and automatic movement altogether. Manual changes announce the newly visible client range without announcing automatic changes.
