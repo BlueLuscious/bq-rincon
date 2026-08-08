@@ -1,27 +1,88 @@
 ---
-/**
- * @description Provides the temporary document title while approved public content is pending.
- */
-const pageTitle = 'BQ Rincón';
+import brandMark from '../assets/brand/bq-mark-primary.svg';
+import Section from '../components/common/section.astro';
+import BaseLayout from '../layouts/base-layout.astro';
 
 /**
- * @description Provides an honest temporary summary without introducing unapproved business claims.
+ * @description Provides the temporary page title until the complete home page is implemented.
  */
-const pageDescription = 'El sitio web de BQ Rincón está en preparación.';
+const pageTitle = 'BQ Baños Químicos';
+
+/**
+ * @description Provides an accurate temporary summary without introducing unapproved claims.
+ */
+const pageDescription = 'Sitio web de BQ Baños Químicos en preparación.';
 ---
 
-<!doctype html>
-<html lang="es-AR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={pageDescription} />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <main>
-      <h1>{pageTitle}</h1>
-      <p>Sitio en preparación.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Section labelledBy="foundation-heading" class="foundation">
+    <div class="foundation-content">
+      <img
+        class="foundation-mark"
+        src={brandMark.src}
+        alt=""
+        width={160}
+        height={160}
+        decoding="async"
+      />
+      <div>
+        <p class="foundation-eyebrow">BQ Baños Químicos</p>
+        <h1 id="foundation-heading">Estamos preparando nuestro nuevo sitio.</h1>
+        <p class="foundation-summary">
+          Muy pronto vas a encontrar información sobre nuestros servicios y
+          formas de contacto.
+        </p>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .foundation {
+    display: grid;
+    min-height: 100svh;
+    align-items: center;
+    background:
+      linear-gradient(135deg, rgb(2 112 122 / 8%), transparent 55%),
+      var(--colour-surface-subtle);
+  }
+
+  .foundation-content {
+    display: grid;
+    max-width: 52rem;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .foundation-mark {
+    width: clamp(6rem, 4rem + 8vw, 10rem);
+    height: auto;
+  }
+
+  .foundation-eyebrow {
+    margin-block-end: var(--space-4);
+    color: var(--colour-brand-teal);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 12ch;
+    margin-block-end: var(--space-5);
+    font-size: var(--font-size-heading-1);
+  }
+
+  .foundation-summary {
+    max-width: 58ch;
+    margin-block-end: 0;
+    color: var(--colour-muted);
+  }
+
+  @media (width >= 48rem) {
+    .foundation-content {
+      grid-template-columns: auto 1fr;
+      gap: var(--space-7);
+    }
+  }
+</style>

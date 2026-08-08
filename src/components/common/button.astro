@@ -1,0 +1,85 @@
+---
+/**
+ * @description Defines the public inputs accepted by the shared action primitive.
+ */
+interface Props {
+  /** @description Navigates to a destination when present; otherwise the component renders a button. */
+  href?: string;
+  /** @description Selects the visual hierarchy of the action. */
+  variant?: 'primary' | 'secondary';
+  /** @description Defines native button behaviour when no destination is present. */
+  type?: 'button' | 'submit' | 'reset';
+  /** @description Supplies an accessible name when the visible content is insufficient. */
+  ariaLabel?: string;
+  /** @description Adds a consumer-owned class without replacing structural action classes. */
+  class?: string;
+}
+
+/**
+ * @description Provides the action attributes and their safe defaults.
+ */
+const {
+  href,
+  variant = 'primary',
+  type = 'button',
+  ariaLabel,
+  class: className,
+} = Astro.props;
+
+/**
+ * @description Combines the stable action classes used by links and buttons.
+ */
+const actionClassNames = ['button', `button-${variant}`, className];
+---
+
+{
+  href ? (
+    <a class:list={actionClassNames} href={href} aria-label={ariaLabel}>
+      <slot />
+    </a>
+  ) : (
+    <button class:list={actionClassNames} type={type} aria-label={ariaLabel}>
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-5);
+    border: 0.125rem solid transparent;
+    border-radius: var(--radius-small);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      color var(--transition-duration) ease,
+      background-color var(--transition-duration) ease,
+      border-color var(--transition-duration) ease;
+  }
+
+  .button-primary {
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+  }
+
+  .button-primary:hover {
+    background: var(--colour-ink);
+  }
+
+  .button-secondary {
+    color: var(--colour-ink);
+    background: var(--colour-brand-orange);
+  }
+
+  .button-secondary:hover {
+    background: var(--colour-surface);
+    border-color: var(--colour-brand-orange);
+  }
+</style>

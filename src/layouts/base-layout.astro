@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+
+/**
+ * @description Defines the required document metadata and locale for a public page.
+ */
+interface Props {
+  /** @description Provides the unique browser and search-result title for the page. */
+  title: string;
+  /** @description Summarises the page for search engines and link previews. */
+  description: string;
+  /** @description Declares the primary language and regional convention of the page content. */
+  language?: string;
+}
+
+/**
+ * @description Provides metadata and the default Argentine Spanish locale for the document shell.
+ */
+const { title, description, language = 'es-AR' } = Astro.props;
+---
+
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <main id="main-content">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: fixed;
+    z-index: 10;
+    inset-block-start: var(--space-4);
+    inset-inline-start: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border-radius: var(--radius-small);
+    transform: translateY(calc(-100% - var(--space-6)));
+    transition: transform var(--transition-duration) ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skip-link {
+      transition: none;
+    }
+  }
+</style>

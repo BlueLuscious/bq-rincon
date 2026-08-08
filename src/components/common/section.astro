@@ -1,0 +1,36 @@
+---
+import Container from './container.astro';
+
+/**
+ * @description Defines the public inputs accepted by a consistently spaced page section.
+ */
+interface Props {
+  /** @description Identifies the section for navigation or document relationships. */
+  id?: string;
+  /** @description Connects the section landmark to the identifier of its visible heading. */
+  labelledBy?: string;
+  /** @description Adds a consumer-owned class without replacing the section's structural class. */
+  class?: string;
+}
+
+/**
+ * @description Provides the section attributes forwarded to semantic HTML.
+ */
+const { id, labelledBy, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledBy}
+  class:list={['section', className]}
+>
+  <Container>
+    <slot />
+  </Container>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-section);
+  }
+</style>
