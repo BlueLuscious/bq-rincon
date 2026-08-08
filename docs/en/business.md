@@ -55,6 +55,8 @@ These names provide historical evidence of the business's experience. Their publ
 
 The approved public telephone and WhatsApp numbers are `3400 415140` and `3400 441365`. The approved public email address is `marinellive@hotmail.com`, and the approved Instagram account is `@bqrincon`.
 
+The primary website WhatsApp action uses `+54 3400 415140` without a prefilled message. The second approved number remains available in the footer but is not presented as the primary conversion destination.
+
 The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Rincón de los Sauces, Neuquén. These locations do not by themselves define or guarantee an exact service-coverage boundary.
 
 The approved legal attribution is María Verónica Marinelli, CUIT `27-23047157-1`.
@@ -69,4 +71,4 @@ The following information is deliberately excluded from the canonical public pro
 - certificates and compliance claims;
 - prices, availability and contractual conditions.
 
-The initial primary action may use telephone, WhatsApp, email or an external quotation channel. The published contact details do not select one of those destinations as the primary conversion action.
+The primary conversion action is the approved WhatsApp destination. Telephone, email, Instagram and the second WhatsApp number remain supporting contact channels.

@@ -28,15 +28,15 @@ The home page owns one primary heading. Its content then proceeds through:
 
 Heading levels follow that hierarchy. Section navigation uses same-page fragments so it remains functional without a client runtime.
 
+On wide viewports, the hero occupies the viewport height remaining beneath the sticky header. On narrower screens it retains that value as a minimum and grows when the complete text, actions and media require additional space.
+
 ## Calls to action
 
-The hero calls to action continue to navigate to relevant information within the page until one public channel is selected as the primary conversion destination. Approved telephone, WhatsApp, email and Instagram channels are published in the footer without implying that one is preferred.
-
-When a contact channel is approved, the primary action may be updated without changing the page architecture. Its accessible name must identify the intended action rather than expose an unexplained destination.
+The hero calls to action continue to navigate to relevant information within the page. A persistent WhatsApp action uses the approved `+54 3400 415140` destination as the primary direct-contact channel, without a prefilled message. Approved telephone, secondary WhatsApp, email and Instagram channels remain published in the footer.
 
 ## Images
 
-The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents six photographs in a compact mosaic covering rural, sporting, urban-service, residential and open-perimeter contexts without making geographic coverage claims. Portrait and landscape slots follow each image's native composition so complete units remain legible. Images dominated by camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
+The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents four photographs in a compact composition: one rural portrait, two central landscape contexts and one urban portrait. Portrait and landscape slots follow each image's native composition so complete units remain legible. Images dominated by camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
 
 Photography is imported through the source asset boundary. Astro generates responsive WebP variants during the static build, supplies intrinsic dimensions and defers the below-the-fold photograph until it approaches the viewport. Source photographs remain the canonical inputs and generated variants are rebuildable.
 
@@ -48,9 +48,9 @@ On narrow viewports, the primary navigation is progressively enhanced into a com
 
 A frame-coalesced scroll controller evaluates ordered section boundaries for wheel, keyboard, touch and scrollbar-thumb movement. The corresponding primary-navigation link receives `aria-current="location"` and a visible underline in addition to its colour change. Same-page navigation applies the matching state immediately while smooth fragment scrolling proceeds.
 
-The return-to-top action is a native fragment link fixed to the lower-left safe area. It is available without JavaScript; progressive enhancement conceals it while the hero remains useful and exposes it after the hero leaves the viewport. The footer reserves enough lower space to keep the action clear of its content.
+The return-to-top action is a native fragment link fixed to the lower-left safe area. It is available without JavaScript; progressive enhancement conceals it while the hero remains useful and exposes it after the hero leaves the viewport. The approved WhatsApp action remains visible in the lower-right safe area and uses the Simple Icons brand path without loading an external asset or browser runtime. The footer reserves enough lower space to keep both actions clear of its content.
 
-The footer contains business identity, legal attribution, both approved operating locations, telephone and WhatsApp numbers, email and Instagram. It does not duplicate primary section navigation or claim that the listed locations define an exact service area.
+The footer contains business identity, legal attribution, both approved operating locations, telephone and WhatsApp numbers, email and Instagram. Its legal row also includes a linked `Developed by Quinoto` credit using the supplied Quinoto artwork. It does not duplicate primary section navigation or claim that the listed locations define an exact service area.
 
 ## Motion
 
@@ -62,4 +62,4 @@ When reduced motion is requested, all reveal boundaries remain immediately visib
 
 Approved client references are presented as a continuously moving multi-item carousel. Every displayed client uses supplied logo artwork without a repeated visible name; Chapa Naval remains omitted until its artwork is supplied. A second `aria-hidden` and inert visual sequence follows the semantic sequence so movement can wrap without a visible end or accessibility duplication.
 
-Pause, previous and next controls precede the moving content in keyboard order. Each arrow advances exactly one client stride. Time-based animation advances by sub-pixel distances and stops during pointer hover, direct interaction, keyboard focus or a hidden document. Focus and manual movement create a persistent pause; movement resumes only through the explicit control. Reduced-motion preference disables that control and automatic movement altogether. Manual changes announce their resulting client without announcing continuous movement. Native horizontal scrolling and its scrollbar are a component option and are disabled for the home-page instance.
+Wide artwork uses larger landscape cards, while square and portrait marks use compact square cards. Pause, previous and next controls precede the moving content in keyboard order. Each arrow advances to exactly one adjacent client using the measured position of each variable-width card. Time-based animation advances by sub-pixel distances and stops during pointer hover, direct interaction, keyboard focus or a hidden document. Focus and manual movement create a persistent pause; movement resumes only through the explicit control. Reduced-motion preference disables that control and automatic movement altogether. Manual changes announce their resulting client without announcing continuous movement. Native horizontal scrolling and its scrollbar are a component option and are disabled for the home-page instance.

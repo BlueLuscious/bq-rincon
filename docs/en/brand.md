@@ -26,9 +26,9 @@ White on brand teal and dark text on orange meet WCAG AA contrast for normal tex
 
 ## Typography
 
-No licensed or supplied brand typeface is required for the initial website. The interface uses a system sans-serif stack so text remains fast, legible and independent of third-party font delivery. A future typeface must be licensed, measured for performance and introduced as an explicit brand decision.
+The interface uses a system sans-serif stack for body copy and headings so its main content remains fast and legible. Section eyebrows use Barlow Condensed at weight 700 as a compact industrial display accent. The font is distributed under the SIL Open Font Licence and is self-hosted through the pinned Fontsource package; the public page makes no request to Google Fonts or another font CDN.
 
-Headings use strong weight and compact line height. Body copy favours comfortable line height and bounded line length over decorative styling.
+Headings use strong weight, compact line height and a broader measure than the initial composition. Body copy favours comfortable line height and bounded line length over decorative styling.
 
 ## Mark usage
 
