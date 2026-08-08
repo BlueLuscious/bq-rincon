@@ -1,15 +1,26 @@
 ---
 import { ArrowUp } from '@lucide/astro';
+import { siWhatsapp } from 'simple-icons';
 ---
 
 <div class="floating-actions">
   <a
-    class="back-to-top"
+    class="floating-action back-to-top"
     href="#top"
     aria-label="Volver al inicio de la página"
     data-back-to-top
   >
     <ArrowUp size={22} stroke-width={2.25} aria-hidden="true" />
+  </a>
+
+  <a
+    class="floating-action whatsapp-action"
+    href="https://wa.me/543400415140"
+    aria-label="Contactar a BQ por WhatsApp"
+  >
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+      <path d={siWhatsapp.path}></path>
+    </svg>
   </a>
 </div>
 
@@ -24,19 +35,20 @@ import { ArrowUp } from '@lucide/astro';
     position: fixed;
     z-index: 15;
     inset-block-end: max(var(--space-4), env(safe-area-inset-bottom));
-    inset-inline-start: max(var(--space-4), env(safe-area-inset-left));
+    inset-inline: max(var(--space-4), env(safe-area-inset-left))
+      max(var(--space-4), env(safe-area-inset-right));
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     pointer-events: none;
   }
 
-  .back-to-top {
+  .floating-action {
     display: grid;
     width: 3rem;
     height: 3rem;
-    color: var(--colour-on-brand);
     text-decoration: none;
     pointer-events: auto;
-    background: var(--colour-brand-teal);
-    border: 0.0625rem solid var(--colour-brand-teal);
     border-radius: 50%;
     box-shadow: var(--shadow-medium);
     transition:
@@ -47,8 +59,33 @@ import { ArrowUp } from '@lucide/astro';
     place-items: center;
   }
 
+  .back-to-top {
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border: 0.0625rem solid var(--colour-brand-teal);
+  }
+
   .back-to-top:hover {
     background: var(--colour-shadow);
+  }
+
+  .whatsapp-action {
+    color: var(--colour-on-brand);
+    background: var(--colour-whatsapp);
+    border: 0.0625rem solid
+      color-mix(in srgb, var(--colour-whatsapp) 72%, var(--colour-ink));
+  }
+
+  .whatsapp-action:hover {
+    background: color-mix(
+      in srgb,
+      var(--colour-whatsapp) 82%,
+      var(--colour-surface)
+    );
+  }
+
+  .whatsapp-action svg {
+    fill: currentcolor;
   }
 
   .back-to-top[data-back-to-top-ready][data-back-to-top-hidden] {
@@ -59,7 +96,7 @@ import { ArrowUp } from '@lucide/astro';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .back-to-top {
+    .floating-action {
       transition: none;
     }
   }
