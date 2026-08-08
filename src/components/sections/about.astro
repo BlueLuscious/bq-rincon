@@ -6,20 +6,6 @@ import Section from '../common/section.astro';
 
 <Section id="nosotros" labelledBy="about-heading" tone="brand">
   <div class="about-layout">
-    <div class="about-visual">
-      <Image
-        class="about-image"
-        src={eventSiteImage}
-        alt="Cuatro baños químicos instalados en un predio al aire libre"
-        format="webp"
-        quality={82}
-        widths={[480, 720]}
-        sizes="(min-width: 56rem) 46vw, 100vw"
-        layout="constrained"
-        loading="lazy"
-      />
-    </div>
-
     <div class="about-content">
       <p class="eyebrow">Sobre BQ</p>
       <h2 id="about-heading">Una empresa familiar cerca de cada proyecto.</h2>
@@ -51,6 +37,20 @@ import Section from '../common/section.astro';
           <span>Limpieza, reposición y mantenimiento durante el servicio.</span>
         </li>
       </ul>
+    </div>
+
+    <div class="about-visual">
+      <Image
+        class="about-image"
+        src={eventSiteImage}
+        alt="Cuatro baños químicos instalados en un predio al aire libre"
+        format="webp"
+        quality={82}
+        widths={[480, 720]}
+        sizes="(min-width: 56rem) 46vw, 100vw"
+        layout="constrained"
+        loading="lazy"
+      />
     </div>
   </div>
 </Section>
@@ -143,6 +143,10 @@ import Section from '../common/section.astro';
     .about-layout {
       grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1fr);
       gap: clamp(4rem, 8vw, 8rem);
+    }
+
+    .about-visual {
+      order: -1;
     }
   }
 
