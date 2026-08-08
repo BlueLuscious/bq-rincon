@@ -1,0 +1,81 @@
+---
+/**
+ * @description Defines the public inputs accepted by a compact informational badge.
+ */
+interface Props {
+  /** @description Selects the semantic colour treatment applied to the badge. */
+  tone?: 'brand' | 'neutral' | 'sanitation';
+  /** @description Adds a consumer-owned class without replacing the badge class. */
+  class?: string;
+}
+
+/**
+ * @description Provides the presentation options forwarded to the badge element.
+ */
+const { tone = 'neutral', class: className } = Astro.props;
+
+/**
+ * @description Records whether the consumer supplied a decorative leading icon.
+ */
+const hasIcon = Astro.slots.has('icon');
+---
+
+<span class:list={['badge', `badge-${tone}`, className]}>
+  {
+    hasIcon && (
+      <span class="badge-icon" aria-hidden="true">
+        <slot name="icon" />
+      </span>
+    )
+  }
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    min-height: 2rem;
+    padding: var(--space-1) var(--space-3);
+    color: var(--colour-ink);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-medium);
+    line-height: 1.2;
+    border: 0.0625rem solid var(--colour-border);
+    border-radius: 999rem;
+  }
+
+  .badge-neutral {
+    background: var(--colour-surface);
+  }
+
+  .badge-brand {
+    background: color-mix(
+      in srgb,
+      var(--colour-brand-teal) 10%,
+      var(--colour-surface)
+    );
+    border-color: color-mix(
+      in srgb,
+      var(--colour-brand-teal) 35%,
+      var(--colour-border)
+    );
+  }
+
+  .badge-sanitation {
+    background: var(--gradient-sanitation-surface);
+    border-color: color-mix(
+      in srgb,
+      var(--colour-identifier-sanitation) 42%,
+      var(--colour-border)
+    );
+  }
+
+  .badge-icon {
+    display: inline-grid;
+    width: 1rem;
+    color: var(--colour-brand-teal);
+    place-items: center;
+  }
+</style>

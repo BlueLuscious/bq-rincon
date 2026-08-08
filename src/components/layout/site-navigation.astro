@@ -1,26 +1,66 @@
 ---
+import { Menu, X } from '@lucide/astro';
+import IconButton from '../common/icon-button.astro';
+
 /**
  * @description Defines the stable destinations exposed by the primary site navigation.
  */
 const navigationItems = [
+  { href: '#clientes', label: 'Clientes' },
   { href: '#servicios', label: 'Servicios' },
+  { href: '#como-trabajamos', label: 'Cómo trabajamos' },
+  { href: '#seguridad', label: 'Seguridad' },
   { href: '#nosotros', label: 'Nosotros' },
+  { href: '#experiencia', label: 'Experiencia' },
 ] as const;
 ---
 
-<nav aria-label="Navegación principal">
-  <ul class="navigation-list">
-    {
-      navigationItems.map(({ href, label }) => (
-        <li>
-          <a href={href}>{label}</a>
-        </li>
-      ))
-    }
-  </ul>
-</nav>
+<div class="site-navigation" data-site-navigation>
+  <div class="navigation-toggle">
+    <IconButton
+      id="site-navigation-toggle"
+      label="Abrir navegación"
+      controls="site-navigation-panel"
+      expanded={false}
+    >
+      <Menu size={22} aria-hidden="true" />
+      <X size={22} slot="expanded-icon" aria-hidden="true" />
+    </IconButton>
+  </div>
+
+  <nav
+    id="site-navigation-panel"
+    class="navigation-panel"
+    aria-label="Navegación principal"
+  >
+    <ul class="navigation-list">
+      {
+        navigationItems.map(({ href, label }) => (
+          <li>
+            <a href={href}>{label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
+
+<script>
+  import { initialiseNavigationDisclosure } from '../../scripts/navigation-disclosure.controller';
+
+  initialiseNavigationDisclosure();
+</script>
 
 <style>
+  .site-navigation {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .navigation-toggle {
+    display: none;
+  }
+
   .navigation-list {
     display: flex;
     flex-wrap: wrap;
@@ -34,7 +74,7 @@ const navigationItems = [
     display: inline-flex;
     padding-block: var(--space-2);
     color: var(--colour-ink);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     font-weight: var(--font-weight-medium);
     text-decoration-color: transparent;
     transition:
@@ -42,12 +82,50 @@ const navigationItems = [
       text-decoration-color var(--transition-duration) ease;
   }
 
-  a:hover {
+  a:hover,
+  a[aria-current='location'] {
     color: var(--colour-brand-teal);
     text-decoration-color: currentcolor;
   }
 
   a:active {
     color: var(--colour-brand-orange-dark);
+  }
+
+  @media (width < 64rem) {
+    .navigation-list {
+      justify-content: flex-end;
+      gap: var(--space-1) var(--space-4);
+    }
+
+    .site-navigation[data-navigation-ready] .navigation-toggle {
+      display: block;
+    }
+
+    .site-navigation[data-navigation-ready] .navigation-panel {
+      position: absolute;
+      inset-block-start: calc(100% + var(--space-3));
+      inset-inline: 0;
+      padding: var(--space-3);
+      background: var(--colour-surface);
+      border: 0.0625rem solid var(--colour-border);
+      border-radius: var(--radius-medium);
+      box-shadow: var(--shadow-medium);
+    }
+
+    .site-navigation[data-navigation-ready] .navigation-list {
+      display: grid;
+      gap: 0;
+    }
+
+    .site-navigation[data-navigation-ready] a {
+      width: 100%;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-small);
+    }
+
+    .site-navigation[data-navigation-ready] a:hover {
+      background: var(--colour-surface-subtle);
+    }
   }
 </style>

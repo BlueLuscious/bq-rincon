@@ -1,0 +1,105 @@
+---
+/**
+ * @description Defines the public inputs accepted by a labelled icon-only button.
+ */
+interface Props {
+  /** @description Provides the accessible name announced for the button. */
+  label: string;
+  /** @description Identifies the button for behavioural relationships. */
+  id?: string;
+  /** @description Identifies the element controlled by the button. */
+  controls?: string;
+  /** @description Communicates the initial disclosure state when controls are present. */
+  expanded?: boolean;
+  /** @description Selects the native button behaviour. */
+  type?: 'button' | 'submit' | 'reset';
+  /** @description Selects the approved visual treatment. */
+  variant?: 'neutral' | 'brand';
+  /** @description Adds a consumer-owned class without replacing the button class. */
+  class?: string;
+}
+
+/**
+ * @description Provides the attributes and presentation options forwarded to the button.
+ */
+const {
+  label,
+  id,
+  controls,
+  expanded = false,
+  type = 'button',
+  variant = 'neutral',
+  class: className,
+} = Astro.props;
+
+/**
+ * @description Records whether the button exposes an alternate icon while expanded.
+ */
+const hasExpandedIcon = Astro.slots.has('expanded-icon');
+---
+
+<button
+  id={id}
+  class:list={['icon-button', `icon-button-${variant}`, className]}
+  type={type}
+  aria-label={label}
+  aria-controls={controls}
+  aria-expanded={controls ? expanded : undefined}
+>
+  <span class="default-icon" aria-hidden="true"><slot /></span>
+  {
+    hasExpandedIcon && (
+      <span class="expanded-icon" aria-hidden="true">
+        <slot name="expanded-icon" />
+      </span>
+    )
+  }
+</button>
+
+<style>
+  .icon-button {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    cursor: pointer;
+    border: 0.0625rem solid var(--colour-border);
+    border-radius: var(--radius-medium);
+    transition:
+      color var(--transition-duration) ease,
+      background-color var(--transition-duration) ease,
+      border-color var(--transition-duration) ease;
+    place-items: center;
+  }
+
+  .icon-button-neutral {
+    color: var(--colour-ink);
+    background: var(--colour-surface);
+  }
+
+  .icon-button-brand {
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border-color: var(--colour-brand-teal);
+  }
+
+  .icon-button:hover {
+    color: var(--colour-on-brand);
+    background: var(--colour-shadow);
+    border-color: var(--colour-shadow);
+  }
+
+  .default-icon,
+  .expanded-icon {
+    grid-area: 1 / 1;
+  }
+
+  .expanded-icon,
+  .icon-button[aria-expanded='true'] .default-icon {
+    display: none;
+  }
+
+  .icon-button[aria-expanded='true'] .expanded-icon {
+    display: block;
+  }
+</style>

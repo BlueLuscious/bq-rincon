@@ -1,4 +1,12 @@
 ---
+import {
+  PackagePlus,
+  Sparkles,
+  SprayCan,
+  Toilet,
+  Truck,
+  Wrench,
+} from '@lucide/astro';
 import Section from '../common/section.astro';
 
 /**
@@ -6,31 +14,37 @@ import Section from '../common/section.astro';
  */
 const services = [
   {
+    icon: Toilet,
     title: 'Alquiler de unidades',
     description:
       'Baños químicos para necesidades temporales en obras, industrias y proyectos.',
   },
   {
+    icon: Truck,
     title: 'Traslado e instalación',
     description:
       'Entrega y ubicación de las unidades en el espacio coordinado para cada operación.',
   },
   {
+    icon: Sparkles,
     title: 'Limpieza programada',
     description:
       'Visitas de limpieza coordinadas según las condiciones acordadas para el servicio.',
   },
   {
+    icon: SprayCan,
     title: 'Desagote y sanitización',
     description:
       'Tratamiento integral de las unidades para sostener condiciones adecuadas de higiene.',
   },
   {
+    icon: PackagePlus,
     title: 'Reposición de insumos',
     description:
       'Reabastecimiento de los consumibles de higiene contemplados en cada servicio.',
   },
   {
+    icon: Wrench,
     title: 'Mantenimiento',
     description:
       'Atención preventiva y correctiva para conservar las unidades en condiciones de uso.',
@@ -50,11 +64,16 @@ const services = [
 
   <ol class="service-grid">
     {
-      services.map(({ title, description }, index) => (
+      services.map(({ icon: Icon, title, description }, index) => (
         <li class="service-card">
-          <span class="service-number" aria-hidden="true">
-            {String(index + 1).padStart(2, '0')}
-          </span>
+          <div class="service-meta" aria-hidden="true">
+            <span class="service-icon">
+              <Icon stroke-width={1.8} />
+            </span>
+            <span class="service-number">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
           <h3>{title}</h3>
           <p>{description}</p>
         </li>
@@ -103,14 +122,34 @@ const services = [
   .service-card {
     min-height: 15rem;
     padding: var(--space-6);
-    background: var(--colour-surface-subtle);
+    background: var(--gradient-sanitation-surface);
     border: 0.0625rem solid var(--colour-border);
     border-radius: var(--radius-medium);
+    box-shadow: 0 0.75rem 2rem rgb(1 61 67 / 6%);
+    transition:
+      box-shadow var(--motion-duration-base) var(--motion-easing-standard),
+      transform var(--motion-duration-base) var(--motion-easing-standard);
+  }
+
+  .service-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-block-end: var(--space-6);
+  }
+
+  .service-icon {
+    display: inline-grid;
+    width: 3rem;
+    height: 3rem;
+    color: var(--colour-on-brand);
+    background: var(--gradient-sanitation-accent);
+    border-radius: var(--radius-medium);
+    box-shadow: 0 0.5rem 1rem rgb(1 61 67 / 15%);
+    place-items: center;
   }
 
   .service-number {
-    display: inline-block;
-    margin-block-end: var(--space-6);
     color: var(--colour-brand-orange-dark);
     font-size: 0.8125rem;
     font-weight: var(--font-weight-bold);
@@ -126,6 +165,13 @@ const services = [
     margin-block-end: 0;
     color: var(--colour-muted);
     font-size: 0.9375rem;
+  }
+
+  @media (hover: hover) {
+    .service-card:hover {
+      box-shadow: var(--shadow-medium);
+      transform: translateY(-0.25rem);
+    }
   }
 
   @media (width >= 40rem) {

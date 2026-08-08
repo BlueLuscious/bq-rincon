@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
+import { Droplets, Handshake, ShieldCheck } from '@lucide/astro';
 import heroImage from '../../assets/images/portable-toilets-industrial-site.jpeg';
+import Badge from '../common/badge.astro';
 import Button from '../common/button.astro';
 import Container from '../common/container.astro';
 ---
@@ -24,9 +26,24 @@ import Container from '../common/container.astro';
         </div>
 
         <ul class="hero-principles" aria-label="Principios del servicio">
-          <li>Higiene</li>
-          <li>Seguridad</li>
-          <li>Atención personalizada</li>
+          <li>
+            <Badge tone="sanitation">
+              <Droplets size={16} slot="icon" aria-hidden="true" />
+              Higiene
+            </Badge>
+          </li>
+          <li>
+            <Badge tone="brand">
+              <ShieldCheck size={16} slot="icon" aria-hidden="true" />
+              Seguridad
+            </Badge>
+          </li>
+          <li>
+            <Badge>
+              <Handshake size={16} slot="icon" aria-hidden="true" />
+              Atención personalizada
+            </Badge>
+          </li>
         </ul>
       </div>
 
@@ -120,24 +137,7 @@ import Container from '../common/container.astro';
     gap: var(--space-3) var(--space-5);
     padding: 0;
     margin: 0;
-    color: var(--colour-muted);
-    font-size: 0.875rem;
-    font-weight: var(--font-weight-medium);
     list-style: none;
-  }
-
-  .hero-principles li {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
-
-  .hero-principles li::before {
-    width: 0.5rem;
-    height: 0.5rem;
-    background: var(--colour-brand-orange);
-    border-radius: 50%;
-    content: '';
   }
 
   .hero-visual {

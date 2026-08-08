@@ -1,0 +1,159 @@
+---
+import {
+  BadgeCheck,
+  CalendarCheck,
+  PackageCheck,
+  SprayCan,
+} from '@lucide/astro';
+import Section from '../common/section.astro';
+
+/**
+ * @description Defines the approved operational sequence communicated to customers.
+ */
+const workflowSteps = [
+  {
+    icon: CalendarCheck,
+    title: 'Planificación',
+    description:
+      'Coordinamos las condiciones del servicio y el cronograma previsto para cada proyecto.',
+  },
+  {
+    icon: PackageCheck,
+    title: 'Preparación e instalación',
+    description:
+      'Verificamos las unidades y los equipos antes del traslado y la instalación en el lugar acordado.',
+  },
+  {
+    icon: SprayCan,
+    title: 'Servicio programado',
+    description:
+      'Realizamos las tareas coordinadas de limpieza, desagote, sanitización y reposición.',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Control final',
+    description:
+      'Inspeccionamos las unidades y el área de trabajo al finalizar cada intervención.',
+  },
+] as const;
+---
+
+<Section id="como-trabajamos" labelledBy="workflow-heading" tone="subtle">
+  <div class="workflow-header">
+    <div>
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2 id="workflow-heading">Un proceso claro para cuidar cada detalle.</h2>
+    </div>
+    <p class="workflow-summary">
+      Organizamos cada intervención para acompañar la continuidad, la higiene y
+      las condiciones seguras del servicio.
+    </p>
+  </div>
+
+  <ol class="workflow-list">
+    {
+      workflowSteps.map(({ icon: Icon, title, description }, index) => (
+        <li>
+          <div class="step-marker" aria-hidden="true">
+            <Icon stroke-width={1.8} />
+            <span class="step-number">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <div>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .workflow-header {
+    display: grid;
+    gap: var(--space-5);
+    align-items: end;
+    margin-block-end: var(--space-7);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    max-width: 16ch;
+    margin-block-end: 0;
+    font-size: var(--font-size-heading-2);
+  }
+
+  .workflow-summary {
+    max-width: 38rem;
+    margin-block-end: 0;
+    color: var(--colour-muted);
+  }
+
+  .workflow-list {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-block-start: 0.0625rem solid var(--colour-border);
+    list-style: none;
+  }
+
+  .workflow-list li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-block-end: 0.0625rem solid var(--colour-border);
+  }
+
+  .step-marker {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+    color: var(--colour-brand-teal);
+  }
+
+  .step-number {
+    color: var(--colour-brand-orange-dark);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.08em;
+  }
+
+  h3 {
+    margin-block-end: var(--space-2);
+    font-size: 1.25rem;
+  }
+
+  .workflow-list p {
+    max-width: 34rem;
+    margin-block-end: 0;
+    color: var(--colour-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (width >= 48rem) {
+    .workflow-header {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.75fr);
+    }
+
+    .workflow-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-inline-start: 0.0625rem solid var(--colour-border);
+    }
+
+    .workflow-list li {
+      padding: var(--space-6);
+      border-inline-end: 0.0625rem solid var(--colour-border);
+    }
+  }
+</style>

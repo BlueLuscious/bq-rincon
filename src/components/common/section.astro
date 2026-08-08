@@ -5,14 +5,14 @@ import Container from './container.astro';
  * @description Defines the public inputs accepted by a consistently spaced page section.
  */
 interface Props {
-  /** @description Identifies the section for navigation or document relationships. */
+  /** @description Identifies the section content as a same-page navigation destination. */
   id?: string;
   /** @description Connects the section landmark to the identifier of its visible heading. */
   labelledBy?: string;
   /** @description Adds a consumer-owned class without replacing the section's structural class. */
   class?: string;
   /** @description Selects the approved surface treatment owned by the section boundary. */
-  tone?: 'default' | 'brand';
+  tone?: 'default' | 'subtle' | 'brand';
 }
 
 /**
@@ -22,12 +22,13 @@ const { id, labelledBy, class: className, tone = 'default' } = Astro.props;
 ---
 
 <section
-  id={id}
   aria-labelledby={labelledBy}
   class:list={['section', `section-${tone}`, className]}
 >
   <Container>
-    <slot />
+    <div id={id} class="section-content">
+      <slot />
+    </div>
   </Container>
 </section>
 
@@ -36,7 +37,15 @@ const { id, labelledBy, class: className, tone = 'default' } = Astro.props;
     padding-block: var(--space-section);
   }
 
+  .section-content {
+    scroll-margin-block-start: calc(var(--site-header-height) + var(--space-4));
+  }
+
   .section-brand {
-    background: var(--colour-brand-teal-dark);
+    background: var(--colour-shadow);
+  }
+
+  .section-subtle {
+    background: var(--colour-surface-subtle);
   }
 </style>

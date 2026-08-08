@@ -1,0 +1,95 @@
+---
+import Section from '../common/section.astro';
+
+/**
+ * @description Defines the organisations named in the approved company presentation.
+ */
+const clients = [
+  'Municipalidad de Villa Constitución',
+  'SIDERSA',
+  'EDECA S.A.',
+  'Grupo Ponce',
+  'ESSESA S.A.',
+  'Bahisa',
+  'Pose S.A.',
+  'Municipio de Arroyo Seco',
+  'Municipio de San Nicolás',
+  'Comuna de Pavón',
+  'Comuna de Fighiera',
+  'Chapa Naval',
+  'Autódromo San Nicolás',
+] as const;
+---
+
+<Section id="clientes" labelledBy="clients-heading">
+  <div class="clients-header">
+    <p class="eyebrow">Confianza</p>
+    <h2 id="clients-heading">Empresas e instituciones que confiaron en BQ.</h2>
+    <p>
+      Nuestra trayectoria se construye a partir de compromisos cumplidos y
+      relaciones de trabajo sostenidas.
+    </p>
+  </div>
+
+  <ul class="client-list" aria-label="Clientes de BQ Baños Químicos">
+    {clients.map((client) => <li>{client}</li>)}
+  </ul>
+</Section>
+
+<style>
+  .clients-header {
+    max-width: 52rem;
+    margin-block-end: var(--space-7);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    max-width: 18ch;
+    margin-block-end: var(--space-4);
+    font-size: var(--font-size-heading-2);
+  }
+
+  .clients-header > p:last-child {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+  }
+
+  .client-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .client-list li {
+    display: grid;
+    flex: 1 1 14rem;
+    max-width: 18rem;
+    min-height: 6.5rem;
+    place-items: center;
+    padding: var(--space-4);
+    color: var(--colour-ink);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    background: var(--colour-surface-subtle);
+    border: 0.0625rem solid var(--colour-border);
+    border-radius: var(--radius-small);
+  }
+
+  @media (width < 36rem) {
+    .client-list li {
+      max-width: none;
+    }
+  }
+</style>

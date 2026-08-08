@@ -1,19 +1,48 @@
 :root {
   --colour-brand-teal: #02707a;
-  --colour-brand-teal-dark: #014e56;
-  --colour-brand-orange: #ed9802;
-  --colour-brand-orange-dark: #9c6000;
-  --colour-brand-orange-light: #ffc869;
   --colour-brand-grey: #9a9a9c;
-  --colour-ink: #142325;
+  --colour-text: #0b1b1d;
+  --colour-shadow: #013d43;
+  --colour-border: #d1dcde;
+  --colour-background: #f3f7f8;
+  --colour-accent: #ed9802;
+  --colour-identifier-red: #c84347;
+  --colour-identifier-yellow: #e59b18;
+  --colour-identifier-sanitation: #24a191;
+  --colour-identifier-purple: #835ca3;
+  --colour-ink: var(--colour-text);
   --colour-muted: #526164;
   --colour-surface: #fff;
-  --colour-surface-subtle: #f3f7f6;
-  --colour-border: #d4dedc;
+  --colour-surface-subtle: var(--colour-background);
+  --colour-brand-orange: var(--colour-accent);
+  --colour-brand-orange-dark: color-mix(
+    in srgb,
+    var(--colour-accent) 68%,
+    var(--colour-text)
+  );
+  --colour-brand-orange-light: color-mix(
+    in srgb,
+    var(--colour-accent) 28%,
+    white
+  );
   --colour-focus: var(--colour-brand-teal);
   --colour-on-brand: #fff;
   --colour-on-dark-muted: #d8e5e3;
   --colour-on-accent: var(--colour-ink);
+  --gradient-sanitation-surface: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colour-brand-teal) 10%, var(--colour-background)),
+    color-mix(
+      in srgb,
+      var(--colour-identifier-sanitation) 18%,
+      var(--colour-background)
+    )
+  );
+  --gradient-sanitation-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-sanitation)
+  );
   --font-family-body:
     'Inter', ui-sans-serif, system-ui, -apple-system, 'BlinkMacSystemFont',
     'Segoe UI', sans-serif;
@@ -40,8 +69,13 @@
   --radius-small: 0.375rem;
   --radius-medium: 0.75rem;
   --radius-large: 1.25rem;
-  --shadow-medium: 0 1rem 2rem rgb(20 35 37 / 14%);
-  --shadow-large: 0 1.5rem 4rem rgb(20 35 37 / 18%);
+  --shadow-medium: 0 1rem 2rem rgb(1 61 67 / 14%);
+  --shadow-large: 0 1.5rem 4rem rgb(1 61 67 / 18%);
   --focus-ring-width: 0.1875rem;
-  --transition-duration: 180ms;
+  --site-header-height: 4.75rem;
+  --motion-duration-fast: 180ms;
+  --motion-duration-base: 320ms;
+  --motion-duration-reveal: 520ms;
+  --motion-easing-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-duration: var(--motion-duration-fast);
 }
