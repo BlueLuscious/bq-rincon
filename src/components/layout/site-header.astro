@@ -1,0 +1,103 @@
+---
+import brandMark from '../../assets/brand/bq-mark-primary.svg';
+import Button from '../common/button.astro';
+import Container from '../common/container.astro';
+import SiteNavigation from './site-navigation.astro';
+---
+
+<header class="site-header">
+  <Container>
+    <div class="site-header-content">
+      <a class="brand" href="/" aria-label="BQ Baños Químicos, inicio">
+        <img
+          src={brandMark.src}
+          alt=""
+          width={48}
+          height={48}
+          decoding="async"
+        />
+        <span class="brand-name">
+          <strong>BQ</strong>
+          <span>Baños Químicos</span>
+        </span>
+      </a>
+
+      <div class="site-header-navigation">
+        <SiteNavigation />
+        <div class="site-header-action">
+          <Button href="#servicios">Ver servicios</Button>
+        </div>
+      </div>
+    </div>
+  </Container>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 5;
+    padding-block: var(--space-4);
+    background: rgb(255 255 255 / 92%);
+    border-block-end: 0.0625rem solid var(--colour-border);
+  }
+
+  .site-header-content,
+  .site-header-navigation,
+  .brand {
+    display: flex;
+    align-items: center;
+  }
+
+  .site-header-content {
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-6);
+  }
+
+  .brand {
+    flex: 0 0 auto;
+    gap: var(--space-3);
+    color: var(--colour-ink);
+    text-decoration: none;
+  }
+
+  .brand img {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .brand-name {
+    display: grid;
+    font-size: 0.75rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .brand-name strong {
+    color: var(--colour-brand-teal);
+    font-size: 1.125rem;
+    letter-spacing: 0.08em;
+  }
+
+  .site-header-navigation {
+    justify-content: flex-end;
+    gap: var(--space-6);
+  }
+
+  @media (width < 48rem) {
+    .site-header-content {
+      align-items: flex-start;
+    }
+
+    .site-header-navigation {
+      align-items: flex-end;
+      flex-direction: column-reverse;
+      gap: var(--space-2);
+    }
+  }
+
+  @media (width < 30rem) {
+    .site-header-action {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+/**
+ * @description Defines the stable destinations exposed by the primary site navigation.
+ */
+const navigationItems = [
+  { href: '#servicios', label: 'Servicios' },
+  { href: '#nosotros', label: 'Nosotros' },
+] as const;
+---
+
+<nav aria-label="Navegación principal">
+  <ul class="navigation-list">
+    {
+      navigationItems.map(({ href, label }) => (
+        <li>
+          <a href={href}>{label}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .navigation-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    padding-block: var(--space-2);
+    color: var(--colour-ink);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-medium);
+    text-decoration-color: transparent;
+    transition:
+      color var(--transition-duration) ease,
+      text-decoration-color var(--transition-duration) ease;
+  }
+
+  a:hover {
+    color: var(--colour-brand-teal);
+    text-decoration-color: currentcolor;
+  }
+
+  a:active {
+    color: var(--colour-brand-orange-dark);
+  }
+</style>

@@ -61,7 +61,8 @@ const actionClassNames = ['button', `button-${variant}`, className];
     transition:
       color var(--transition-duration) ease,
       background-color var(--transition-duration) ease,
-      border-color var(--transition-duration) ease;
+      border-color var(--transition-duration) ease,
+      transform var(--transition-duration) ease;
   }
 
   .button-primary {
@@ -81,5 +82,9 @@ const actionClassNames = ['button', `button-${variant}`, className];
   .button-secondary:hover {
     background: var(--colour-surface);
     border-color: var(--colour-brand-orange);
+  }
+
+  .button:active {
+    transform: translateY(0.125rem);
   }
 </style>

@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import SiteFooter from '../components/layout/site-footer.astro';
+import SiteHeader from '../components/layout/site-header.astro';
 
 /**
  * @description Defines the required document metadata and locale for a public page.
@@ -20,7 +22,7 @@ const { title, description, language = 'es-AR' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang={language}>
+<html id="top" lang={language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -29,9 +31,11 @@ const { title, description, language = 'es-AR' } = Astro.props;
   </head>
   <body>
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <SiteHeader />
     <main id="main-content">
       <slot />
     </main>
+    <SiteFooter />
   </body>
 </html>
 

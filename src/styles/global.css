@@ -10,6 +10,7 @@ html {
   min-width: 20rem;
   color-scheme: light;
   scroll-behavior: smooth;
+  scroll-padding-block-start: var(--space-6);
 }
 
 body {
@@ -22,6 +23,10 @@ body {
   line-height: var(--line-height-body);
   background: var(--colour-surface);
   text-rendering: optimizelegibility;
+}
+
+main {
+  overflow: clip;
 }
 
 button,

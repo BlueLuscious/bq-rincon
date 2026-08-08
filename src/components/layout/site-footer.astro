@@ -1,0 +1,103 @@
+---
+import brandMark from '../../assets/brand/bq-mark-primary.svg';
+import Container from '../common/container.astro';
+
+/**
+ * @description Provides the current year for the site ownership notice.
+ */
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <Container>
+    <div class="site-footer-content">
+      <div class="site-footer-brand">
+        <img src={brandMark.src} alt="" width={56} height={56} loading="lazy" />
+        <div>
+          <strong>BQ Baños Químicos</strong>
+          <p>Soluciones sanitarias para obras, industrias y proyectos.</p>
+        </div>
+      </div>
+
+      <nav aria-label="Navegación del pie de página">
+        <a href="#servicios">Servicios</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#top">Volver arriba</a>
+      </nav>
+    </div>
+
+    <p class="site-footer-legal">© {currentYear} BQ Baños Químicos.</p>
+  </Container>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-7) var(--space-5);
+    background: var(--colour-surface);
+    border-block-start: 0.0625rem solid var(--colour-border);
+  }
+
+  .site-footer-content,
+  .site-footer-brand,
+  nav {
+    display: flex;
+  }
+
+  .site-footer-content {
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .site-footer-brand {
+    max-width: 30rem;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .site-footer-brand img {
+    flex: 0 0 auto;
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .site-footer-brand strong {
+    display: block;
+    margin-block-end: var(--space-1);
+  }
+
+  .site-footer-brand p,
+  .site-footer-legal {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+    font-size: 0.875rem;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  nav a {
+    color: var(--colour-ink);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .site-footer-legal {
+    padding-block-start: var(--space-5);
+    margin-block-start: var(--space-6);
+    border-block-start: 0.0625rem solid var(--colour-border);
+  }
+
+  @media (width < 40rem) {
+    .site-footer-content {
+      flex-direction: column;
+    }
+
+    nav {
+      justify-content: flex-start;
+    }
+  }
+</style>

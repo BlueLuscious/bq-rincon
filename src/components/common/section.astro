@@ -11,18 +11,20 @@ interface Props {
   labelledBy?: string;
   /** @description Adds a consumer-owned class without replacing the section's structural class. */
   class?: string;
+  /** @description Selects the approved surface treatment owned by the section boundary. */
+  tone?: 'default' | 'brand';
 }
 
 /**
  * @description Provides the section attributes forwarded to semantic HTML.
  */
-const { id, labelledBy, class: className } = Astro.props;
+const { id, labelledBy, class: className, tone = 'default' } = Astro.props;
 ---
 
 <section
   id={id}
   aria-labelledby={labelledBy}
-  class:list={['section', className]}
+  class:list={['section', `section-${tone}`, className]}
 >
   <Container>
     <slot />
@@ -32,5 +34,9 @@ const { id, labelledBy, class: className } = Astro.props;
 <style>
   .section {
     padding-block: var(--space-section);
+  }
+
+  .section-brand {
+    background: var(--colour-brand-teal-dark);
   }
 </style>
