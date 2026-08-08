@@ -27,9 +27,11 @@
     "verify": "prettier --check . && eslint . && stylelint \"src/**/*.{astro,css}\" && astro check && astro build"
   },
   "dependencies": {
+    "@fontsource/barlow-condensed": "5.3.0",
     "@lucide/astro": "1.27.0",
     "astro": "7.2.0",
-    "sharp": "0.35.3"
+    "sharp": "0.35.3",
+    "simple-icons": "16.28.0"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
