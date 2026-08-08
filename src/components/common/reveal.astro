@@ -1,0 +1,64 @@
+---
+/**
+ * @description Defines the public inputs accepted by a progressively revealed content boundary.
+ */
+interface Props {
+  /** @description Delays the entrance transition by the supplied number of milliseconds. */
+  delay?: number;
+  /** @description Adds a consumer-owned class without replacing the reveal class. */
+  class?: string;
+}
+
+/**
+ * @description Provides the reveal timing and consumer class forwarded to the boundary.
+ */
+const { delay = 0, class: className } = Astro.props;
+---
+
+<div
+  class:list={['reveal', className]}
+  data-reveal
+  style={`--reveal-delay: ${delay}ms;`}
+>
+  <slot />
+</div>
+
+<script>
+  import { initialiseRevealObserver } from '../../scripts/reveal.observer';
+
+  initialiseRevealObserver();
+</script>
+
+<style>
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal[data-reveal-concealed] {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition:
+      opacity var(--motion-duration-reveal) var(--motion-easing-standard),
+      transform var(--motion-duration-reveal) var(--motion-easing-standard);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-reveal-concealed][data-reveal-preparing] {
+    transition: none;
+  }
+
+  .reveal[data-reveal-concealed][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal[data-reveal-concealed] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

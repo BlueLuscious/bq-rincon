@@ -1,5 +1,6 @@
 ---
 import Section from '../common/section.astro';
+import ClientCarousel from './client-carousel.astro';
 
 /**
  * @description Defines the organisations named in the approved company presentation.
@@ -31,9 +32,7 @@ const clients = [
     </p>
   </div>
 
-  <ul class="client-list" aria-label="Clientes de BQ Baños Químicos">
-    {clients.map((client) => <li>{client}</li>)}
-  </ul>
+  <ClientCarousel clients={clients} />
 </Section>
 
 <style>
@@ -60,36 +59,5 @@ const clients = [
   .clients-header > p:last-child {
     margin-block-end: 0;
     color: var(--colour-muted);
-  }
-
-  .client-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-
-  .client-list li {
-    display: grid;
-    flex: 1 1 14rem;
-    max-width: 18rem;
-    min-height: 6.5rem;
-    place-items: center;
-    padding: var(--space-4);
-    color: var(--colour-ink);
-    font-weight: var(--font-weight-bold);
-    text-align: center;
-    background: var(--colour-surface-subtle);
-    border: 0.0625rem solid var(--colour-border);
-    border-radius: var(--radius-small);
-  }
-
-  @media (width < 36rem) {
-    .client-list li {
-      max-width: none;
-    }
   }
 </style>

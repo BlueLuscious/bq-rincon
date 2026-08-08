@@ -1,5 +1,6 @@
 ---
 import About from '../components/sections/about.astro';
+import Reveal from '../components/common/reveal.astro';
 import Clients from '../components/sections/clients.astro';
 import FieldGallery from '../components/sections/field-gallery.astro';
 import Hero from '../components/sections/hero.astro';
@@ -22,10 +23,10 @@ const pageDescription =
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <Hero />
-  <Clients />
-  <Services />
-  <Workflow />
-  <Safety />
-  <About />
-  <FieldGallery />
+  <Reveal><Clients /></Reveal>
+  <Reveal><Services /></Reveal>
+  <Reveal><Workflow /></Reveal>
+  <Reveal><Safety /></Reveal>
+  <Reveal><About /></Reveal>
+  <Reveal><FieldGallery /></Reveal>
 </BaseLayout>

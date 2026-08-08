@@ -1,0 +1,179 @@
+---
+import { ChevronLeft, ChevronRight, Pause, Play } from '@lucide/astro';
+import IconButton from '../common/icon-button.astro';
+
+/**
+ * @description Defines the public inputs accepted by the controlled client carousel.
+ */
+interface Props {
+  /** @description Ordered client names approved for text-only publication. */
+  clients: readonly string[];
+}
+
+/**
+ * @description Provides the client sequence rendered as finite carousel slides.
+ */
+const { clients } = Astro.props;
+---
+
+<div
+  class="client-carousel"
+  data-client-carousel
+  role="region"
+  aria-roledescription="carrusel"
+  aria-label="Clientes de BQ Baños Químicos"
+>
+  <div class="carousel-toolbar">
+    <div data-carousel-action="rotation">
+      <IconButton
+        label="Pausar rotación automática"
+        controls="client-carousel-viewport"
+        pressed={false}
+      >
+        <Pause size={20} aria-hidden="true" />
+        <Play size={20} slot="pressed-icon" aria-hidden="true" />
+      </IconButton>
+    </div>
+
+    <div class="carousel-navigation" aria-label="Controles del carrusel">
+      <div data-carousel-action="previous">
+        <IconButton
+          label="Mostrar clientes anteriores"
+          controls="client-carousel-viewport"
+        >
+          <ChevronLeft size={22} aria-hidden="true" />
+        </IconButton>
+      </div>
+      <div data-carousel-action="next">
+        <IconButton
+          label="Mostrar clientes siguientes"
+          controls="client-carousel-viewport"
+        >
+          <ChevronRight size={22} aria-hidden="true" />
+        </IconButton>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="client-carousel-viewport"
+    class="carousel-viewport"
+    data-carousel-viewport
+    tabindex="0"
+    aria-label="Referencias de clientes"
+    aria-live="off"
+  >
+    <div class="carousel-track" data-carousel-track>
+      {
+        clients.map((client, index) => (
+          <div
+            class="client-slide"
+            data-carousel-slide
+            role="group"
+            aria-roledescription="diapositiva"
+            aria-label={`${index + 1} de ${clients.length}`}
+          >
+            <span>{client}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <p
+    class="carousel-status"
+    data-carousel-status
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+  </p>
+</div>
+
+<script>
+  import { initialiseClientCarousel } from '../../scripts/client-carousel.controller';
+
+  initialiseClientCarousel();
+</script>
+
+<style>
+  .client-carousel {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .carousel-toolbar,
+  .carousel-navigation {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .carousel-toolbar {
+    justify-content: space-between;
+  }
+
+  .carousel-viewport {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    scroll-snap-type: inline mandatory;
+    scrollbar-color: var(--colour-brand-teal) var(--colour-background);
+    scrollbar-width: thin;
+  }
+
+  .carousel-track {
+    display: grid;
+    grid-auto-columns: 100%;
+    grid-auto-flow: column;
+    gap: var(--space-3);
+    padding-block-end: var(--space-3);
+  }
+
+  .client-slide {
+    display: grid;
+    min-width: 0;
+    min-height: 7rem;
+    padding: var(--space-5);
+    color: var(--colour-ink);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    background: var(--gradient-sanitation-surface);
+    border: 0.0625rem solid var(--colour-border);
+    border-radius: var(--radius-medium);
+    scroll-snap-align: start;
+    place-items: center;
+  }
+
+  .carousel-status {
+    position: absolute;
+    width: 0.0625rem;
+    height: 0.0625rem;
+    padding: 0;
+    margin: -0.0625rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip-path: inset(50%);
+  }
+
+  @media (width >= 40rem) {
+    .carousel-track {
+      grid-auto-columns: calc((100% - var(--space-3)) / 2);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .carousel-track {
+      grid-auto-columns: calc(
+        (100% - var(--space-3) - var(--space-3) - var(--space-3)) / 4
+      );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-viewport {
+      scroll-behavior: auto;
+    }
+  }
+</style>

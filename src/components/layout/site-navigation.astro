@@ -47,8 +47,10 @@ const navigationItems = [
 
 <script>
   import { initialiseNavigationDisclosure } from '../../scripts/navigation-disclosure.controller';
+  import { initialiseSectionNavigationObserver } from '../../scripts/section-navigation.observer';
 
   initialiseNavigationDisclosure();
+  initialiseSectionNavigationObserver();
 </script>
 
 <style>
@@ -86,6 +88,11 @@ const navigationItems = [
   a[aria-current='location'] {
     color: var(--colour-brand-teal);
     text-decoration-color: currentcolor;
+  }
+
+  a[aria-current='location'] {
+    text-decoration-thickness: 0.14em;
+    text-underline-offset: 0.35em;
   }
 
   a:active {

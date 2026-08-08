@@ -11,6 +11,10 @@ interface Props {
   controls?: string;
   /** @description Communicates the initial disclosure state when controls are present. */
   expanded?: boolean;
+  /** @description Communicates an optional initial toggle-button state. */
+  pressed?: boolean;
+  /** @description Prevents activation when the represented behaviour is unavailable. */
+  disabled?: boolean;
   /** @description Selects the native button behaviour. */
   type?: 'button' | 'submit' | 'reset';
   /** @description Selects the approved visual treatment. */
@@ -27,6 +31,8 @@ const {
   id,
   controls,
   expanded = false,
+  pressed,
+  disabled = false,
   type = 'button',
   variant = 'neutral',
   class: className,
@@ -36,6 +42,11 @@ const {
  * @description Records whether the button exposes an alternate icon while expanded.
  */
 const hasExpandedIcon = Astro.slots.has('expanded-icon');
+
+/**
+ * @description Records whether the button exposes an alternate icon while pressed.
+ */
+const hasPressedIcon = Astro.slots.has('pressed-icon');
 ---
 
 <button
@@ -45,12 +56,21 @@ const hasExpandedIcon = Astro.slots.has('expanded-icon');
   aria-label={label}
   aria-controls={controls}
   aria-expanded={controls ? expanded : undefined}
+  aria-pressed={pressed}
+  disabled={disabled}
 >
   <span class="default-icon" aria-hidden="true"><slot /></span>
   {
     hasExpandedIcon && (
       <span class="expanded-icon" aria-hidden="true">
         <slot name="expanded-icon" />
+      </span>
+    )
+  }
+  {
+    hasPressedIcon && (
+      <span class="pressed-icon" aria-hidden="true">
+        <slot name="pressed-icon" />
       </span>
     )
   }
@@ -83,23 +103,38 @@ const hasExpandedIcon = Astro.slots.has('expanded-icon');
     border-color: var(--colour-brand-teal);
   }
 
-  .icon-button:hover {
+  .icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .icon-button:hover:not(:disabled) {
     color: var(--colour-on-brand);
     background: var(--colour-shadow);
     border-color: var(--colour-shadow);
   }
 
   .default-icon,
-  .expanded-icon {
+  .expanded-icon,
+  .pressed-icon {
     grid-area: 1 / 1;
   }
 
   .expanded-icon,
+  .pressed-icon,
   .icon-button[aria-expanded='true'] .default-icon {
     display: none;
   }
 
   .icon-button[aria-expanded='true'] .expanded-icon {
+    display: block;
+  }
+
+  .icon-button[aria-pressed='true'] .default-icon {
+    display: none;
+  }
+
+  .icon-button[aria-pressed='true'] .pressed-icon {
     display: block;
   }
 </style>
