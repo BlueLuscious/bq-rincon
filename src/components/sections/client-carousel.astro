@@ -12,9 +12,14 @@ interface Props {
   id: string;
   /** @description Provides ordered, approved client references and optional logos. */
   clients: readonly {
+    /** @description Provides the accessible organisation name represented by the slide. */
     readonly name: string;
+    /** @description Provides optional approved artwork for the organisation. */
     readonly logo?: ImageMetadata;
+    /** @description Selects the card surface required by the supplied artwork. */
     readonly tone?: 'default' | 'inverse';
+    /** @description Requests a square card for visually compact artwork. */
+    readonly compact?: boolean;
   }[];
   /** @description Sets continuous movement speed in CSS pixels per second. */
   speed?: number;
@@ -111,38 +116,43 @@ const sequences = [false, true] as const;
             aria-hidden={clone ? 'true' : undefined}
             inert={clone ? true : undefined}
           >
-            {clients.map(({ name, logo, tone = 'default' }, index) => (
-              <div
-                class:list={[
-                  'client-slide',
-                  `client-slide-${tone}`,
-                  { 'client-slide-logo': logo },
-                ]}
-                data-carousel-slide
-                role={clone ? undefined : 'group'}
-                aria-roledescription={clone ? undefined : 'diapositiva'}
-                aria-label={
-                  clone
-                    ? undefined
-                    : `${index + 1} de ${clients.length}: ${name}`
-                }
-              >
-                {logo ? (
-                  <Image
-                    class="client-logo"
-                    src={logo}
-                    alt=""
-                    widths={[160, 240, 320]}
-                    sizes="(min-width: 64rem) 14rem, 11rem"
-                    format={logo.format === 'svg' ? 'svg' : 'webp'}
-                    quality={90}
-                    loading="lazy"
-                  />
-                ) : (
-                  <span>{name}</span>
-                )}
-              </div>
-            ))}
+            {clients.map(
+              ({ name, logo, tone = 'default', compact = false }, index) => (
+                <div
+                  class:list={[
+                    'client-slide',
+                    `client-slide-${tone}`,
+                    {
+                      'client-slide-logo': logo,
+                      'client-slide-compact': compact,
+                    },
+                  ]}
+                  data-carousel-slide
+                  role={clone ? undefined : 'group'}
+                  aria-roledescription={clone ? undefined : 'diapositiva'}
+                  aria-label={
+                    clone
+                      ? undefined
+                      : `${index + 1} de ${clients.length}: ${name}`
+                  }
+                >
+                  {logo ? (
+                    <Image
+                      class="client-logo"
+                      src={logo}
+                      alt=""
+                      widths={[160, 240, 320]}
+                      sizes="(min-width: 64rem) 14rem, 11rem"
+                      format={logo.format === 'svg' ? 'svg' : 'webp'}
+                      quality={90}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span>{name}</span>
+                  )}
+                </div>
+              ),
+            )}
           </div>
         ))
       }
@@ -202,9 +212,9 @@ const sequences = [false, true] as const;
 
   .client-slide {
     display: grid;
-    flex: 0 0 clamp(12rem, 22vw, 17rem);
+    flex: 0 0 clamp(15rem, 24vw, 19rem);
     min-width: 0;
-    min-height: 7.5rem;
+    min-height: 8.75rem;
     padding: var(--space-5);
     color: var(--colour-ink);
     font-weight: var(--font-weight-bold);
@@ -219,6 +229,13 @@ const sequences = [false, true] as const;
     background: var(--colour-surface);
   }
 
+  .client-slide-compact {
+    flex-basis: 8.75rem;
+    min-height: 8.75rem;
+    padding: var(--space-4);
+    aspect-ratio: 1;
+  }
+
   .client-slide-inverse {
     background: var(--colour-shadow);
     border-color: var(--colour-shadow);
@@ -226,10 +243,15 @@ const sequences = [false, true] as const;
 
   .client-logo {
     width: auto;
-    max-width: min(100%, 13rem);
+    max-width: min(100%, 15rem);
     height: auto;
-    max-height: 4rem;
+    max-height: 5.25rem;
     object-fit: contain;
+  }
+
+  .client-slide-compact .client-logo {
+    max-width: 7rem;
+    max-height: 7rem;
   }
 
   .carousel-status {

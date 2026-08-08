@@ -241,19 +241,36 @@ class ClientCarouselController {
    */
   #move(direction: -1 | 1): void {
     const sequenceWidth = this.#getSequenceWidth();
-    const distance = this.#getSlideStride();
+    const slidePositions = this.#getSlidePositions();
 
-    if (direction < 0 && this.#viewport.scrollLeft < distance) {
-      this.#viewport.scrollLeft += sequenceWidth;
+    if (sequenceWidth <= 0 || slidePositions.length === 0) {
+      return;
     }
 
-    const targetOffset = this.#viewport.scrollLeft + direction * distance;
+    const normalisedOffset =
+      ((this.#viewport.scrollLeft % sequenceWidth) + sequenceWidth) %
+      sequenceWidth;
+    const currentIndex = this.#getClosestSlideIndex(
+      normalisedOffset,
+      slidePositions,
+      sequenceWidth,
+    );
+    const targetIndex =
+      (currentIndex + direction + slidePositions.length) %
+      slidePositions.length;
+    let targetOffset = slidePositions[targetIndex];
+
+    if (direction > 0 && targetOffset <= normalisedOffset) {
+      targetOffset += sequenceWidth;
+    } else if (direction < 0 && targetOffset >= normalisedOffset) {
+      this.#viewport.scrollLeft += sequenceWidth;
+    }
 
     this.#viewport.scrollTo({
       left: targetOffset,
       behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',
     });
-    this.#announcePosition(targetOffset);
+    this.#announcePosition(targetIndex);
 
     window.setTimeout(() => {
       this.#normalisePosition();
@@ -291,41 +308,55 @@ class ClientCarouselController {
   }
 
   /**
-   * @description Measures one slide and its sequence gap for manual movement and announcements.
-   * @returns Slide stride in CSS pixels.
+   * @description Measures each semantic slide's leading edge within the seamless sequence.
+   * @returns Ordered slide positions in CSS pixels.
    */
-  #getSlideStride(): number {
+  #getSlidePositions(): readonly number[] {
     const firstSlide = this.#slides[0];
 
     if (!firstSlide) {
-      return this.#viewport.clientWidth;
+      return [];
     }
 
     const sequence = firstSlide.parentElement ?? firstSlide;
-    const gap = Number.parseFloat(getComputedStyle(sequence).columnGap);
 
-    return (
-      firstSlide.getBoundingClientRect().width +
-      (Number.isFinite(gap) ? gap : 0)
-    );
+    return this.#slides.map((slide) => slide.offsetLeft - sequence.offsetLeft);
+  }
+
+  /**
+   * @description Finds the visual client nearest to the current seamless position.
+   * @param normalisedOffset Current position within one semantic sequence.
+   * @param slidePositions Ordered client positions within that sequence.
+   * @param sequenceWidth Complete width of one seamless sequence.
+   * @returns Index of the closest client.
+   */
+  #getClosestSlideIndex(
+    normalisedOffset: number,
+    slidePositions: readonly number[],
+    sequenceWidth: number,
+  ): number {
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    slidePositions.forEach((position, index) => {
+      const directDistance = Math.abs(position - normalisedOffset);
+      const distance = Math.min(directDistance, sequenceWidth - directDistance);
+
+      if (distance < closestDistance) {
+        closestIndex = index;
+        closestDistance = distance;
+      }
+    });
+
+    return closestIndex;
   }
 
   /**
    * @description Announces the client reached through a manual control.
-   * @param targetOffset Requested scroll offset in CSS pixels.
+   * @param clientIndex Index of the client reached by manual navigation.
    * @returns Nothing.
    */
-  #announcePosition(targetOffset: number): void {
-    const sequenceWidth = this.#getSequenceWidth();
-    const normalisedOffset =
-      sequenceWidth > 0
-        ? ((targetOffset % sequenceWidth) + sequenceWidth) % sequenceWidth
-        : 0;
-    const clientIndex = Math.min(
-      this.#slides.length - 1,
-      Math.max(0, Math.round(normalisedOffset / this.#getSlideStride())),
-    );
-
+  #announcePosition(clientIndex: number): void {
     this.#status.textContent = `Cliente ${clientIndex + 1} de ${this.#slides.length}.`;
   }
 

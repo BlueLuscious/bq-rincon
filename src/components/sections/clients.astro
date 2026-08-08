@@ -24,14 +24,18 @@ const clients = [
   },
   { name: 'SIDERSA', logo: sidersaLogo, tone: 'inverse' },
   { name: 'EDECA S.A.', logo: edecaLogo },
-  { name: 'Grupo Ponce', logo: grupoPonceLogo },
+  { name: 'Grupo Ponce', logo: grupoPonceLogo, compact: true },
   { name: 'ESSESA S.A.', logo: esesaLogo },
   { name: 'Bahisa', logo: bahisaLogo },
   { name: 'Pose S.A.', logo: poseLogo },
-  { name: 'Municipio de Arroyo Seco', logo: municipioArroyoSecoLogo },
+  {
+    name: 'Municipio de Arroyo Seco',
+    logo: municipioArroyoSecoLogo,
+    compact: true,
+  },
   { name: 'Municipio de San Nicolás', logo: municipioSanNicolasLogo },
-  { name: 'Comuna de Pavón', logo: comunaPavonLogo },
-  { name: 'Comuna de Fighiera', logo: comunaFighieraLogo },
+  { name: 'Comuna de Pavón', logo: comunaPavonLogo, compact: true },
+  { name: 'Comuna de Fighiera', logo: comunaFighieraLogo, compact: true },
   // { name: 'Chapa Naval' },
   {
     name: 'Autódromo San Nicolás',
@@ -68,16 +72,16 @@ const clients = [
   .eyebrow {
     margin-block-end: var(--space-3);
     color: var(--colour-brand-teal);
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
     font-weight: var(--font-weight-bold);
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
   h2 {
-    max-width: 18ch;
+    width: var(--width-heading-2-section);
     margin-block-end: var(--space-4);
-    font-size: var(--font-size-heading-2);
+    font-size: var(--font-size-heading-2-section);
   }
 
   .clients-header > p:last-child {
