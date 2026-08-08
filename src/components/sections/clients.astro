@@ -1,7 +1,14 @@
 ---
+import autodromoSanNicolasLogo from '../../assets/clients/autodromo-sn.svg';
 import bahisaLogo from '../../assets/clients/bahisa.png';
+import comunaFighieraLogo from '../../assets/clients/comuna-fighiera.png';
+import comunaPavonLogo from '../../assets/clients/comuna-pavon.png';
 import edecaLogo from '../../assets/clients/edeca.png';
 import esesaLogo from '../../assets/clients/esesa.png';
+import grupoPonceLogo from '../../assets/clients/grupo-ponce.png';
+import municipioArroyoSecoLogo from '../../assets/clients/municipio-as.png';
+import municipioSanNicolasLogo from '../../assets/clients/municipio-sn.svg';
+import municipioVillaConstitucionLogo from '../../assets/clients/municipio-vc.png';
 import poseLogo from '../../assets/clients/pose-sa.png';
 import sidersaLogo from '../../assets/clients/sidersa.png';
 import Section from '../common/section.astro';
@@ -11,19 +18,26 @@ import ClientCarousel from './client-carousel.astro';
  * @description Defines the organisations named in the approved company presentation.
  */
 const clients = [
-  { name: 'Municipalidad de Villa Constitución' },
+  {
+    name: 'Municipalidad de Villa Constitución',
+    logo: municipioVillaConstitucionLogo,
+  },
   { name: 'SIDERSA', logo: sidersaLogo, tone: 'inverse' },
   { name: 'EDECA S.A.', logo: edecaLogo },
-  { name: 'Grupo Ponce' },
+  { name: 'Grupo Ponce', logo: grupoPonceLogo },
   { name: 'ESSESA S.A.', logo: esesaLogo },
   { name: 'Bahisa', logo: bahisaLogo },
   { name: 'Pose S.A.', logo: poseLogo },
-  { name: 'Municipio de Arroyo Seco' },
-  { name: 'Municipio de San Nicolás' },
-  { name: 'Comuna de Pavón' },
-  { name: 'Comuna de Fighiera' },
-  { name: 'Chapa Naval' },
-  { name: 'Autódromo San Nicolás' },
+  { name: 'Municipio de Arroyo Seco', logo: municipioArroyoSecoLogo },
+  { name: 'Municipio de San Nicolás', logo: municipioSanNicolasLogo },
+  { name: 'Comuna de Pavón', logo: comunaPavonLogo },
+  { name: 'Comuna de Fighiera', logo: comunaFighieraLogo },
+  // { name: 'Chapa Naval' },
+  {
+    name: 'Autódromo San Nicolás',
+    logo: autodromoSanNicolasLogo,
+    tone: 'inverse',
+  },
 ] as const;
 ---
 

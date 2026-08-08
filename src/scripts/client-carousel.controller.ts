@@ -235,16 +235,13 @@ class ClientCarouselController {
   }
 
   /**
-   * @description Moves a substantial viewport distance while preserving seamless sequence continuity.
+   * @description Moves exactly one client stride while preserving seamless sequence continuity.
    * @param direction Negative for previous or positive for following clients.
    * @returns Nothing.
    */
   #move(direction: -1 | 1): void {
     const sequenceWidth = this.#getSequenceWidth();
-    const distance = Math.max(
-      this.#viewport.clientWidth * 0.8,
-      this.#getSlideStride(),
-    );
+    const distance = this.#getSlideStride();
 
     if (direction < 0 && this.#viewport.scrollLeft < distance) {
       this.#viewport.scrollLeft += sequenceWidth;

@@ -134,7 +134,7 @@ const sequences = [false, true] as const;
                     alt=""
                     widths={[160, 240, 320]}
                     sizes="(min-width: 64rem) 14rem, 11rem"
-                    format="webp"
+                    format={logo.format === 'svg' ? 'svg' : 'webp'}
                     quality={90}
                     loading="lazy"
                   />
