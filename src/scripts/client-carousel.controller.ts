@@ -1,29 +1,32 @@
 /**
- * @description Defines the minimum interval between automatic carousel movements.
+ * @description Defines the settling delay used before a manual seamless normalisation.
  */
-const CAROUSEL_ROTATION_INTERVAL_MS = 5000;
+const CAROUSEL_MANUAL_SETTLE_MS = 450;
 
 /**
- * @description Controls finite client-carousel movement, rotation and interaction pauses.
+ * @description Controls continuous client-carousel movement, seamless wrapping and interaction pauses.
  */
 class ClientCarouselController {
   /** @description Complete carousel interaction boundary. */
   readonly #root: HTMLElement;
 
-  /** @description Horizontally scrollable viewport containing the client slides. */
+  /** @description Horizontally scrollable viewport containing both visual sequences. */
   readonly #viewport: HTMLElement;
 
-  /** @description Ordered finite set of client slides. */
+  /** @description Track containing the semantic and cloned visual sequences. */
+  readonly #track: HTMLElement;
+
+  /** @description Ordered semantic set of client slides. */
   readonly #slides: readonly HTMLElement[];
 
-  /** @description Toggle button which pauses or resumes automatic rotation. */
+  /** @description Toggle button which pauses or resumes automatic movement. */
   readonly #rotationButton: HTMLButtonElement;
 
-  /** @description Button which moves to the previous visible group. */
-  readonly #previousButton: HTMLButtonElement;
+  /** @description Optional button which moves towards previous clients. */
+  readonly #previousButton?: HTMLButtonElement;
 
-  /** @description Button which moves to the next visible group. */
-  readonly #nextButton: HTMLButtonElement;
+  /** @description Optional button which moves towards following clients. */
+  readonly #nextButton?: HTMLButtonElement;
 
   /** @description Polite status boundary used for manual movement announcements. */
   readonly #status: HTMLElement;
@@ -31,55 +34,70 @@ class ClientCarouselController {
   /** @description User motion preference which disables automatic movement. */
   readonly #reducedMotion: MediaQueryList;
 
-  /** @description Timer scheduled for the next automatic movement. */
-  #rotationTimer?: number;
+  /** @description Requested automatic movement speed in CSS pixels per second. */
+  readonly #speed: number;
 
-  /** @description Whether the user has left automatic rotation enabled. */
+  /** @description Scheduled animation frame for continuous movement. */
+  #animationFrame?: number;
+
+  /** @description Previous animation-frame timestamp used to calculate distance. */
+  #previousFrameTime?: number;
+
+  /** @description Sub-pixel travel retained until it can advance one complete CSS pixel. */
+  #distanceRemainder = 0;
+
+  /** @description Whether the user has left automatic movement enabled. */
   #rotationEnabled = true;
 
-  /** @description Whether pointer hover is temporarily holding rotation. */
+  /** @description Whether pointer hover is temporarily holding movement. */
   #pointerInside = false;
 
   /** @description Rotation state requested before pointer-driven focus changes the effective state. */
   #pendingRotationState?: boolean;
 
   /**
-   * @description Creates a controller for one complete client carousel.
+   * @description Creates a controller for one complete continuous client carousel.
    * @param root Complete carousel interaction boundary.
    * @param viewport Horizontally scrollable slide viewport.
-   * @param slides Ordered finite client slides.
-   * @param rotationButton Automatic-rotation toggle.
-   * @param previousButton Previous-group control.
-   * @param nextButton Next-group control.
+   * @param track Track containing both visual sequences.
+   * @param slides Ordered semantic client slides.
+   * @param rotationButton Automatic-movement toggle.
+   * @param previousButton Optional previous-client control.
+   * @param nextButton Optional next-client control.
    * @param status Manual movement announcement boundary.
+   * @param speed Continuous movement speed in CSS pixels per second.
    */
   constructor(
     root: HTMLElement,
     viewport: HTMLElement,
+    track: HTMLElement,
     slides: readonly HTMLElement[],
     rotationButton: HTMLButtonElement,
-    previousButton: HTMLButtonElement,
-    nextButton: HTMLButtonElement,
+    previousButton: HTMLButtonElement | undefined,
+    nextButton: HTMLButtonElement | undefined,
     status: HTMLElement,
+    speed: number,
   ) {
     this.#root = root;
     this.#viewport = viewport;
+    this.#track = track;
     this.#slides = slides;
     this.#rotationButton = rotationButton;
     this.#previousButton = previousButton;
     this.#nextButton = nextButton;
     this.#status = status;
+    this.#speed = speed;
     this.#reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   }
 
   /**
-   * @description Attaches carousel controls and starts rotation when user preferences permit it.
+   * @description Attaches carousel controls and starts movement when user preferences permit it.
    * @returns Nothing.
    */
   initialise(): void {
     this.#rotationButton.addEventListener('click', this.#handleRotationToggle);
-    this.#previousButton.addEventListener('click', this.#handlePrevious);
-    this.#nextButton.addEventListener('click', this.#handleNext);
+    this.#previousButton?.addEventListener('click', this.#handlePrevious);
+    this.#nextButton?.addEventListener('click', this.#handleNext);
     this.#root.addEventListener('pointerenter', this.#handlePointerEnter);
     this.#root.addEventListener('pointerleave', this.#handlePointerLeave);
     this.#root.addEventListener('pointerdown', this.#handlePointerInteraction);
@@ -87,11 +105,11 @@ class ClientCarouselController {
     document.addEventListener('visibilitychange', this.#handleVisibilityChange);
     this.#reducedMotion.addEventListener('change', this.#handleMotionChange);
     this.#updateRotationPresentation();
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   }
 
   /**
-   * @description Toggles user-controlled automatic rotation.
+   * @description Toggles user-controlled automatic movement.
    * @returns Nothing.
    */
   readonly #handleRotationToggle = (): void => {
@@ -103,47 +121,35 @@ class ClientCarouselController {
       this.#pendingRotationState ?? !this.#rotationEnabled;
     this.#pendingRotationState = undefined;
     this.#updateRotationPresentation();
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   };
 
-  /**
-   * @description Pauses rotation and moves to the previous visible client group.
-   * @returns Nothing.
-   */
+  /** @description Pauses movement and moves towards previous clients. @returns Nothing. */
   readonly #handlePrevious = (): void => {
     this.#pausePermanently();
-    this.#move(-1, true);
+    this.#move(-1);
   };
 
-  /**
-   * @description Pauses rotation and moves to the next visible client group.
-   * @returns Nothing.
-   */
+  /** @description Pauses movement and moves towards following clients. @returns Nothing. */
   readonly #handleNext = (): void => {
     this.#pausePermanently();
-    this.#move(1, true);
+    this.#move(1);
   };
 
-  /**
-   * @description Temporarily holds rotation while the pointer remains over the carousel.
-   * @returns Nothing.
-   */
+  /** @description Temporarily holds movement while the pointer remains inside. @returns Nothing. */
   readonly #handlePointerEnter = (): void => {
     this.#pointerInside = true;
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   };
 
-  /**
-   * @description Releases a temporary pointer-hover hold without overriding a user pause.
-   * @returns Nothing.
-   */
+  /** @description Releases a pointer-hover hold without overriding a user pause. @returns Nothing. */
   readonly #handlePointerLeave = (): void => {
     this.#pointerInside = false;
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   };
 
   /**
-   * @description Converts direct pointer interaction into a persistent pause.
+   * @description Converts direct content interaction into a persistent pause.
    * @param event Pointer event dispatched within the carousel.
    * @returns Nothing.
    */
@@ -156,11 +162,18 @@ class ClientCarouselController {
       return;
     }
 
+    if (
+      event.target instanceof Element &&
+      event.target.closest('[data-carousel-action]')
+    ) {
+      return;
+    }
+
     this.#pausePermanently();
   };
 
   /**
-   * @description Pauses rotation when focus first enters from outside the carousel.
+   * @description Pauses movement when focus first enters from outside the carousel.
    * @param event Focus event dispatched within the carousel.
    * @returns Nothing.
    */
@@ -175,134 +188,152 @@ class ClientCarouselController {
     this.#pausePermanently();
   };
 
-  /**
-   * @description Re-evaluates rotation when the document becomes visible or hidden.
-   * @returns Nothing.
-   */
+  /** @description Re-evaluates movement when document visibility changes. @returns Nothing. */
   readonly #handleVisibilityChange = (): void => {
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   };
 
-  /**
-   * @description Disables automatic movement while reduced motion is requested.
-   * @returns Nothing.
-   */
+  /** @description Re-evaluates movement when the reduced-motion preference changes. @returns Nothing. */
   readonly #handleMotionChange = (): void => {
     this.#updateRotationPresentation();
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   };
 
   /**
-   * @description Advances the carousel automatically and schedules the next finite movement.
+   * @description Advances the visual sequence by a time-based sub-pixel distance.
+   * @param timestamp Current animation-frame timestamp.
    * @returns Nothing.
    */
-  readonly #handleRotation = (): void => {
-    this.#move(1, false);
-    this.#scheduleRotation();
+  readonly #handleAnimationFrame = (timestamp: number): void => {
+    const previousTimestamp = this.#previousFrameTime ?? timestamp;
+    const elapsedMilliseconds = Math.min(timestamp - previousTimestamp, 64);
+
+    this.#previousFrameTime = timestamp;
+    this.#distanceRemainder += (this.#speed * elapsedMilliseconds) / 1000;
+
+    const completePixels = Math.floor(this.#distanceRemainder);
+
+    if (completePixels > 0) {
+      this.#viewport.scrollLeft += completePixels;
+      this.#distanceRemainder -= completePixels;
+    }
+
+    this.#normalisePosition();
+    this.#animationFrame = window.requestAnimationFrame(
+      this.#handleAnimationFrame,
+    );
   };
 
   /**
-   * @description Stops automatic rotation until the user explicitly resumes it.
+   * @description Stops automatic movement until the user explicitly resumes it.
    * @returns Nothing.
    */
   #pausePermanently(): void {
     this.#rotationEnabled = false;
     this.#updateRotationPresentation();
-    this.#scheduleRotation();
+    this.#scheduleAnimation();
   }
 
   /**
-   * @description Moves one responsive group in the requested direction without cloning slides.
-   * @param direction Negative for previous or positive for next.
-   * @param announce Whether assistive technology should announce the resulting group.
+   * @description Moves a substantial viewport distance while preserving seamless sequence continuity.
+   * @param direction Negative for previous or positive for following clients.
    * @returns Nothing.
    */
-  #move(direction: -1 | 1, announce: boolean): void {
-    const pageDistance = this.#getPageDistance();
-    const maximumOffset = Math.max(
-      0,
-      this.#viewport.scrollWidth - this.#viewport.clientWidth,
+  #move(direction: -1 | 1): void {
+    const sequenceWidth = this.#getSequenceWidth();
+    const distance = Math.max(
+      this.#viewport.clientWidth * 0.8,
+      this.#getSlideStride(),
     );
-    const currentOffset = this.#viewport.scrollLeft;
-    let targetOffset = currentOffset + direction * pageDistance;
 
-    if (direction > 0 && currentOffset >= maximumOffset - 1) {
-      targetOffset = 0;
-    } else if (direction < 0 && currentOffset <= 1) {
-      targetOffset = maximumOffset;
-    } else {
-      targetOffset = Math.min(maximumOffset, Math.max(0, targetOffset));
+    if (direction < 0 && this.#viewport.scrollLeft < distance) {
+      this.#viewport.scrollLeft += sequenceWidth;
     }
+
+    const targetOffset = this.#viewport.scrollLeft + direction * distance;
 
     this.#viewport.scrollTo({
       left: targetOffset,
       behavior: this.#reducedMotion.matches ? 'auto' : 'smooth',
     });
+    this.#announcePosition(targetOffset);
 
-    if (announce) {
-      this.#announcePosition(targetOffset);
+    window.setTimeout(() => {
+      this.#normalisePosition();
+    }, CAROUSEL_MANUAL_SETTLE_MS);
+  }
+
+  /**
+   * @description Maps the cloned continuation back onto its identical semantic sequence.
+   * @returns Nothing.
+   */
+  #normalisePosition(): void {
+    const sequenceWidth = this.#getSequenceWidth();
+
+    if (sequenceWidth <= 0) {
+      return;
+    }
+
+    while (this.#viewport.scrollLeft >= sequenceWidth) {
+      this.#viewport.scrollLeft -= sequenceWidth;
     }
   }
 
   /**
-   * @description Calculates the distance represented by the currently visible slide group.
-   * @returns Horizontal movement distance in CSS pixels.
+   * @description Measures the complete semantic sequence including its following track gap.
+   * @returns Seamless sequence width in CSS pixels.
    */
-  #getPageDistance(): number {
+  #getSequenceWidth(): number {
+    const sequences = this.#track.querySelectorAll<HTMLElement>(
+      '[data-carousel-sequence]',
+    );
+
+    return sequences.length > 1
+      ? sequences[1].offsetLeft - sequences[0].offsetLeft
+      : 0;
+  }
+
+  /**
+   * @description Measures one slide and its sequence gap for manual movement and announcements.
+   * @returns Slide stride in CSS pixels.
+   */
+  #getSlideStride(): number {
     const firstSlide = this.#slides[0];
 
     if (!firstSlide) {
       return this.#viewport.clientWidth;
     }
 
-    const gap = Number.parseFloat(
-      getComputedStyle(firstSlide.parentElement ?? firstSlide).columnGap,
-    );
-    const safeGap = Number.isFinite(gap) ? gap : 0;
-    const stride = firstSlide.getBoundingClientRect().width + safeGap;
-    const visibleSlides = Math.max(
-      1,
-      Math.round((this.#viewport.clientWidth + safeGap) / stride),
-    );
+    const sequence = firstSlide.parentElement ?? firstSlide;
+    const gap = Number.parseFloat(getComputedStyle(sequence).columnGap);
 
-    return stride * visibleSlides;
+    return (
+      firstSlide.getBoundingClientRect().width +
+      (Number.isFinite(gap) ? gap : 0)
+    );
   }
 
   /**
-   * @description Announces the client range reached through a manual control.
-   * @param targetOffset Destination scroll offset in CSS pixels.
+   * @description Announces the client reached through a manual control.
+   * @param targetOffset Requested scroll offset in CSS pixels.
    * @returns Nothing.
    */
   #announcePosition(targetOffset: number): void {
-    const firstSlide = this.#slides[0];
-
-    if (!firstSlide) {
-      return;
-    }
-
-    const gap = Number.parseFloat(
-      getComputedStyle(firstSlide.parentElement ?? firstSlide).columnGap,
-    );
-    const safeGap = Number.isFinite(gap) ? gap : 0;
-    const stride = firstSlide.getBoundingClientRect().width + safeGap;
-    const firstVisible = Math.min(
+    const sequenceWidth = this.#getSequenceWidth();
+    const normalisedOffset =
+      sequenceWidth > 0
+        ? ((targetOffset % sequenceWidth) + sequenceWidth) % sequenceWidth
+        : 0;
+    const clientIndex = Math.min(
       this.#slides.length - 1,
-      Math.max(0, Math.round(targetOffset / stride)),
-    );
-    const visibleSlides = Math.max(
-      1,
-      Math.round((this.#viewport.clientWidth + safeGap) / stride),
-    );
-    const lastVisible = Math.min(
-      this.#slides.length,
-      firstVisible + visibleSlides,
+      Math.max(0, Math.round(normalisedOffset / this.#getSlideStride())),
     );
 
-    this.#status.textContent = `Mostrando clientes ${firstVisible + 1} a ${lastVisible} de ${this.#slides.length}.`;
+    this.#status.textContent = `Cliente ${clientIndex + 1} de ${this.#slides.length}.`;
   }
 
   /**
-   * @description Updates the rotation control and live-region policy from the effective user state.
+   * @description Updates the pause control and live-region policy from effective user state.
    * @returns Nothing.
    */
   #updateRotationPresentation(): void {
@@ -314,26 +345,26 @@ class ClientCarouselController {
     this.#rotationButton.setAttribute(
       'aria-label',
       motionBlocked
-        ? 'Rotación automática desactivada por preferencia de movimiento'
+        ? 'Movimiento automático desactivado por preferencia de movimiento'
         : paused
-          ? 'Reanudar rotación automática'
-          : 'Pausar rotación automática',
+          ? 'Reanudar movimiento automático'
+          : 'Pausar movimiento automático',
     );
-    this.#viewport.setAttribute(
-      'aria-live',
-      this.#rotationEnabled && !motionBlocked ? 'off' : 'polite',
-    );
+    this.#viewport.setAttribute('aria-live', paused ? 'polite' : 'off');
   }
 
   /**
-   * @description Clears any existing timer and schedules rotation only while all conditions permit it.
+   * @description Cancels stale work and schedules animation only while all conditions permit it.
    * @returns Nothing.
    */
-  #scheduleRotation(): void {
-    if (this.#rotationTimer !== undefined) {
-      window.clearTimeout(this.#rotationTimer);
-      this.#rotationTimer = undefined;
+  #scheduleAnimation(): void {
+    if (this.#animationFrame !== undefined) {
+      window.cancelAnimationFrame(this.#animationFrame);
+      this.#animationFrame = undefined;
     }
+
+    this.#previousFrameTime = undefined;
+    this.#distanceRemainder = 0;
 
     if (
       this.#rotationEnabled &&
@@ -341,16 +372,15 @@ class ClientCarouselController {
       !document.hidden &&
       !this.#reducedMotion.matches
     ) {
-      this.#rotationTimer = window.setTimeout(
-        this.#handleRotation,
-        CAROUSEL_ROTATION_INTERVAL_MS,
+      this.#animationFrame = window.requestAnimationFrame(
+        this.#handleAnimationFrame,
       );
     }
   }
 }
 
 /**
- * @description Initialises each unowned client carousel found in the document.
+ * @description Initialises each unowned continuous client carousel found in the document.
  * @returns Nothing.
  */
 export function initialiseClientCarousel(): void {
@@ -364,9 +394,17 @@ export function initialiseClientCarousel(): void {
       const viewport = root.querySelector<HTMLElement>(
         '[data-carousel-viewport]',
       );
-      const slides = Array.from(
-        root.querySelectorAll<HTMLElement>('[data-carousel-slide]'),
+      const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+      const semanticSequence = root.querySelector<HTMLElement>(
+        '[data-carousel-sequence]:not([data-carousel-clone])',
       );
+      const slides = semanticSequence
+        ? Array.from(
+            semanticSequence.querySelectorAll<HTMLElement>(
+              '[data-carousel-slide]',
+            ),
+          )
+        : [];
       const rotationButton = root.querySelector<HTMLButtonElement>(
         '[data-carousel-action="rotation"] button',
       );
@@ -377,13 +415,13 @@ export function initialiseClientCarousel(): void {
         '[data-carousel-action="next"] button',
       );
       const status = root.querySelector<HTMLElement>('[data-carousel-status]');
+      const parsedSpeed = Number.parseFloat(root.dataset.carouselSpeed ?? '');
 
       if (
         !viewport ||
+        !track ||
         slides.length === 0 ||
         !rotationButton ||
-        !previousButton ||
-        !nextButton ||
         !status
       ) {
         return;
@@ -393,11 +431,13 @@ export function initialiseClientCarousel(): void {
       new ClientCarouselController(
         root,
         viewport,
+        track,
         slides,
         rotationButton,
-        previousButton,
-        nextButton,
+        previousButton ?? undefined,
+        nextButton ?? undefined,
         status,
+        Number.isFinite(parsedSpeed) && parsedSpeed > 0 ? parsedSpeed : 22,
       ).initialise();
     });
 }
