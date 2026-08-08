@@ -17,12 +17,14 @@ The primary mark uses teal and grey. A secondary teal-and-orange variant is avai
 | Complementary | Border     | `#d1dcde` | Dividers and component boundaries                     |
 | Complementary | Background | `#f3f7f8` | Subtle sections and pale card surfaces                |
 | Complementary | Accent     | `#ed9802` | Highlights and action accents carrying dark text      |
-| B2C           | Red        | `#c84347` | Reserved until its business meaning is confirmed      |
-| B2C           | Yellow     | `#e59b18` | Reserved until its business meaning is confirmed      |
-| B2C           | Sanitation | `#24a191` | Sanitation and hygiene identifiers combined with teal |
-| B2C           | Purple     | `#835ca3` | Reserved until its business meaning is confirmed      |
+| B2C           | Red        | `#c84347` | Maintenance and corrective-attention identifiers      |
+| B2C           | Yellow     | `#e59b18` | Hire, transport and installation identifiers          |
+| B2C           | Sanitation | `#24a191` | Cleaning, sanitisation and replenishment identifiers  |
+| B2C           | Purple     | `#835ca3` | Personalised planning and special-project identifiers |
 
 White on brand teal and dark text on orange meet WCAG AA contrast for normal text. Orange or brand grey must not carry white text. A saturated teal-to-sanitation gradient is decorative because no single text colour meets normal-text AA over its complete range; text-bearing sanitation surfaces use pale mixes with dark text. Brand colours used decoratively still need a separate visible focus treatment when attached to an interactive control.
+
+The B2C colours identify service families, primarily within the service catalogue and related detail treatments. Brand teal remains the unifying colour across every family. Identifiers should appear as restrained accents, badges, icon surfaces, borders or pale gradients rather than full saturated content surfaces. Red must not represent general safety when no warning or corrective condition exists, and yellow must not replace the main orange action accent.
 
 ## Typography
 

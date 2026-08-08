@@ -15,36 +15,42 @@ import Section from '../common/section.astro';
 const services = [
   {
     icon: Toilet,
+    identifier: 'logistics',
     title: 'Alquiler de unidades',
     description:
       'Baños químicos para necesidades temporales en obras, industrias y proyectos.',
   },
   {
     icon: Truck,
+    identifier: 'logistics',
     title: 'Traslado e instalación',
     description:
       'Entrega y ubicación de las unidades en el espacio coordinado para cada operación.',
   },
   {
     icon: Sparkles,
+    identifier: 'sanitation',
     title: 'Limpieza programada',
     description:
       'Visitas de limpieza coordinadas según las condiciones acordadas para el servicio.',
   },
   {
     icon: SprayCan,
+    identifier: 'sanitation',
     title: 'Desagote y sanitización',
     description:
       'Tratamiento integral de las unidades para sostener condiciones adecuadas de higiene.',
   },
   {
     icon: PackagePlus,
+    identifier: 'sanitation',
     title: 'Reposición de insumos',
     description:
       'Reabastecimiento de los consumibles de higiene contemplados en cada servicio.',
   },
   {
     icon: Wrench,
+    identifier: 'maintenance',
     title: 'Mantenimiento',
     description:
       'Atención preventiva y correctiva para conservar las unidades en condiciones de uso.',
@@ -64,8 +70,8 @@ const services = [
 
   <ol class="service-grid">
     {
-      services.map(({ icon: Icon, title, description }) => (
-        <li class="service-card">
+      services.map(({ icon: Icon, identifier, title, description }) => (
+        <li class:list={['service-card', `service-card-${identifier}`]}>
           <span class="service-icon" aria-hidden="true">
             <Icon stroke-width={1.8} />
           </span>
@@ -115,9 +121,12 @@ const services = [
   }
 
   .service-card {
+    --service-surface: var(--gradient-sanitation-surface);
+    --service-accent: var(--gradient-sanitation-accent);
+
     min-height: 15rem;
     padding: var(--space-6);
-    background: var(--gradient-sanitation-surface);
+    background: var(--service-surface);
     border: 0.0625rem solid var(--colour-border);
     border-radius: var(--radius-medium);
     box-shadow: 0 0.75rem 2rem rgb(1 61 67 / 6%);
@@ -126,13 +135,23 @@ const services = [
       transform var(--motion-duration-base) var(--motion-easing-standard);
   }
 
+  .service-card-logistics {
+    --service-surface: var(--gradient-logistics-surface);
+    --service-accent: var(--gradient-logistics-accent);
+  }
+
+  .service-card-maintenance {
+    --service-surface: var(--gradient-maintenance-surface);
+    --service-accent: var(--gradient-maintenance-accent);
+  }
+
   .service-icon {
     display: inline-grid;
     width: 3rem;
     height: 3rem;
     margin-block-end: var(--space-6);
     color: var(--colour-on-brand);
-    background: var(--gradient-sanitation-accent);
+    background: var(--service-accent);
     border-radius: var(--radius-medium);
     box-shadow: 0 0.5rem 1rem rgb(1 61 67 / 15%);
     place-items: center;

@@ -13,24 +13,28 @@ import Section from '../common/section.astro';
 const workflowSteps = [
   {
     icon: CalendarCheck,
+    identifier: 'planning',
     title: 'Planificación',
     description:
       'Coordinamos las condiciones del servicio y el cronograma previsto para cada proyecto.',
   },
   {
     icon: PackageCheck,
+    identifier: 'logistics',
     title: 'Preparación e instalación',
     description:
       'Verificamos las unidades y los equipos antes del traslado y la instalación en el lugar acordado.',
   },
   {
     icon: SprayCan,
+    identifier: 'sanitation',
     title: 'Servicio programado',
     description:
       'Realizamos las tareas coordinadas de limpieza, desagote, sanitización y reposición.',
   },
   {
     icon: BadgeCheck,
+    identifier: 'brand',
     title: 'Control final',
     description:
       'Inspeccionamos las unidades y el área de trabajo al finalizar cada intervención.',
@@ -52,9 +56,12 @@ const workflowSteps = [
 
   <ol class="workflow-list">
     {
-      workflowSteps.map(({ icon: Icon, title, description }) => (
+      workflowSteps.map(({ icon: Icon, identifier, title, description }) => (
         <li>
-          <div class="step-marker" aria-hidden="true">
+          <div
+            class:list={['step-marker', `step-marker-${identifier}`]}
+            aria-hidden="true"
+          >
             <Icon size={36} stroke-width={1.8} />
           </div>
           <div>
@@ -120,8 +127,26 @@ const workflowSteps = [
 
   .step-marker {
     display: grid;
+    width: 3rem;
+    height: 3rem;
     place-items: center;
-    color: var(--colour-brand-teal);
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border-radius: var(--radius-medium);
+    box-shadow: 0 0.5rem 1rem rgb(1 61 67 / 12%);
+  }
+
+  .step-marker-planning {
+    background: var(--gradient-planning-accent);
+  }
+
+  .step-marker-logistics {
+    color: var(--colour-on-brand);
+    background: var(--gradient-logistics-accent);
+  }
+
+  .step-marker-sanitation {
+    background: var(--gradient-sanitation-accent);
   }
 
   h3 {

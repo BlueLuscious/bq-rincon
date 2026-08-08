@@ -23,7 +23,7 @@ The home page owns one primary heading. Its content then proceeds through:
 3. a service section containing the six approved service categories;
 4. a workflow section describing planning, preparation, scheduled service and final inspection;
 5. a safety section describing protective equipment, procedures and continuous training;
-6. an about section covering the family business, its history and its operating principles;
+6. an about section covering the family business, its history, its operating principles and location-dependent service in Vaca Muerta from the Rincón de los Sauces base;
 7. a field gallery showing real installations in several operating contexts.
 
 Heading levels follow that hierarchy. Section navigation uses same-page fragments so it remains functional without a client runtime.
@@ -33,6 +33,8 @@ On wide viewports, the hero occupies the viewport height remaining beneath the s
 ## Calls to action
 
 The hero calls to action continue to navigate to relevant information within the page. A persistent WhatsApp action uses the approved `+54 3400 415140` destination as the primary direct-contact channel, without a prefilled message. Approved telephone, secondary WhatsApp, email and Instagram channels remain published in the footer.
+
+The initial home page has no separate contact section. The footer is the canonical contact boundary; if primary navigation gains a `Contacto` destination later, its fragment must target the footer rather than introduce a duplicate section.
 
 ## Images
 

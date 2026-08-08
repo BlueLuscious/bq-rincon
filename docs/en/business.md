@@ -57,7 +57,7 @@ The approved public telephone and WhatsApp numbers are `3400 415140` and `3400 4
 
 The primary website WhatsApp action uses `+54 3400 415140` without a prefilled message. The second approved number remains available in the footer but is not presented as the primary conversion destination.
 
-The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Rincón de los Sauces, Neuquén. These locations do not by themselves define or guarantee an exact service-coverage boundary.
+The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Rincón de los Sauces, Neuquén. Both locations may be described as operating bases. Coverage is assessed from each project's location rather than represented as province-wide availability. Public copy may name Vaca Muerta in connection with the Rincón de los Sauces base and should invite customers to confirm availability for their specific site.
 
 The approved legal attribution is María Verónica Marinelli, CUIT `27-23047157-1`.
 

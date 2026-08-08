@@ -32,10 +32,10 @@
   --colour-on-accent: var(--colour-ink);
   --gradient-sanitation-surface: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--colour-brand-teal) 10%, var(--colour-background)),
+    color-mix(in srgb, var(--colour-brand-teal) 6%, var(--colour-background)),
     color-mix(
       in srgb,
-      var(--colour-identifier-sanitation) 18%,
+      var(--colour-identifier-sanitation) 30%,
       var(--colour-background)
     )
   );
@@ -43,6 +43,39 @@
     135deg,
     var(--colour-brand-teal),
     var(--colour-identifier-sanitation)
+  );
+  --gradient-logistics-surface: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colour-brand-teal) 8%, var(--colour-background)),
+    color-mix(
+      in srgb,
+      var(--colour-identifier-yellow) 18%,
+      var(--colour-background)
+    )
+  );
+  --gradient-logistics-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-yellow)
+  );
+  --gradient-maintenance-surface: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colour-brand-teal) 8%, var(--colour-background)),
+    color-mix(
+      in srgb,
+      var(--colour-identifier-red) 14%,
+      var(--colour-background)
+    )
+  );
+  --gradient-maintenance-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-red)
+  );
+  --gradient-planning-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-purple)
   );
   --font-family-body:
     'Inter', ui-sans-serif, system-ui, -apple-system, 'BlinkMacSystemFont',
