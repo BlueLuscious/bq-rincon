@@ -4,7 +4,7 @@
 
 `bq-rincon` is the source repository for the informational website of BQ Baños Químicos, a family-run portable sanitation business established in 2017. The website presents the business, its services and the means to request further information or a quotation. Its primary public locale is Argentinian Spanish (`es-AR`). Final customer-facing copy, contact details and the precise service area remain content decisions to be confirmed before release.
 
-The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website.
+The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website. The [home page](home-page.md) documents how that context is presented in the initial public route.
 
 The first delivery is a static website. It has no application backend, user accounts, database, content management system or transactional workflow.
 
@@ -41,7 +41,9 @@ bq-rincon/
 │   │   │   ├── site-header.astro
 │   │   │   └── site-navigation.astro
 │   │   └── sections/
-│   │       └── hero.astro
+│   │       ├── about.astro
+│   │       ├── hero.astro
+│   │       └── services.astro
 │   ├── layouts/
 │   │   └── base-layout.astro
 │   ├── pages/
@@ -77,6 +79,8 @@ The interface must be responsive, keyboard-operable, readable with browser zoom 
 ### Assets
 
 Imported images and icons belong in `src/assets/` so Astro can validate, transform and optimise them during the build. Files that must retain an exact public path or pass through unchanged belong in `public/`. Each image requires an explicit content purpose and appropriate alternative text; decorative images use an empty alternative.
+
+Raster photography used by a page is processed through Astro's image service during the static build. Responsive variants should be limited to the widths and formats the layout actually consumes.
 
 ### Scripts
 
