@@ -52,13 +52,10 @@ const workflowSteps = [
 
   <ol class="workflow-list">
     {
-      workflowSteps.map(({ icon: Icon, title, description }, index) => (
+      workflowSteps.map(({ icon: Icon, title, description }) => (
         <li>
           <div class="step-marker" aria-hidden="true">
-            <Icon stroke-width={1.8} />
-            <span class="step-number">
-              {String(index + 1).padStart(2, '0')}
-            </span>
+            <Icon size={36} stroke-width={1.8} />
           </div>
           <div>
             <h3>{title}</h3>
@@ -73,29 +70,33 @@ const workflowSteps = [
 <style>
   .workflow-header {
     display: grid;
-    gap: var(--space-5);
-    align-items: end;
+    gap: var(--space-4);
+    max-width: 52rem;
     margin-block-end: var(--space-7);
+    margin-inline: auto;
+    text-align: center;
   }
 
   .eyebrow {
     margin-block-end: var(--space-3);
     color: var(--colour-brand-teal);
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
     font-weight: var(--font-weight-bold);
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
   h2 {
-    max-width: 16ch;
+    width: var(--width-heading-2-section);
     margin-block-end: 0;
-    font-size: var(--font-size-heading-2);
+    margin-inline: auto;
+    font-size: var(--font-size-heading-2-section);
   }
 
   .workflow-summary {
     max-width: 38rem;
     margin-block-end: 0;
+    margin-inline: auto;
     color: var(--colour-muted);
   }
 
@@ -111,22 +112,16 @@ const workflowSteps = [
     display: grid;
     grid-template-columns: 3rem minmax(0, 1fr);
     gap: var(--space-4);
+    align-items: center;
     padding-block: var(--space-5);
+    text-align: start;
     border-block-end: 0.0625rem solid var(--colour-border);
   }
 
   .step-marker {
     display: grid;
-    gap: var(--space-2);
-    justify-items: start;
+    place-items: center;
     color: var(--colour-brand-teal);
-  }
-
-  .step-number {
-    color: var(--colour-brand-orange-dark);
-    font-size: 0.8125rem;
-    font-weight: var(--font-weight-bold);
-    letter-spacing: 0.08em;
   }
 
   h3 {
@@ -142,10 +137,6 @@ const workflowSteps = [
   }
 
   @media (width >= 48rem) {
-    .workflow-header {
-      grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.75fr);
-    }
-
     .workflow-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       border-inline-start: 0.0625rem solid var(--colour-border);

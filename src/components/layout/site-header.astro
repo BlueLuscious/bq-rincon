@@ -49,7 +49,9 @@ import SiteNavigation from './site-navigation.astro';
     position: relative;
     justify-content: space-between;
     gap: var(--space-4) var(--space-6);
-    min-height: calc(var(--site-header-height) - (2 * var(--space-3)));
+    min-height: calc(
+      var(--site-header-height) - (2 * var(--space-3)) - 0.0625rem
+    );
   }
 
   .brand {

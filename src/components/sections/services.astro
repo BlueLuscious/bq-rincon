@@ -64,16 +64,11 @@ const services = [
 
   <ol class="service-grid">
     {
-      services.map(({ icon: Icon, title, description }, index) => (
+      services.map(({ icon: Icon, title, description }) => (
         <li class="service-card">
-          <div class="service-meta" aria-hidden="true">
-            <span class="service-icon">
-              <Icon stroke-width={1.8} />
-            </span>
-            <span class="service-number">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-          </div>
+          <span class="service-icon" aria-hidden="true">
+            <Icon stroke-width={1.8} />
+          </span>
           <h3>{title}</h3>
           <p>{description}</p>
         </li>
@@ -85,26 +80,27 @@ const services = [
 <style>
   .section-introduction {
     display: grid;
-    max-width: 48rem;
+    max-width: 58rem;
     margin-block-end: var(--space-7);
   }
 
   .eyebrow {
     margin-block-end: var(--space-3);
     color: var(--colour-brand-teal);
-    font-size: 0.8125rem;
+    font-size: 0.9375rem;
     font-weight: var(--font-weight-bold);
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
 
   h2 {
-    max-width: 15ch;
+    width: var(--width-heading-2-section);
     margin-block-end: var(--space-4);
-    font-size: var(--font-size-heading-2);
+    font-size: var(--font-size-heading-2-section);
   }
 
   .section-summary {
+    max-width: 48rem;
     margin-block-end: 0;
     color: var(--colour-muted);
   }
@@ -116,7 +112,6 @@ const services = [
     padding: 0;
     margin: 0;
     list-style: none;
-    counter-reset: services;
   }
 
   .service-card {
@@ -131,29 +126,16 @@ const services = [
       transform var(--motion-duration-base) var(--motion-easing-standard);
   }
 
-  .service-meta {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-block-end: var(--space-6);
-  }
-
   .service-icon {
     display: inline-grid;
     width: 3rem;
     height: 3rem;
+    margin-block-end: var(--space-6);
     color: var(--colour-on-brand);
     background: var(--gradient-sanitation-accent);
     border-radius: var(--radius-medium);
     box-shadow: 0 0.5rem 1rem rgb(1 61 67 / 15%);
     place-items: center;
-  }
-
-  .service-number {
-    color: var(--colour-brand-orange-dark);
-    font-size: 0.8125rem;
-    font-weight: var(--font-weight-bold);
-    letter-spacing: 0.08em;
   }
 
   h3 {

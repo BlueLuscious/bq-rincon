@@ -72,6 +72,10 @@ p {
   text-wrap: pretty;
 }
 
+.eyebrow {
+  font-family: var(--font-family-eyebrow);
+}
+
 :focus-visible {
   outline: var(--focus-ring-width) solid var(--colour-focus);
   outline-offset: var(--space-1);
