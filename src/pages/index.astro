@@ -1,88 +1,23 @@
 ---
-import brandMark from '../assets/brand/bq-mark-primary.svg';
-import Section from '../components/common/section.astro';
+import About from '../components/sections/about.astro';
+import Hero from '../components/sections/hero.astro';
+import Services from '../components/sections/services.astro';
 import BaseLayout from '../layouts/base-layout.astro';
 
 /**
- * @description Provides the temporary page title until the complete home page is implemented.
+ * @description Provides the public title for the initial home page.
  */
-const pageTitle = 'BQ Baños Químicos';
+const pageTitle = 'BQ Baños Químicos | Soluciones sanitarias';
 
 /**
- * @description Provides an accurate temporary summary without introducing unapproved claims.
+ * @description Summarises the approved service scope represented by the home page.
  */
-const pageDescription = 'Sitio web de BQ Baños Químicos en preparación.';
+const pageDescription =
+  'Alquiler, instalación, limpieza y mantenimiento de baños químicos para obras, industrias y proyectos.';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <Section labelledBy="foundation-heading" class="foundation">
-    <div class="foundation-content">
-      <img
-        class="foundation-mark"
-        src={brandMark.src}
-        alt=""
-        width={160}
-        height={160}
-        decoding="async"
-      />
-      <div>
-        <p class="foundation-eyebrow">BQ Baños Químicos</p>
-        <h1 id="foundation-heading">Estamos preparando nuestro nuevo sitio.</h1>
-        <p class="foundation-summary">
-          Muy pronto vas a encontrar información sobre nuestros servicios y
-          formas de contacto.
-        </p>
-      </div>
-    </div>
-  </Section>
+  <Hero />
+  <Services />
+  <About />
 </BaseLayout>
-
-<style>
-  .foundation {
-    display: grid;
-    min-height: 100svh;
-    align-items: center;
-    background:
-      linear-gradient(135deg, rgb(2 112 122 / 8%), transparent 55%),
-      var(--colour-surface-subtle);
-  }
-
-  .foundation-content {
-    display: grid;
-    max-width: 52rem;
-    gap: var(--space-6);
-    align-items: center;
-  }
-
-  .foundation-mark {
-    width: clamp(6rem, 4rem + 8vw, 10rem);
-    height: auto;
-  }
-
-  .foundation-eyebrow {
-    margin-block-end: var(--space-4);
-    color: var(--colour-brand-teal);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  h1 {
-    max-width: 12ch;
-    margin-block-end: var(--space-5);
-    font-size: var(--font-size-heading-1);
-  }
-
-  .foundation-summary {
-    max-width: 58ch;
-    margin-block-end: 0;
-    color: var(--colour-muted);
-  }
-
-  @media (width >= 48rem) {
-    .foundation-content {
-      grid-template-columns: auto 1fr;
-      gap: var(--space-7);
-    }
-  }
-</style>

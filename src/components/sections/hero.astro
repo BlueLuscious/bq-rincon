@@ -1,0 +1,191 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '../../assets/images/portable-toilets-industrial-site.jpeg';
+import Button from '../common/button.astro';
+import Container from '../common/container.astro';
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <Container>
+    <div class="hero-layout">
+      <div class="hero-content">
+        <p class="eyebrow">BQ Baños Químicos</p>
+        <h1 id="hero-heading">
+          Soluciones sanitarias para obras, industrias y proyectos.
+        </h1>
+        <p class="hero-summary">
+          Acompañamos cada operación con alquiler, instalación, limpieza y
+          mantenimiento de baños químicos.
+        </p>
+
+        <div class="hero-actions">
+          <Button href="#servicios">Conocé nuestros servicios</Button>
+          <a class="text-link" href="#nosotros">Conocé BQ</a>
+        </div>
+
+        <ul class="hero-principles" aria-label="Principios del servicio">
+          <li>Higiene</li>
+          <li>Seguridad</li>
+          <li>Atención personalizada</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual">
+        <Image
+          class="hero-image"
+          src={heroImage}
+          alt="Tres baños químicos instalados junto a un espacio de trabajo modular"
+          format="webp"
+          quality={82}
+          widths={[480, 720]}
+          sizes="(min-width: 64rem) 42vw, 100vw"
+          layout="constrained"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="hero-note" aria-hidden="true">
+          <span>Desde 2017</span>
+          <strong>Servicio integral</strong>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: clip;
+    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem);
+    background:
+      radial-gradient(
+        circle at 8% 15%,
+        rgb(237 152 2 / 14%),
+        transparent 28rem
+      ),
+      linear-gradient(135deg, rgb(2 112 122 / 8%), transparent 58%),
+      var(--colour-surface-subtle);
+  }
+
+  .hero-layout {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-4);
+    color: var(--colour-brand-teal);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 13ch;
+    margin-block-end: var(--space-5);
+    font-size: var(--font-size-heading-1);
+  }
+
+  .hero-summary {
+    max-width: 42rem;
+    margin-block-end: var(--space-6);
+    color: var(--colour-muted);
+    font-size: var(--font-size-lead);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    align-items: center;
+    margin-block-end: var(--space-7);
+  }
+
+  .text-link {
+    padding: var(--space-3) var(--space-1);
+    color: var(--colour-ink);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .hero-principles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    padding: 0;
+    margin: 0;
+    color: var(--colour-muted);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+    list-style: none;
+  }
+
+  .hero-principles li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hero-principles li::before {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--colour-brand-orange);
+    border-radius: 50%;
+    content: '';
+  }
+
+  .hero-visual {
+    position: relative;
+    max-width: 36rem;
+    justify-self: center;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-height: 42rem;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 60%;
+    border: 0.5rem solid var(--colour-surface);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-large);
+  }
+
+  .hero-note {
+    position: absolute;
+    inset-block-end: var(--space-5);
+    inset-inline-start: calc(-1 * var(--space-5));
+    display: grid;
+    min-width: 10rem;
+    padding: var(--space-4) var(--space-5);
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .hero-note span {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (width >= 64rem) {
+    .hero-layout {
+      grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.75fr);
+      gap: clamp(3rem, 7vw, 7rem);
+    }
+  }
+
+  @media (width < 36rem) {
+    .hero-note {
+      inset-inline-start: var(--space-4);
+    }
+  }
+</style>

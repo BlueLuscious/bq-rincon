@@ -1,0 +1,142 @@
+---
+import Section from '../common/section.astro';
+
+/**
+ * @description Defines the approved service categories and their customer-facing summaries.
+ */
+const services = [
+  {
+    title: 'Alquiler de unidades',
+    description:
+      'Baños químicos para necesidades temporales en obras, industrias y proyectos.',
+  },
+  {
+    title: 'Traslado e instalación',
+    description:
+      'Entrega y ubicación de las unidades en el espacio coordinado para cada operación.',
+  },
+  {
+    title: 'Limpieza programada',
+    description:
+      'Visitas de limpieza coordinadas según las condiciones acordadas para el servicio.',
+  },
+  {
+    title: 'Desagote y sanitización',
+    description:
+      'Tratamiento integral de las unidades para sostener condiciones adecuadas de higiene.',
+  },
+  {
+    title: 'Reposición de insumos',
+    description:
+      'Reabastecimiento de los consumibles de higiene contemplados en cada servicio.',
+  },
+  {
+    title: 'Mantenimiento',
+    description:
+      'Atención preventiva y correctiva para conservar las unidades en condiciones de uso.',
+  },
+] as const;
+---
+
+<Section id="servicios" labelledBy="services-heading">
+  <div class="section-introduction">
+    <p class="eyebrow">Servicios</p>
+    <h2 id="services-heading">Una solución integral en cada etapa.</h2>
+    <p class="section-summary">
+      Coordinamos las unidades y las tareas necesarias para acompañar las
+      condiciones de cada proyecto.
+    </p>
+  </div>
+
+  <ol class="service-grid">
+    {
+      services.map(({ title, description }, index) => (
+        <li class="service-card">
+          <span class="service-number" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .section-introduction {
+    display: grid;
+    max-width: 48rem;
+    margin-block-end: var(--space-7);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    max-width: 15ch;
+    margin-block-end: var(--space-4);
+    font-size: var(--font-size-heading-2);
+  }
+
+  .section-summary {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: services;
+  }
+
+  .service-card {
+    min-height: 15rem;
+    padding: var(--space-6);
+    background: var(--colour-surface-subtle);
+    border: 0.0625rem solid var(--colour-border);
+    border-radius: var(--radius-medium);
+  }
+
+  .service-number {
+    display: inline-block;
+    margin-block-end: var(--space-6);
+    color: var(--colour-brand-orange-dark);
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.08em;
+  }
+
+  h3 {
+    margin-block-end: var(--space-3);
+    font-size: 1.25rem;
+  }
+
+  .service-card p {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (width >= 40rem) {
+    .service-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 64rem) {
+    .service-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
