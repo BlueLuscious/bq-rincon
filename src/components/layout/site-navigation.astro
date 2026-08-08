@@ -47,10 +47,10 @@ const navigationItems = [
 
 <script>
   import { initialiseNavigationDisclosure } from '../../scripts/navigation-disclosure.controller';
-  import { initialiseSectionNavigationObserver } from '../../scripts/section-navigation.observer';
+  import { initialiseSectionNavigationController } from '../../scripts/section-navigation.controller';
 
   initialiseNavigationDisclosure();
-  initialiseSectionNavigationObserver();
+  initialiseSectionNavigationController();
 </script>
 
 <style>
@@ -111,9 +111,12 @@ const navigationItems = [
 
     .site-navigation[data-navigation-ready] .navigation-panel {
       position: absolute;
-      inset-block-start: calc(100% + var(--space-3));
-      inset-inline: 0;
-      padding: var(--space-3);
+      inset-block-start: calc(100% + var(--space-2));
+      inset-inline-end: 0;
+      width: min(20rem, calc(100vw - (2 * var(--container-inline-space))));
+      max-height: calc(100vh - var(--site-header-height) - var(--space-5));
+      padding: var(--space-2);
+      overflow-y: auto;
       background: var(--colour-surface);
       border: 0.0625rem solid var(--colour-border);
       border-radius: var(--radius-medium);
@@ -122,10 +125,13 @@ const navigationItems = [
 
     .site-navigation[data-navigation-ready] .navigation-list {
       display: grid;
+      width: 100%;
       gap: 0;
+      justify-content: stretch;
     }
 
     .site-navigation[data-navigation-ready] a {
+      justify-content: flex-start;
       width: 100%;
       padding: var(--space-3) var(--space-4);
       border-radius: var(--radius-small);
@@ -133,6 +139,10 @@ const navigationItems = [
 
     .site-navigation[data-navigation-ready] a:hover {
       background: var(--colour-surface-subtle);
+    }
+
+    .site-navigation[data-navigation-ready] a[aria-current='location'] {
+      background: var(--gradient-sanitation-surface);
     }
   }
 </style>

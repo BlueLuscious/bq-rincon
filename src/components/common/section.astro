@@ -22,11 +22,12 @@ const { id, labelledBy, class: className, tone = 'default' } = Astro.props;
 ---
 
 <section
+  id={id}
   aria-labelledby={labelledBy}
   class:list={['section', `section-${tone}`, className]}
 >
   <Container>
-    <div id={id} class="section-content">
+    <div class="section-content">
       <slot />
     </div>
   </Container>
@@ -35,10 +36,7 @@ const { id, labelledBy, class: className, tone = 'default' } = Astro.props;
 <style>
   .section {
     padding-block: var(--space-section);
-  }
-
-  .section-content {
-    scroll-margin-block-start: calc(var(--site-header-height) + var(--space-4));
+    scroll-margin-block-start: calc(var(--site-header-height) + var(--space-3));
   }
 
   .section-brand {

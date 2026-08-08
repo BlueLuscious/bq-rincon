@@ -39,6 +39,7 @@ class NavigationDisclosureController {
     this.#root.dataset.navigationReady = '';
     this.#toggle.addEventListener('click', this.#handleToggle);
     this.#panel.addEventListener('click', this.#handlePanelClick);
+    document.addEventListener('pointerdown', this.#handleDocumentPointerDown);
     document.addEventListener('keydown', this.#handleKeydown);
     this.#compactViewport.addEventListener(
       'change',
@@ -65,6 +66,22 @@ class NavigationDisclosureController {
       this.#compactViewport.matches &&
       event.target instanceof Element &&
       event.target.closest('a[href^="#"]')
+    ) {
+      this.#setExpanded(false);
+    }
+  };
+
+  /**
+   * @description Closes the compact disclosure when a pointer interaction starts outside its boundary.
+   * @param event Pointer event dispatched by the document.
+   * @returns Nothing.
+   */
+  readonly #handleDocumentPointerDown = (event: PointerEvent): void => {
+    if (
+      this.#compactViewport.matches &&
+      this.#toggle.getAttribute('aria-expanded') === 'true' &&
+      event.target instanceof Node &&
+      !this.#root.contains(event.target)
     ) {
       this.#setExpanded(false);
     }
@@ -133,5 +150,10 @@ export function initialiseNavigationDisclosure(): void {
     return;
   }
 
+  if (root.dataset.navigationOwned !== undefined) {
+    return;
+  }
+
+  root.dataset.navigationOwned = '';
   new NavigationDisclosureController(root, toggle, panel).initialise();
 }
