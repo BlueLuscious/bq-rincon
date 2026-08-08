@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`bq-rincon` is the source repository for the informational website of BQ Baños Químicos, a family-run portable sanitation business established in 2017. The website presents the business, its services and the means to request further information or a quotation. Its primary public locale is Argentinian Spanish (`es-AR`). Final customer-facing copy, contact details and the precise service area remain content decisions to be confirmed before release.
+`bq-rincon` is the source repository for the informational website of BQ Baños Químicos, a family-run portable sanitation business established in 2017. The website presents the business, its services and the means to request further information or a quotation. Its primary public locale is Argentinian Spanish (`es-AR`). The exact service area and primary conversion channel remain content decisions to be confirmed before release.
 
 The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website. The [home page](home-page.md) documents how that context is presented in the initial public route.
 
@@ -29,7 +29,7 @@ bq-rincon/
 ├── src/
 │   ├── assets/
 │   │   ├── brand/
-│   │   ├── icons/
+│   │   ├── clients/
 │   │   └── images/
 │   ├── components/
 │   │   ├── common/
@@ -62,7 +62,7 @@ bq-rincon/
 │   │   ├── client-carousel.controller.ts
 │   │   ├── navigation-disclosure.controller.ts
 │   │   ├── reveal.observer.ts
-│   │   └── section-navigation.observer.ts
+│   │   └── section-navigation.controller.ts
 │   └── styles/
 │       ├── global.css
 │       └── variables.css
@@ -91,7 +91,7 @@ The interface must be responsive, keyboard-operable, readable with browser zoom 
 
 ### Assets
 
-Imported images and icons belong in `src/assets/` so Astro can validate, transform and optimise them during the build. Files that must retain an exact public path or pass through unchanged belong in `public/`. Each image requires an explicit content purpose and appropriate alternative text; decorative images use an empty alternative.
+Imported images and icons belong in `src/assets/` so Astro can validate, transform and optimise them during the build. Approved third-party client artwork is isolated under `src/assets/clients/`; its presence does not authorise logo use outside the documented client reference. Files that must retain an exact public path or pass through unchanged belong in `public/`. Each image requires an explicit content purpose and appropriate alternative text; decorative images use an empty alternative.
 
 Raster photography used by a page is processed through Astro's image service during the static build. Responsive variants should be limited to the widths and formats the layout actually consumes.
 
@@ -126,6 +126,6 @@ The following decisions are intentionally outside the current foundation and mus
 
 - approved customer-facing copy and the exact public service area;
 - production domain, hosting provider and deployment workflow;
-- contact and quotation channel;
+- primary contact and quotation channel;
 - analytics, consent and privacy requirements;
 - additional routes or content management needs.

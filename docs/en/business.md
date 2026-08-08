@@ -49,18 +49,24 @@ The following organisations are approved as text-only references to BQ's previou
 - Chapa Naval;
 - Autódromo San Nicolás.
 
-These names provide historical evidence of the business's experience. Their publication must not imply a current contract, partnership or endorsement. Third-party logos remain excluded until their owners authorise a specific use.
+These names provide historical evidence of the business's experience. Their publication must not imply a current contract, partnership or endorsement. Supplied logo artwork is approved for Bahisa, EDECA S.A., ESSESA S.A., Pose S.A. and SIDERSA; all remaining references stay text-only until equivalent artwork and authorisation are supplied.
+
+## Public contact details
+
+The approved public telephone and WhatsApp numbers are `3400 415140` and `3400 441365`. The approved public email address is `marinellive@hotmail.com`, and the approved Instagram account is `@bqrincon`.
+
+The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Rincón de los Sauces, Neuquén. These locations do not by themselves define or guarantee an exact service-coverage boundary.
+
+The approved legal attribution is María Verónica Marinelli, CUIT `27-23047157-1`.
 
 ## Publication boundaries
 
 The following information is deliberately excluded from the canonical public profile until it has an explicit owner and approval:
 
-- legal-person identifiers and registration records;
-- private or unselected telephone, messaging and email channels;
 - unapproved third-party logos or endorsements;
 - fleet totals, growth forecasts and guaranteed response times;
 - exact coverage boundaries;
 - certificates and compliance claims;
 - prices, availability and contractual conditions.
 
-The initial primary action may use telephone, WhatsApp, email or an external quotation channel. One authoritative destination must be selected before the action is implemented.
+The initial primary action may use telephone, WhatsApp, email or an external quotation channel. The published contact details do not select one of those destinations as the primary conversion action.
