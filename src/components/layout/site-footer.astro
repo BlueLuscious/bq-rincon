@@ -1,4 +1,11 @@
 ---
+import {
+  ExternalLink,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+} from '@lucide/astro';
 import brandMark from '../../assets/brand/bq-mark-primary.svg';
 import Container from '../common/container.astro';
 
@@ -6,24 +13,88 @@ import Container from '../common/container.astro';
  * @description Provides the current year for the site ownership notice.
  */
 const currentYear = new Date().getFullYear();
+
+/**
+ * @description Provides the approved public Instagram destination.
+ */
+const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
 ---
 
 <footer class="site-footer">
   <Container>
-    <div class="site-footer-content">
+    <div class="site-footer-grid">
       <div class="site-footer-brand">
-        <img src={brandMark.src} alt="" width={56} height={56} loading="lazy" />
+        <img src={brandMark.src} alt="" width={64} height={64} loading="lazy" />
         <div>
           <strong>BQ Baños Químicos</strong>
           <p>Soluciones sanitarias para obras, industrias y proyectos.</p>
+          <p class="site-footer-principles">
+            Higiene, seguridad y atención personalizada en cada servicio.
+          </p>
         </div>
       </div>
-      <p class="site-footer-principles">
-        Higiene, seguridad y atención personalizada en cada servicio.
-      </p>
+
+      <section class="footer-column" aria-labelledby="footer-contact-heading">
+        <h2 id="footer-contact-heading">Contacto</h2>
+        <ul class="footer-list">
+          <li>
+            <Phone size={19} aria-hidden="true" />
+            <span>
+              <span class="footer-label">Teléfonos</span>
+              <a href="tel:+543400415140">3400 415140</a>
+              <a href="tel:+543400441365">3400 441365</a>
+            </span>
+          </li>
+          <li>
+            <MessageCircle size={19} aria-hidden="true" />
+            <span>
+              <span class="footer-label">WhatsApp</span>
+              <a href="https://wa.me/5493400415140">3400 415140</a>
+              <a href="https://wa.me/5493400441365">3400 441365</a>
+            </span>
+          </li>
+          <li>
+            <Mail size={19} aria-hidden="true" />
+            <span>
+              <span class="footer-label">Correo electrónico</span>
+              <a href="mailto:marinellive@hotmail.com">
+                marinellive@hotmail.com
+              </a>
+            </span>
+          </li>
+          <li>
+            <ExternalLink size={19} aria-hidden="true" />
+            <span>
+              <span class="footer-label">Instagram</span>
+              <a href={instagramUrl} target="_blank" rel="noreferrer">
+                @bqrincon
+              </a>
+            </span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="footer-column" aria-labelledby="footer-location-heading">
+        <h2 id="footer-location-heading">Ubicaciones</h2>
+        <ul class="footer-list">
+          <li>
+            <MapPin size={19} aria-hidden="true" />
+            <address>
+              Urquiza 1538<br />
+              Villa Constitución, Santa Fe
+            </address>
+          </li>
+          <li>
+            <MapPin size={19} aria-hidden="true" />
+            <address>Rincón de los Sauces, Neuquén</address>
+          </li>
+        </ul>
+      </section>
     </div>
 
-    <p class="site-footer-legal">© {currentYear} BQ Baños Químicos.</p>
+    <p class="site-footer-legal">
+      © {currentYear} BQ Baños Químicos. María Verónica Marinelli · CUIT 27-23047157-1.
+    </p>
   </Container>
 </footer>
 
@@ -31,64 +102,130 @@ const currentYear = new Date().getFullYear();
   .site-footer {
     padding-block: var(--space-7)
       calc(var(--space-8) + var(--space-2) + env(safe-area-inset-bottom));
-    background: var(--colour-surface);
-    border-block-start: 0.0625rem solid var(--colour-border);
+    color: var(--colour-on-brand);
+    background: var(--colour-shadow);
+    border-block-start: 0.25rem solid var(--colour-brand-orange);
   }
 
-  .site-footer-content,
+  .site-footer-grid {
+    display: grid;
+    grid-template-columns: minmax(16rem, 1.15fr) repeat(
+        2,
+        minmax(13rem, 0.85fr)
+      );
+    gap: var(--space-7);
+  }
+
   .site-footer-brand {
     display: flex;
-  }
-
-  .site-footer-content {
     align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-6);
-  }
-
-  .site-footer-brand {
-    max-width: 30rem;
-    align-items: center;
     gap: var(--space-4);
   }
 
   .site-footer-brand img {
     flex: 0 0 auto;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 4rem;
+    height: 4rem;
+    padding: var(--space-1);
+    background: var(--colour-surface);
+    border-radius: var(--radius-medium);
   }
 
   .site-footer-brand strong {
     display: block;
-    margin-block-end: var(--space-1);
+    margin-block-end: var(--space-2);
+    font-size: 1.125rem;
   }
 
   .site-footer-brand p,
-  .site-footer-principles,
   .site-footer-legal {
     margin-block-end: 0;
-    color: var(--colour-muted);
+    color: var(--colour-on-dark-muted);
     font-size: 0.875rem;
   }
 
   .site-footer-principles {
-    max-width: 26rem;
-    text-align: end;
+    max-width: 28rem;
+    padding-block-start: var(--space-4);
+    margin-block-start: var(--space-4);
+    border-block-start: 0.0625rem solid rgb(209 220 222 / 24%);
+  }
+
+  .footer-column h2 {
+    margin-block-end: var(--space-4);
+    color: var(--colour-on-brand);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .footer-list {
+    display: grid;
+    gap: var(--space-4);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .footer-list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+  }
+
+  .footer-list li > svg {
+    margin-block-start: 0.2rem;
+    color: var(--colour-brand-orange);
+  }
+
+  .footer-list li > span {
+    display: grid;
+    justify-items: start;
+  }
+
+  .footer-label {
+    color: var(--colour-on-dark-muted);
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-list a,
+  .footer-list address {
+    color: var(--colour-on-brand);
+    font-size: 0.9375rem;
+    font-style: normal;
+  }
+
+  .footer-list a {
+    overflow-wrap: anywhere;
   }
 
   .site-footer-legal {
     padding-block-start: var(--space-5);
-    margin-block-start: var(--space-6);
-    border-block-start: 0.0625rem solid var(--colour-border);
+    margin-block-start: var(--space-7);
+    border-block-start: 0.0625rem solid rgb(209 220 222 / 24%);
+  }
+
+  @media (width < 64rem) {
+    .site-footer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .site-footer-brand {
+      grid-column: 1 / -1;
+    }
   }
 
   @media (width < 40rem) {
-    .site-footer-content {
-      flex-direction: column;
+    .site-footer-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
 
-    .site-footer-principles {
-      text-align: start;
+    .site-footer-brand {
+      grid-column: auto;
     }
   }
 </style>
