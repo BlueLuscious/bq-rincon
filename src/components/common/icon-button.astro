@@ -9,7 +9,7 @@ interface Props {
   id?: string;
   /** @description Identifies the element controlled by the button. */
   controls?: string;
-  /** @description Communicates the initial disclosure state when controls are present. */
+  /** @description Communicates an optional initial disclosure state. */
   expanded?: boolean;
   /** @description Communicates an optional initial toggle-button state. */
   pressed?: boolean;
@@ -30,7 +30,7 @@ const {
   label,
   id,
   controls,
-  expanded = false,
+  expanded,
   pressed,
   disabled = false,
   type = 'button',
@@ -55,7 +55,7 @@ const hasPressedIcon = Astro.slots.has('pressed-icon');
   type={type}
   aria-label={label}
   aria-controls={controls}
-  aria-expanded={controls ? expanded : undefined}
+  aria-expanded={expanded}
   aria-pressed={pressed}
   disabled={disabled}
 >

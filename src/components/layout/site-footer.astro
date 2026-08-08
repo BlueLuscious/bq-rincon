@@ -18,14 +18,9 @@ const currentYear = new Date().getFullYear();
           <p>Soluciones sanitarias para obras, industrias y proyectos.</p>
         </div>
       </div>
-
-      <nav aria-label="Navegación del pie de página">
-        <a href="#servicios">Servicios</a>
-        <a href="#como-trabajamos">Cómo trabajamos</a>
-        <a href="#clientes">Clientes</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#top">Volver arriba</a>
-      </nav>
+      <p class="site-footer-principles">
+        Higiene, seguridad y atención personalizada en cada servicio.
+      </p>
     </div>
 
     <p class="site-footer-legal">© {currentYear} BQ Baños Químicos.</p>
@@ -34,14 +29,14 @@ const currentYear = new Date().getFullYear();
 
 <style>
   .site-footer {
-    padding-block: var(--space-7) var(--space-5);
+    padding-block: var(--space-7)
+      calc(var(--space-8) + var(--space-2) + env(safe-area-inset-bottom));
     background: var(--colour-surface);
     border-block-start: 0.0625rem solid var(--colour-border);
   }
 
   .site-footer-content,
-  .site-footer-brand,
-  nav {
+  .site-footer-brand {
     display: flex;
   }
 
@@ -69,22 +64,16 @@ const currentYear = new Date().getFullYear();
   }
 
   .site-footer-brand p,
+  .site-footer-principles,
   .site-footer-legal {
     margin-block-end: 0;
     color: var(--colour-muted);
     font-size: 0.875rem;
   }
 
-  nav {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: var(--space-3) var(--space-5);
-  }
-
-  nav a {
-    color: var(--colour-ink);
-    font-size: 0.875rem;
-    font-weight: var(--font-weight-medium);
+  .site-footer-principles {
+    max-width: 26rem;
+    text-align: end;
   }
 
   .site-footer-legal {
@@ -98,8 +87,8 @@ const currentYear = new Date().getFullYear();
       flex-direction: column;
     }
 
-    nav {
-      justify-content: flex-start;
+    .site-footer-principles {
+      text-align: start;
     }
   }
 </style>
