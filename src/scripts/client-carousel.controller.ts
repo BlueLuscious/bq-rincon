@@ -4,6 +4,11 @@
 const CAROUSEL_MANUAL_SETTLE_MS = 450;
 
 /**
+ * @description Defines the default delay before continuous movement resumes after arrow navigation.
+ */
+export const CLIENT_CAROUSEL_DEFAULT_RESUME_DELAY_MS = 4000;
+
+/**
  * @description Controls continuous client-carousel movement, seamless wrapping and interaction pauses.
  */
 class ClientCarouselController {
@@ -37,6 +42,9 @@ class ClientCarouselController {
   /** @description Requested automatic movement speed in CSS pixels per second. */
   readonly #speed: number;
 
+  /** @description Delay before automatic movement resumes after manual arrow navigation. */
+  readonly #manualResumeDelay: number;
+
   /** @description Scheduled animation frame for continuous movement. */
   #animationFrame?: number;
 
@@ -52,6 +60,15 @@ class ClientCarouselController {
   /** @description Whether pointer hover is temporarily holding movement. */
   #pointerInside = false;
 
+  /** @description Whether arrow navigation is temporarily holding movement. */
+  #manualHold = false;
+
+  /** @description Pending timer which releases a temporary manual hold. */
+  #manualResumeTimer?: number;
+
+  /** @description Whether an incoming focus event originated from a pointer interaction. */
+  #pointerInitiatedFocus = false;
+
   /** @description Rotation state requested before pointer-driven focus changes the effective state. */
   #pendingRotationState?: boolean;
 
@@ -66,6 +83,7 @@ class ClientCarouselController {
    * @param nextButton Optional next-client control.
    * @param status Manual movement announcement boundary.
    * @param speed Continuous movement speed in CSS pixels per second.
+   * @param manualResumeDelay Delay before movement resumes after arrow navigation.
    */
   constructor(
     root: HTMLElement,
@@ -77,6 +95,7 @@ class ClientCarouselController {
     nextButton: HTMLButtonElement | undefined,
     status: HTMLElement,
     speed: number,
+    manualResumeDelay: number,
   ) {
     this.#root = root;
     this.#viewport = viewport;
@@ -87,6 +106,7 @@ class ClientCarouselController {
     this.#nextButton = nextButton;
     this.#status = status;
     this.#speed = speed;
+    this.#manualResumeDelay = manualResumeDelay;
     this.#reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   }
 
@@ -126,13 +146,13 @@ class ClientCarouselController {
 
   /** @description Pauses movement and moves towards previous clients. @returns Nothing. */
   readonly #handlePrevious = (): void => {
-    this.#pausePermanently();
+    this.#holdForManualNavigation();
     this.#move(-1);
   };
 
   /** @description Pauses movement and moves towards following clients. @returns Nothing. */
   readonly #handleNext = (): void => {
-    this.#pausePermanently();
+    this.#holdForManualNavigation();
     this.#move(1);
   };
 
@@ -154,6 +174,11 @@ class ClientCarouselController {
    * @returns Nothing.
    */
   readonly #handlePointerInteraction = (event: PointerEvent): void => {
+    this.#pointerInitiatedFocus = true;
+    window.setTimeout(() => {
+      this.#pointerInitiatedFocus = false;
+    }, 0);
+
     if (
       event.target instanceof Element &&
       event.target.closest('[data-carousel-action="rotation"]')
@@ -178,6 +203,10 @@ class ClientCarouselController {
    * @returns Nothing.
    */
   readonly #handleFocusEntry = (event: FocusEvent): void => {
+    if (this.#pointerInitiatedFocus) {
+      return;
+    }
+
     if (
       event.relatedTarget instanceof Node &&
       this.#root.contains(event.relatedTarget)
@@ -229,9 +258,42 @@ class ClientCarouselController {
    * @returns Nothing.
    */
   #pausePermanently(): void {
+    this.#cancelManualResume();
     this.#rotationEnabled = false;
     this.#updateRotationPresentation();
     this.#scheduleAnimation();
+  }
+
+  /**
+   * @description Temporarily holds enabled rotation after arrow navigation without overriding an explicit pause.
+   * @returns Nothing.
+   */
+  #holdForManualNavigation(): void {
+    if (!this.#rotationEnabled || this.#reducedMotion.matches) {
+      return;
+    }
+
+    this.#cancelManualResume();
+    this.#manualHold = true;
+    this.#scheduleAnimation();
+    this.#manualResumeTimer = window.setTimeout(() => {
+      this.#manualHold = false;
+      this.#manualResumeTimer = undefined;
+      this.#scheduleAnimation();
+    }, this.#manualResumeDelay);
+  }
+
+  /**
+   * @description Cancels a pending manual-resume timer and clears its temporary hold.
+   * @returns Nothing.
+   */
+  #cancelManualResume(): void {
+    if (this.#manualResumeTimer !== undefined) {
+      window.clearTimeout(this.#manualResumeTimer);
+      this.#manualResumeTimer = undefined;
+    }
+
+    this.#manualHold = false;
   }
 
   /**
@@ -396,6 +458,7 @@ class ClientCarouselController {
 
     if (
       this.#rotationEnabled &&
+      !this.#manualHold &&
       !this.#pointerInside &&
       !document.hidden &&
       !this.#reducedMotion.matches
@@ -444,6 +507,9 @@ export function initialiseClientCarousel(): void {
       );
       const status = root.querySelector<HTMLElement>('[data-carousel-status]');
       const parsedSpeed = Number.parseFloat(root.dataset.carouselSpeed ?? '');
+      const parsedResumeDelay = Number.parseFloat(
+        root.dataset.carouselResumeDelay ?? '',
+      );
 
       if (
         !viewport ||
@@ -466,6 +532,9 @@ export function initialiseClientCarousel(): void {
         nextButton ?? undefined,
         status,
         Number.isFinite(parsedSpeed) && parsedSpeed > 0 ? parsedSpeed : 22,
+        Number.isFinite(parsedResumeDelay) && parsedResumeDelay >= 0
+          ? parsedResumeDelay
+          : CLIENT_CAROUSEL_DEFAULT_RESUME_DELAY_MS,
       ).initialise();
     });
 }

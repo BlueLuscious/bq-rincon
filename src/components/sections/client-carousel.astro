@@ -2,6 +2,7 @@
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import { ChevronLeft, ChevronRight, Pause, Play } from '@lucide/astro';
+import { CLIENT_CAROUSEL_DEFAULT_RESUME_DELAY_MS } from '../../scripts/client-carousel.controller';
 import IconButton from '../common/icon-button.astro';
 
 /**
@@ -27,6 +28,8 @@ interface Props {
   showScrollbar?: boolean;
   /** @description Controls whether optional previous and next buttons are rendered. */
   showArrows?: boolean;
+  /** @description Sets the delay before automatic movement resumes after arrow navigation. */
+  manualResumeDelay?: number;
 }
 
 /**
@@ -38,6 +41,7 @@ const {
   speed = 22,
   showScrollbar = false,
   showArrows = true,
+  manualResumeDelay = CLIENT_CAROUSEL_DEFAULT_RESUME_DELAY_MS,
 } = Astro.props;
 
 /**
@@ -55,6 +59,7 @@ const sequences = [false, true] as const;
   class="client-carousel"
   data-client-carousel
   data-carousel-speed={speed}
+  data-carousel-resume-delay={manualResumeDelay}
   role="region"
   aria-roledescription="carrusel"
   aria-label="Clientes de BQ Baños Químicos"
