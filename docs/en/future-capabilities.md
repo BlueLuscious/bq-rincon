@@ -24,3 +24,7 @@ No analytics dependency, environment variable, consent interface or event instru
 Railway is the intended production hosting platform for the static Astro output. This choice does not change the static delivery model and does not authorise a server adapter, on-demand rendering or an application backend.
 
 The production domain has not been selected. DonWeb is the probable registrar or domain provider, but that choice remains unconfirmed. Canonical URLs, production crawl directives and domain-specific deployment configuration must wait until the final domain and ownership are known.
+
+The release foundation accepts the owned HTTPS origin through `SITE_URL` and requires the separate `SITE_INDEXABLE=true` opt-in before allowing crawlers. Local and preview builds remain closed by default. Once the domain is confirmed, production configuration must provide both values, verify that preview deployments do not inherit the indexing flag and add the established route set to a sitemap.
+
+Before deployment configuration is finalised, the complete tracked source and workflow configuration must be audited for environment-dependent or sensitive values. Environment variables should be introduced only for secrets or values that genuinely vary between preview and production; public business content and stable source-controlled configuration should remain explicit in the repository.

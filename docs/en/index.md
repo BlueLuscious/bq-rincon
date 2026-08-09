@@ -25,9 +25,7 @@ The intended source tree is:
 ```text
 bq-rincon/
 ├── public/
-│   ├── images/
-│   ├── favicon.svg
-│   └── robots.txt
+│   └── favicon.svg
 ├── src/
 │   ├── assets/
 │   │   ├── brand/
@@ -59,7 +57,8 @@ bq-rincon/
 │   ├── layouts/
 │   │   └── base-layout.astro
 │   ├── pages/
-│   │   └── index.astro
+│   │   ├── index.astro
+│   │   └── robots.txt.ts
 │   ├── scripts/
 │   │   ├── back-to-top.observer.ts
 │   │   ├── client-carousel.controller.ts
@@ -80,7 +79,7 @@ This is the initial boundary, not a requirement to create empty abstractions. Fi
 
 ### Pages and layout
 
-`src/pages/` owns public routes. The initial route is the home page. `base-layout.astro` owns the shared document shell, including language, viewport, canonical metadata hooks and the site-wide header and footer.
+`src/pages/` owns public routes. The initial route is the home page, while `robots.txt.ts` emits the environment-specific static crawl policy. `base-layout.astro` owns the shared document shell, including language, viewport, canonical metadata hooks and the site-wide header and footer.
 
 ### Components
 
@@ -107,6 +106,16 @@ Shared scripts belong in `src/scripts/`, but a global script is not required by 
 The foundation is complete only when the project can be installed reproducibly with `pnpm`, passes Astro and TypeScript checks, builds static output without errors and can be previewed locally. Formatting and linting must enforce the repository's naming, semicolon, stylesheet and documentation conventions.
 
 Every public page must provide an explicit title and description, a single clear primary heading, meaningful landmark structure and crawl directives appropriate to the target environment. Performance-sensitive assets should be optimised at build time, and unnecessary client JavaScript must not be shipped.
+
+Release candidates are measured against the static preview with Lighthouse's mobile profile. The target floors are 90 for performance and 100 for accessibility and best practices, with no cumulative layout shift and no material main-thread blocking introduced by client behaviour. The initial release baseline records 99 for performance, 100 for accessibility and 100 for best practices, with zero total blocking time and zero cumulative layout shift. Timing values remain diagnostic because workstation and browser conditions can vary.
+
+Generated-HTML release checks must also confirm one primary heading, explicit alternative text semantics for every image, resolvable same-page fragments and the presence of every locally referenced asset. Client marks remain decorative because their carousel slides already provide accessible organisation names; the duplicated visual carousel sequence remains hidden from the accessibility tree.
+
+## Discoverability and crawl safety
+
+The shared layout emits the page title, description, Open Graph identity, X card metadata, theme colour and the stable `/favicon.svg` reference. The default social preview uses approved field photography. Absolute canonical and social-image URLs are emitted only when Astro receives an owned site origin through `SITE_URL`; an absent origin never falls back to localhost or another placeholder host.
+
+Every build is non-indexable by default. Both the HTML robots directive and generated `robots.txt` remain closed unless `SITE_INDEXABLE=true` is supplied and `SITE_URL` configures the canonical origin. Preview and local environments must retain the default closed state. Production may opt in only after domain ownership, final metadata and deployment isolation have been verified.
 
 ## Automation
 

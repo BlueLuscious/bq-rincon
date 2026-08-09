@@ -151,6 +151,7 @@ const sequences = [false, true] as const;
                       format={logo.format === 'svg' ? 'svg' : 'webp'}
                       quality={90}
                       loading="lazy"
+                      draggable="false"
                     />
                   ) : (
                     <span>{name}</span>
@@ -200,6 +201,13 @@ const sequences = [false, true] as const;
   .carousel-viewport {
     overflow: hidden;
     overscroll-behavior-inline: contain;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .carousel-viewport[data-carousel-dragging] {
+    cursor: grabbing;
   }
 
   .carousel-viewport-scrollable {

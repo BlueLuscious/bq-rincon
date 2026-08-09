@@ -6,6 +6,12 @@ The initial home page is the public entry point for BQ Baños Químicos. It intr
 
 The route is statically rendered in Argentinian Spanish (`es-AR`). Its title and description describe the actual service scope without placeholder or launch language.
 
+## Document metadata
+
+The home page supplies its own descriptive title and summary to the shared layout. The layout adds Open Graph and X preview metadata and uses the approved sports-site photograph as the default large preview image. Absolute canonical, page and image URLs remain absent until the production origin is configured, preventing a development or preview host from becoming public metadata.
+
+The document and generated `robots.txt` are non-indexable by default. Public indexing requires an explicit release opt-in together with the configured production origin. The primary brand mark is available at the stable `/favicon.svg` path and the document declares the approved teal as its browser theme colour.
+
 ## Document structure
 
 The shared document layout renders, in order:
@@ -64,4 +70,4 @@ When reduced motion is requested, all reveal boundaries remain immediately visib
 
 Approved client references are presented as a continuously moving multi-item carousel. Every displayed client uses supplied logo artwork without a repeated visible name; Chapa Naval remains omitted until its artwork is supplied. A second `aria-hidden` and inert visual sequence follows the semantic sequence so movement can wrap without a visible end or accessibility duplication.
 
-Wide artwork uses larger landscape cards, while square and portrait marks use compact square cards. Pause, previous and next controls precede the moving content in keyboard order. Each arrow advances to exactly one adjacent client using the measured position of each variable-width card. Pointer-initiated arrow navigation holds automatic movement for four seconds before it resumes; an explicit pause remains authoritative and is never overridden by that timer. Time-based animation advances by sub-pixel distances and stops during pointer hover, direct interaction, keyboard focus or a hidden document. Reduced-motion preference disables the rotation control and automatic movement altogether. Manual changes announce their resulting client without announcing continuous movement. Native horizontal scrolling and its scrollbar are a component option and are disabled for the home-page instance.
+Wide artwork uses larger landscape cards, while square and portrait marks use compact square cards. Pause, previous and next controls precede the moving content in keyboard order. Each arrow advances to exactly one adjacent client using the measured position of each variable-width card. Pointer-initiated arrow navigation, a tap or a completed horizontal drag holds automatic movement for four seconds before it resumes; an explicit pause remains authoritative and is never overridden by that timer. The viewport supports captured mouse, pen and touch dragging across the seamless sequence while preserving vertical page gestures on touch screens. Time-based animation advances by sub-pixel distances and stops during mouse hover, active dragging, keyboard focus or a hidden document. Reduced-motion preference disables the rotation control and automatic movement altogether. Manual changes announce their resulting client without announcing continuous movement. Native horizontal scrolling and its scrollbar are a component option and are disabled for the home-page instance.

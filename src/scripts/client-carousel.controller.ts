@@ -60,6 +60,9 @@ class ClientCarouselController {
   /** @description Whether pointer hover is temporarily holding movement. */
   #pointerInside = false;
 
+  /** @description Whether keyboard focus is temporarily holding movement. */
+  #focusInside = false;
+
   /** @description Whether arrow navigation is temporarily holding movement. */
   #manualHold = false;
 
@@ -71,6 +74,15 @@ class ClientCarouselController {
 
   /** @description Rotation state requested before pointer-driven focus changes the effective state. */
   #pendingRotationState?: boolean;
+
+  /** @description Identifier of the pointer currently dragging the carousel viewport. */
+  #dragPointerId?: number;
+
+  /** @description Horizontal pointer coordinate captured when dragging begins. */
+  #dragStartX = 0;
+
+  /** @description Carousel offset captured when dragging begins. */
+  #dragStartScrollLeft = 0;
 
   /**
    * @description Creates a controller for one complete continuous client carousel.
@@ -122,6 +134,12 @@ class ClientCarouselController {
     this.#root.addEventListener('pointerleave', this.#handlePointerLeave);
     this.#root.addEventListener('pointerdown', this.#handlePointerInteraction);
     this.#root.addEventListener('focusin', this.#handleFocusEntry);
+    this.#root.addEventListener('focusout', this.#handleFocusExit);
+    this.#viewport.addEventListener('pointerdown', this.#handleDragStart);
+    this.#viewport.addEventListener('pointermove', this.#handleDragMove);
+    this.#viewport.addEventListener('pointerup', this.#handleDragEnd);
+    this.#viewport.addEventListener('pointercancel', this.#handleDragEnd);
+    this.#viewport.addEventListener('lostpointercapture', this.#handleDragEnd);
     document.addEventListener('visibilitychange', this.#handleVisibilityChange);
     this.#reducedMotion.addEventListener('change', this.#handleMotionChange);
     this.#updateRotationPresentation();
@@ -156,20 +174,36 @@ class ClientCarouselController {
     this.#move(1);
   };
 
-  /** @description Temporarily holds movement while the pointer remains inside. @returns Nothing. */
-  readonly #handlePointerEnter = (): void => {
+  /**
+   * @description Temporarily holds movement while a mouse pointer remains inside.
+   * @param event Pointer event entering the carousel boundary.
+   * @returns Nothing.
+   */
+  readonly #handlePointerEnter = (event: PointerEvent): void => {
+    if (event.pointerType !== 'mouse') {
+      return;
+    }
+
     this.#pointerInside = true;
     this.#scheduleAnimation();
   };
 
-  /** @description Releases a pointer-hover hold without overriding a user pause. @returns Nothing. */
-  readonly #handlePointerLeave = (): void => {
+  /**
+   * @description Releases a mouse-hover hold without overriding a user pause.
+   * @param event Pointer event leaving the carousel boundary.
+   * @returns Nothing.
+   */
+  readonly #handlePointerLeave = (event: PointerEvent): void => {
+    if (event.pointerType !== 'mouse') {
+      return;
+    }
+
     this.#pointerInside = false;
     this.#scheduleAnimation();
   };
 
   /**
-   * @description Converts direct content interaction into a persistent pause.
+   * @description Distinguishes pointer-origin focus from keyboard focus and preserves explicit rotation-button intent.
    * @param event Pointer event dispatched within the carousel.
    * @returns Nothing.
    */
@@ -186,19 +220,10 @@ class ClientCarouselController {
       this.#pendingRotationState = !this.#rotationEnabled;
       return;
     }
-
-    if (
-      event.target instanceof Element &&
-      event.target.closest('[data-carousel-action]')
-    ) {
-      return;
-    }
-
-    this.#pausePermanently();
   };
 
   /**
-   * @description Pauses movement when focus first enters from outside the carousel.
+   * @description Temporarily holds movement when keyboard focus first enters from outside the carousel.
    * @param event Focus event dispatched within the carousel.
    * @returns Nothing.
    */
@@ -214,7 +239,92 @@ class ClientCarouselController {
       return;
     }
 
-    this.#pausePermanently();
+    this.#focusInside = true;
+    this.#scheduleAnimation();
+  };
+
+  /**
+   * @description Releases the keyboard-focus hold when focus leaves the complete carousel.
+   * @param event Focus event leaving an element within the carousel.
+   * @returns Nothing.
+   */
+  readonly #handleFocusExit = (event: FocusEvent): void => {
+    if (
+      event.relatedTarget instanceof Node &&
+      this.#root.contains(event.relatedTarget)
+    ) {
+      return;
+    }
+
+    this.#focusInside = false;
+    this.#scheduleAnimation();
+  };
+
+  /**
+   * @description Starts a primary-button drag and holds automatic movement for its duration.
+   * @param event Pointer event beginning within the carousel viewport.
+   * @returns Nothing.
+   */
+  readonly #handleDragStart = (event: PointerEvent): void => {
+    if (!event.isPrimary || event.button !== 0) {
+      return;
+    }
+
+    this.#cancelManualResume();
+    this.#manualHold = this.#rotationEnabled && !this.#reducedMotion.matches;
+    this.#dragPointerId = event.pointerId;
+    this.#dragStartX = event.clientX;
+    this.#dragStartScrollLeft = this.#viewport.scrollLeft;
+    this.#viewport.dataset.carouselDragging = '';
+    this.#viewport.setPointerCapture(event.pointerId);
+    this.#scheduleAnimation();
+  };
+
+  /**
+   * @description Moves the seamless sequence with the active pointer while retaining vertical page gestures.
+   * @param event Pointer movement dispatched by the captured drag pointer.
+   * @returns Nothing.
+   */
+  readonly #handleDragMove = (event: PointerEvent): void => {
+    if (event.pointerId !== this.#dragPointerId) {
+      return;
+    }
+
+    const sequenceWidth = this.#getSequenceWidth();
+
+    if (sequenceWidth <= 0) {
+      return;
+    }
+
+    const pointerDistance = event.clientX - this.#dragStartX;
+    const requestedOffset = this.#dragStartScrollLeft - pointerDistance;
+    const wrappedOffset =
+      ((requestedOffset % sequenceWidth) + sequenceWidth) % sequenceWidth;
+
+    event.preventDefault();
+    this.#viewport.scrollLeft = wrappedOffset;
+  };
+
+  /**
+   * @description Finishes a captured drag and schedules automatic movement to resume after the configured delay.
+   * @param event Pointer event ending or losing the captured drag.
+   * @returns Nothing.
+   */
+  readonly #handleDragEnd = (event: PointerEvent): void => {
+    if (event.pointerId !== this.#dragPointerId) {
+      return;
+    }
+
+    this.#dragPointerId = undefined;
+    delete this.#viewport.dataset.carouselDragging;
+
+    if (this.#viewport.hasPointerCapture(event.pointerId)) {
+      this.#viewport.releasePointerCapture(event.pointerId);
+    }
+
+    this.#manualHold = false;
+    this.#normalisePosition();
+    this.#holdForManualNavigation();
   };
 
   /** @description Re-evaluates movement when document visibility changes. @returns Nothing. */
@@ -252,17 +362,6 @@ class ClientCarouselController {
       this.#handleAnimationFrame,
     );
   };
-
-  /**
-   * @description Stops automatic movement until the user explicitly resumes it.
-   * @returns Nothing.
-   */
-  #pausePermanently(): void {
-    this.#cancelManualResume();
-    this.#rotationEnabled = false;
-    this.#updateRotationPresentation();
-    this.#scheduleAnimation();
-  }
 
   /**
    * @description Temporarily holds enabled rotation after arrow navigation without overriding an explicit pause.
@@ -460,6 +559,8 @@ class ClientCarouselController {
       this.#rotationEnabled &&
       !this.#manualHold &&
       !this.#pointerInside &&
+      !this.#focusInside &&
+      this.#dragPointerId === undefined &&
       !document.hidden &&
       !this.#reducedMotion.matches
     ) {

@@ -1,6 +1,8 @@
 ---
+import type { ImageMetadata } from 'astro';
 import '@fontsource/barlow-condensed/latin-700.css';
 import '../styles/global.css';
+import defaultSocialImage from '../assets/images/portable-toilets-sports-site.jpeg';
 import FloatingActions from '../components/layout/floating-actions.astro';
 import SiteFooter from '../components/layout/site-footer.astro';
 import SiteHeader from '../components/layout/site-header.astro';
@@ -15,12 +17,47 @@ interface Props {
   description: string;
   /** @description Declares the primary language and regional convention of the page content. */
   language?: string;
+  /** @description Provides the approved image represented in large social-sharing previews. */
+  socialImage?: ImageMetadata;
+  /** @description Describes the social-sharing image when a platform exposes alternative text. */
+  socialImageAlt?: string;
 }
 
 /**
  * @description Provides metadata and the default Argentine Spanish locale for the document shell.
  */
-const { title, description, language = 'es-AR' } = Astro.props;
+const {
+  title,
+  description,
+  language = 'es-AR',
+  socialImage = defaultSocialImage,
+  socialImageAlt = 'Cuatro baÃ±os quÃ­micos de BQ instalados junto a un campo deportivo',
+} = Astro.props;
+
+/**
+ * @description Provides the canonical URL only when a production site origin has been configured.
+ */
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site)
+  : undefined;
+
+/**
+ * @description Resolves the approved social image against the canonical origin without emitting a placeholder host.
+ */
+const socialImageUrl = Astro.site
+  ? new URL(socialImage.src, Astro.site)
+  : undefined;
+
+/**
+ * @description Allows indexing only when the build explicitly opts in and owns a canonical origin.
+ */
+const siteIsIndexable =
+  import.meta.env.SITE_INDEXABLE === 'true' && Astro.site !== undefined;
+
+/**
+ * @description Converts the document language to the locale syntax required by Open Graph.
+ */
+const openGraphLocale = language.replace('-', '_');
 ---
 
 <!doctype html>
@@ -29,6 +66,38 @@ const { title, description, language = 'es-AR' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content={siteIsIndexable ? 'index, follow' : 'noindex, nofollow'}
+    />
+    <meta name="theme-color" content="#02707a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BQ BaÃ±os QuÃ­micos" />
+    <meta property="og:locale" content={openGraphLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {
+      socialImageUrl && (
+        <>
+          <meta property="og:image" content={socialImageUrl} />
+          <meta
+            property="og:image:type"
+            content={`image/${socialImage.format}`}
+          />
+          <meta property="og:image:width" content={`${socialImage.width}`} />
+          <meta property="og:image:height" content={`${socialImage.height}`} />
+          <meta property="og:image:alt" content={socialImageAlt} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content={socialImageUrl} />
+          <meta name="twitter:image:alt" content={socialImageAlt} />
+        </>
+      )
+    }
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <title>{title}</title>
   </head>
   <body>
