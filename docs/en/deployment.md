@@ -38,7 +38,7 @@ Railpack configuration variables are deployment controls rather than website env
 
 ## Render preview authority
 
-The root `render.yaml` file is the canonical infrastructure definition for the client preview. It declares one Static Site named `bq-rincon-preview`, tracks `feature/deploy`, waits for repository checks to pass, installs the pinned pnpm dependency graph with a frozen lockfile and publishes `dist/`. This Render service remains isolated from the later Railway environments and is not migrated to `develop`.
+The root `render.yaml` file is the canonical infrastructure definition for the client preview. It declares one Static Site named `bq-rincon-preview`, tracks `feature/deploy`, waits for repository checks to pass, installs the pinned pnpm dependency graph with a frozen lockfile and publishes `dist/`. Render already exposes its managed pnpm executable, so the build command must not run `corepack enable` or attempt to replace platform binaries. This Render service remains isolated from the later Railway environments and is not migrated to `develop`.
 
 The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header as a second boundary beyond the generated HTML and `robots.txt`. Hashed Astro assets receive immutable caching. Conservative content-type, referrer and frame headers are applied without introducing a Content Security Policy before browser behaviour has been observed on the real service.
 
@@ -87,7 +87,6 @@ After the production domain is confirmed, add Astro's official sitemap integrati
 A deployment is reproducible when Railway can create `dist/` from a clean checkout without receiving local files, a prebuilt directory or an unlocked dependency installation. Railpack should derive the following logical sequence from the repository's `packageManager`, lockfile and `build` script:
 
 ```sh
-corepack enable
 pnpm install --frozen-lockfile
 pnpm run build
 ```

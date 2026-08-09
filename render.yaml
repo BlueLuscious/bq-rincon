@@ -4,7 +4,7 @@ services:
     name: bq-rincon-preview
     branch: feature/deploy
     autoDeployTrigger: checksPass
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm run build
+    buildCommand: pnpm install --frozen-lockfile && pnpm run build
     staticPublishPath: ./dist
     envVars:
       - key: NODE_VERSION
