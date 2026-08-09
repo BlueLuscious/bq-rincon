@@ -1,16 +1,12 @@
 import type { APIRoute } from 'astro';
-
-/**
- * @description Declares whether the current static build has explicitly opted into public indexing.
- */
-const SITE_INDEXING_ENABLED = import.meta.env.SITE_INDEXABLE === 'true';
+import { SITE_INDEXABLE } from 'astro:env/server';
 
 /**
  * @description Emits crawl rules that remain closed unless the build also owns a canonical site URL.
  * @returns A plain-text robots response for the current build environment.
  */
 export const GET: APIRoute = ({ site }) => {
-  const allowsCrawling = SITE_INDEXING_ENABLED && site !== undefined;
+  const allowsCrawling = SITE_INDEXABLE && site !== undefined;
   const directive = allowsCrawling ? 'Allow: /' : 'Disallow: /';
 
   return new Response(`User-agent: *\n${directive}\n`, {

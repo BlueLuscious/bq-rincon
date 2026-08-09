@@ -8,31 +8,37 @@ The deployed artefact remains the static `dist/` directory produced by Astro. No
 
 ## Environment boundaries
 
-| Environment       | Source branch                                     | Delivery target                        | Canonical origin        | Indexing                                             |
-| ----------------- | ------------------------------------------------- | -------------------------------------- | ----------------------- | ---------------------------------------------------- |
-| Local development | Current working branch                            | Local Astro server                     | Absent                  | Disabled                                             |
-| Client preview    | `feature/deploy` during bootstrap, then `develop` | Render Static Site                     | Absent                  | Disabled in HTML, `robots.txt` and the HTTP response |
-| Production        | `master`                                          | Railway, subject to final confirmation | Confirmed public domain | Enabled only after release approval                  |
+| Environment        | Source branch          | Delivery target                        | Canonical origin        | Indexing                                             |
+| ------------------ | ---------------------- | -------------------------------------- | ----------------------- | ---------------------------------------------------- |
+| Local development  | Current working branch | Local Astro server                     | Absent                  | Disabled                                             |
+| Client preview     | `feature/deploy`       | Render Static Site                     | Absent                  | Disabled in HTML, `robots.txt` and the HTTP response |
+| Railway validation | `develop`              | Railway static delivery                | Absent                  | Disabled                                             |
+| Production         | `master`               | Railway, subject to final confirmation | Confirmed public domain | Enabled only after release approval                  |
 
-The Render `onrender.com` address is a presentation URL for client review. It must not be supplied as `SITE_URL`, treated as the canonical public origin or added to a sitemap.
+The Render client-review address is [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). It must not be supplied as `SITE_URL`, treated as the canonical public origin or added to a sitemap.
 
 ## Configuration audit
 
-The tracked source and workflows require the following deployment configuration:
+The website and Render preview require the following deployment configuration:
 
-| Name                 | Owner                  | Sensitivity | Purpose                                                                                                                              |
-| -------------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `SITE_URL`           | Production deployment  | Public      | Supplies Astro's owned canonical origin after the final domain is confirmed. It remains absent from local and client-preview builds. |
-| `SITE_INDEXABLE`     | Deployment environment | Public      | Requires an explicit string value of `true` before HTML and `robots.txt` allow indexing. Preview configuration fixes it to `false`.  |
-| `NODE_VERSION`       | Render preview         | Public      | Pins the preview builder to the repository's supported Node.js version.                                                              |
-| `SKIP_INSTALL_DEPS`  | Render preview         | Public      | Prevents Render's automatic dependency installation because the tracked build command performs the frozen pnpm installation.         |
-| `BQ_DISCORD_WEBHOOK` | GitHub Actions         | Secret      | Allows the notification workflow to contact Discord. It remains a GitHub repository secret and must not be copied into Render.       |
+| Name                | Owner                  | Sensitivity | Purpose                                                                                                                              |
+| ------------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `SITE_URL`          | Production deployment  | Public      | Supplies Astro's owned canonical origin after the final domain is confirmed. It remains absent from local and client-preview builds. |
+| `SITE_INDEXABLE`    | Deployment environment | Public      | Requires an explicit boolean value of `true` before HTML and `robots.txt` allow indexing. Preview configuration fixes it to `false`. |
+| `NODE_VERSION`      | Render preview         | Public      | Pins the preview builder to the repository's supported Node.js version.                                                              |
+| `SKIP_INSTALL_DEPS` | Render preview         | Public      | Prevents Render's automatic dependency installation because the tracked build command performs the frozen pnpm installation.         |
+
+The Discord notification workflow obtains its credential directly from GitHub repository secrets. It does not add a website, Render or Railway environment variable.
 
 No other environment variables are justified by the current website. Telephone numbers, email addresses, locations, social destinations and other approved public business content are source-controlled content. Carousel timing, visual tokens and build behaviour are stable code configuration. Moving those values into deployment state would obscure their ownership without creating a real environment boundary.
 
+The schema in `astro.config.mjs` is the type and validation authority for both website variables. `SITE_INDEXABLE` is a server-only boolean with a closed default. `SITE_URL` is an optional, validated URL and is consumed by Astro configuration only when the deployment environment supplies it. The tracked `.env.example` records safe example values, while the ignored local `.env` keeps development non-indexable without claiming a canonical origin.
+
+Railpack configuration variables are deployment controls rather than website environment variables and therefore do not belong in `.env.example`. None is currently required: Railway can detect the pinned package manager, lockfile, build script and Astro static output from the tracked repository. If platform logs later demonstrate that static-output detection needs an override, prefer tracked Railway configuration over a local shell wrapper and keep the published directory fixed to `dist/`.
+
 ## Render preview authority
 
-The root `render.yaml` file is the canonical infrastructure definition for the client preview. It declares one Static Site named `bq-rincon-preview`, temporarily tracks `feature/deploy` for initial validation, waits for repository checks to pass, installs the pinned pnpm dependency graph with a frozen lockfile and publishes `dist/`. The long-lived preview branch is `develop`; the temporary branch reference must be replaced before `feature/deploy` is deleted.
+The root `render.yaml` file is the canonical infrastructure definition for the client preview. It declares one Static Site named `bq-rincon-preview`, tracks `feature/deploy`, waits for repository checks to pass, installs the pinned pnpm dependency graph with a frozen lockfile and publishes `dist/`. This Render service remains isolated from the later Railway environments and is not migrated to `develop`.
 
 The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header as a second boundary beyond the generated HTML and `robots.txt`. Hashed Astro assets receive immutable caching. Conservative content-type, referrer and frame headers are applied without introducing a Content Security Policy before browser behaviour has been observed on the real service.
 
@@ -42,25 +48,15 @@ The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header 
 2. In the Render Dashboard, create a new Blueprint and connect `BlueLuscious/bq-rincon`.
 3. Select `feature/deploy` as the Blueprint branch and retain the default root `render.yaml` path.
 4. Review the proposed `bq-rincon-preview` Static Site and deploy the Blueprint.
-5. Record the assigned `onrender.com` URL after the first successful deployment.
+5. Confirm that the assigned address matches the recorded client-review URL.
 6. Confirm that the page, navigation, carousel, images and contact destinations work from the public preview.
 7. Confirm that `/robots.txt` disallows crawling and that the response includes `X-Robots-Tag: noindex, nofollow`.
 
 No `SITE_URL` value or secret is required during this provisioning flow.
 
-## Branch migration
-
-After the client has validated the preview and before deleting `feature/deploy`:
-
-1. Change the service `branch` in `render.yaml` from `feature/deploy` to `develop`.
-2. Merge the reviewed deployment work into `develop` and confirm that its continuous integration succeeds.
-3. Change the Blueprint branch in Render from `feature/deploy` to `develop`.
-4. Synchronise the Blueprint and confirm that the service deploys the expected `develop` commit.
-5. Delete `feature/deploy` only after the preview remains healthy on `develop`.
-
 ## Routine deployment
 
-During bootstrap, Render follows `feature/deploy`. After branch migration, it follows `develop`. In both cases, it deploys only after the linked commit's GitHub checks pass. The build command reconstructs the website from tracked sources and `pnpm-lock.yaml`; a failed build leaves the previous successful static deployment available.
+Render follows `feature/deploy` and deploys only after the linked commit's GitHub checks pass. The build command reconstructs the website from tracked sources and `pnpm-lock.yaml`; a failed build leaves the previous successful static deployment available.
 
 Changes to the Blueprint must be reviewed with the same care as application code because a subsequent Blueprint synchronisation overwrites conflicting dashboard configuration. Dashboard-only changes should be avoided unless they are part of an incident response and are then reconciled back into tracked configuration.
 
@@ -78,4 +74,24 @@ The dashboard rollback reuses the selected build artefact but does not restore c
 
 ## Production activation
 
-Production deployment remains deferred until the public domain and final hosting ownership are confirmed. Activation requires the final HTTPS origin as `SITE_URL`, `SITE_INDEXABLE=true` only in production, a sitemap using that origin and verification that the Render preview retains all three no-index boundaries. The production and preview services must never share an environment group that can enable indexing.
+Railway deployment remains deferred until its service ownership is confirmed. Its validation environment follows `develop`, retains `SITE_INDEXABLE=false` and does not set `SITE_URL`. Production activation later requires the final HTTPS origin as `SITE_URL`, `SITE_INDEXABLE=true` only in production, a sitemap using that origin and verification that both preview environments remain closed to indexing. Preview and production services must never share an environment group that can enable indexing.
+
+## Sitemap activation
+
+A sitemap is a production-only XML index of the canonical public routes that search engines may crawl. The current single-page website does not require one for navigation, and generating one before the domain is confirmed would publish the wrong origin. It must remain absent from local, Render and Railway validation builds.
+
+After the production domain is confirmed, add Astro's official sitemap integration, supply the owned HTTPS origin through `SITE_URL` and verify that the generated `sitemap-index.xml` and `sitemap-0.xml` contain only production URLs. The index must then be referenced from the production `robots.txt`. Preview crawl rules must continue to omit the sitemap and disallow all routes.
+
+## Reproducible deployment verification
+
+A deployment is reproducible when Railway can create `dist/` from a clean checkout without receiving local files, a prebuilt directory or an unlocked dependency installation. Railpack should derive the following logical sequence from the repository's `packageManager`, lockfile and `build` script:
+
+```sh
+corepack enable
+pnpm install --frozen-lockfile
+pnpm run build
+```
+
+These commands do not require `build.sh`. The project also requires no `start.sh` because Railway's static delivery owns the file server; adding an application server would violate the static-output boundary.
+
+The Railway build log is the release evidence. It must show a successful frozen installation and Astro static build from the tracked commit, followed by publication of `dist/`. A deployment that depends on the ignored `.env`, local caches, `node_modules/` or a manually uploaded `dist/` directory does not satisfy this contract.

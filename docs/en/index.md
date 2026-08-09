@@ -12,7 +12,7 @@ The first delivery is a static website. It has no application backend, user acco
 
 Astro is the site generator and must emit static files at build time. Hosting therefore needs only to serve the generated HTML, CSS, JavaScript and media assets. A server adapter is outside the current architecture.
 
-Render hosts the non-indexable client preview, using `feature/deploy` for initial validation before moving to the long-lived `develop` branch. Railway is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
+Render hosts the non-indexable client preview from `feature/deploy` at [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). This preview remains independent of the later Railway delivery. Railway will use `develop` for pre-production validation and is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
 
 Pages and components use Astro templates, semantic HTML and CSS. Browser-side JavaScript is reserved for small, progressively enhanced interactions that cannot be expressed adequately with HTML and CSS. A UI framework such as React, Vue or Svelte is not part of the initial stack.
 

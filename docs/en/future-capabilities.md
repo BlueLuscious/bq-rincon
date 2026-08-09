@@ -21,7 +21,7 @@ No analytics dependency, environment variable, consent interface or event instru
 
 ## Deployment context
 
-Render provides the tracked, non-indexable client preview. The initial bootstrap uses `feature/deploy`; the long-lived preview follows `develop` after the deployment work is merged. Railway remains the intended production hosting platform for the static Astro output, subject to final confirmation when the domain is selected. Neither target changes the static delivery model or authorises a server adapter, on-demand rendering or an application backend.
+Render provides the tracked, non-indexable client preview from `feature/deploy`. It remains a client-review environment and will not migrate to `develop`. Railway will use `develop` for pre-production validation and remains the intended production hosting platform for the static Astro output, subject to final confirmation when the domain is selected. Neither target changes the static delivery model or authorises a server adapter, on-demand rendering or an application backend.
 
 The production domain has not been selected. DonWeb is the probable registrar or domain provider, but that choice remains unconfirmed. Canonical URLs, production crawl directives and domain-specific deployment configuration must wait until the final domain and ownership are known.
 
