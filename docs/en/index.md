@@ -4,7 +4,7 @@
 
 `bq-rincon` is the source repository for the informational website of BQ Baños Químicos, a family-run portable sanitation business established in 2017. The website presents the business, its services and the means to request further information or a quotation. Its primary public locale is Argentinian Spanish (`es-AR`). Public coverage wording is limited to location-dependent availability from the approved operating bases and may name Vaca Muerta without claiming province-wide service; the primary direct-contact channel is the approved WhatsApp number.
 
-The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website. The [home page](home-page.md) documents how that context is presented in the initial public route. [Future capabilities](future-capabilities.md) records deliberately excluded capabilities and unresolved delivery configuration.
+The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website. The [home page](home-page.md) documents how that context is presented in the initial public route. The [deployment contract](deployment.md) defines environment ownership and release operations. [Future capabilities](future-capabilities.md) records deliberately excluded capabilities and unresolved delivery configuration.
 
 The first delivery is a static website. It has no application backend, user accounts, database, content management system or transactional workflow.
 
@@ -12,7 +12,7 @@ The first delivery is a static website. It has no application backend, user acco
 
 Astro is the site generator and must emit static files at build time. Hosting therefore needs only to serve the generated HTML, CSS, JavaScript and media assets. A server adapter is outside the current architecture.
 
-Railway is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
+Render hosts the non-indexable client preview, using `feature/deploy` for initial validation before moving to the long-lived `develop` branch. Railway is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
 
 Pages and components use Astro templates, semantic HTML and CSS. Browser-side JavaScript is reserved for small, progressively enhanced interactions that cannot be expressed adequately with HTML and CSS. A UI framework such as React, Vue or Svelte is not part of the initial stack.
 
@@ -72,6 +72,7 @@ bq-rincon/
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── render.yaml
 └── tsconfig.json
 ```
 
