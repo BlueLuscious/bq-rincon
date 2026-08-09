@@ -1,0 +1,91 @@
+---
+import autodromoSanNicolasLogo from '../../assets/clients/autodromo-sn.svg';
+import bahisaLogo from '../../assets/clients/bahisa.png';
+import comunaFighieraLogo from '../../assets/clients/comuna-fighiera.png';
+import comunaPavonLogo from '../../assets/clients/comuna-pavon.png';
+import edecaLogo from '../../assets/clients/edeca.png';
+import esesaLogo from '../../assets/clients/esesa.png';
+import grupoPonceLogo from '../../assets/clients/grupo-ponce.png';
+import municipioArroyoSecoLogo from '../../assets/clients/municipio-as.png';
+import municipioSanNicolasLogo from '../../assets/clients/municipio-sn.svg';
+import municipioVillaConstitucionLogo from '../../assets/clients/municipio-vc.png';
+import poseLogo from '../../assets/clients/pose-sa.png';
+import sidersaLogo from '../../assets/clients/sidersa.png';
+import Section from '../common/section.astro';
+import ClientCarousel from './client-carousel.astro';
+
+/**
+ * @description Defines the organisations named in the approved company presentation.
+ */
+const clients = [
+  {
+    name: 'Municipalidad de Villa Constitución',
+    logo: municipioVillaConstitucionLogo,
+  },
+  { name: 'SIDERSA', logo: sidersaLogo, tone: 'inverse' },
+  { name: 'EDECA S.A.', logo: edecaLogo },
+  { name: 'Grupo Ponce', logo: grupoPonceLogo, compact: true },
+  { name: 'ESSESA S.A.', logo: esesaLogo },
+  { name: 'Bahisa', logo: bahisaLogo },
+  { name: 'Pose S.A.', logo: poseLogo },
+  {
+    name: 'Municipio de Arroyo Seco',
+    logo: municipioArroyoSecoLogo,
+    compact: true,
+  },
+  { name: 'Municipio de San Nicolás', logo: municipioSanNicolasLogo },
+  { name: 'Comuna de Pavón', logo: comunaPavonLogo, compact: true },
+  { name: 'Comuna de Fighiera', logo: comunaFighieraLogo, compact: true },
+  // { name: 'Chapa Naval' },
+  {
+    name: 'Autódromo San Nicolás',
+    logo: autodromoSanNicolasLogo,
+    tone: 'inverse',
+  },
+] as const;
+---
+
+<Section id="clientes" labelledBy="clients-heading">
+  <div class="clients-header">
+    <p class="eyebrow">Confianza</p>
+    <h2 id="clients-heading">Empresas e instituciones que confiaron en BQ.</h2>
+    <p>
+      Nuestra trayectoria se construye a partir de compromisos cumplidos y
+      relaciones de trabajo sostenidas.
+    </p>
+  </div>
+
+  <ClientCarousel
+    id="trusted-clients"
+    clients={clients}
+    speed={22}
+    showScrollbar={false}
+  />
+</Section>
+
+<style>
+  .clients-header {
+    max-width: 52rem;
+    margin-block-end: var(--space-7);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    width: var(--width-heading-2-section);
+    margin-block-end: var(--space-4);
+    font-size: var(--font-size-heading-2-section);
+  }
+
+  .clients-header > p:last-child {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+  }
+</style>

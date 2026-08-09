@@ -1,0 +1,28 @@
+---
+/**
+ * @description Defines the public inputs accepted by the shared content container.
+ */
+interface Props {
+  /** @description Adds a consumer-owned class without replacing the container's structural class. */
+  class?: string;
+}
+
+/**
+ * @description Provides the optional consumer class used to extend the container presentation.
+ */
+const { class: className } = Astro.props;
+---
+
+<div class:list={['container', className]}>
+  <slot />
+</div>
+
+<style>
+  .container {
+    width: min(
+      100% - (2 * var(--container-inline-space)),
+      var(--container-max-width)
+    );
+    margin-inline: auto;
+  }
+</style>

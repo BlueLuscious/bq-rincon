@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Astro build output and cache
+dist/
+.astro/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Tool output and caches
+coverage/
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.pnpm-store/
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Local agent instructions and planning
+AGENTS.md
+plans/
+TODO/

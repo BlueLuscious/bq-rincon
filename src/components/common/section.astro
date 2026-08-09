@@ -1,0 +1,49 @@
+---
+import Container from './container.astro';
+
+/**
+ * @description Defines the public inputs accepted by a consistently spaced page section.
+ */
+interface Props {
+  /** @description Identifies the section content as a same-page navigation destination. */
+  id?: string;
+  /** @description Connects the section landmark to the identifier of its visible heading. */
+  labelledBy?: string;
+  /** @description Adds a consumer-owned class without replacing the section's structural class. */
+  class?: string;
+  /** @description Selects the approved surface treatment owned by the section boundary. */
+  tone?: 'default' | 'subtle' | 'brand';
+}
+
+/**
+ * @description Provides the section attributes forwarded to semantic HTML.
+ */
+const { id, labelledBy, class: className, tone = 'default' } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledBy}
+  class:list={['section', `section-${tone}`, className]}
+>
+  <Container>
+    <div class="section-content">
+      <slot />
+    </div>
+  </Container>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-section);
+    scroll-margin-block-start: var(--site-header-height);
+  }
+
+  .section-brand {
+    background: var(--colour-shadow);
+  }
+
+  .section-subtle {
+    background: var(--colour-surface-subtle);
+  }
+</style>

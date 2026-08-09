@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import eventSiteImage from '../../assets/images/portable-toilets-event-site.jpeg';
+import Section from '../common/section.astro';
+---
+
+<Section id="nosotros" labelledBy="about-heading" tone="brand">
+  <div class="about-layout">
+    <div class="about-content">
+      <p class="eyebrow">Sobre BQ</p>
+      <h2 id="about-heading">Una empresa familiar cerca de cada proyecto.</h2>
+      <p class="about-lead">
+        Nacimos en 2017 con una forma simple de trabajar: atención
+        personalizada, cumplimiento de lo acordado y soluciones prácticas para
+        cada necesidad sanitaria.
+      </p>
+      <p>
+        Acompañamos a obras, industrias y proyectos con un servicio que integra
+        instalación, higiene y mantenimiento de las unidades.
+      </p>
+      <p>
+        Desde nuestra base operativa en Rincón de los Sauces acompañamos
+        proyectos en Vaca Muerta, coordinando la disponibilidad según la
+        ubicación de cada operación.
+      </p>
+
+      <ul class="value-list">
+        <li>
+          <strong>Higiene y seguridad</strong>
+          <span
+            >Procedimientos de trabajo y elementos de protección adecuados.</span
+          >
+        </li>
+        <li>
+          <strong>Atención personalizada</strong>
+          <span
+            >Coordinación del servicio según el contexto de cada proyecto.</span
+          >
+        </li>
+        <li>
+          <strong>Cuidado continuo</strong>
+          <span>Limpieza, reposición y mantenimiento durante el servicio.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="about-visual">
+      <Image
+        class="about-image"
+        src={eventSiteImage}
+        alt="Cuatro baños químicos instalados en un predio al aire libre"
+        format="webp"
+        quality={82}
+        widths={[480, 720]}
+        sizes="(min-width: 56rem) 46vw, 100vw"
+        layout="constrained"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .about-layout {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .about-visual {
+    --about-visual-offset: var(--space-5);
+
+    position: relative;
+    padding-block-end: var(--about-visual-offset);
+    padding-inline-end: var(--about-visual-offset);
+  }
+
+  .about-visual::before {
+    position: absolute;
+    z-index: 0;
+    inset: var(--about-visual-offset) 0 0 var(--about-visual-offset);
+    background: var(--colour-brand-orange);
+    border-radius: var(--radius-large);
+    content: '';
+  }
+
+  .about-image {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-height: 40rem;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 40%;
+    border-radius: var(--radius-large);
+  }
+
+  .about-content {
+    color: var(--colour-on-brand);
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-orange-light);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    width: var(--width-heading-2-section);
+    margin-block-end: var(--space-5);
+    font-size: var(--font-size-heading-2-section);
+  }
+
+  .about-lead {
+    color: var(--colour-on-brand);
+    font-size: var(--font-size-lead);
+  }
+
+  .about-content > p:not(.eyebrow, .about-lead) {
+    color: var(--colour-on-dark-muted);
+  }
+
+  .value-list {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5) 0 0;
+    margin: var(--space-6) 0 0;
+    border-block-start: 0.0625rem solid rgb(255 255 255 / 22%);
+    list-style: none;
+  }
+
+  .value-list li {
+    display: grid;
+    gap: var(--space-1);
+    padding-inline-start: var(--space-5);
+    border-inline-start: 0.1875rem solid var(--colour-brand-orange);
+  }
+
+  .value-list span {
+    color: var(--colour-on-dark-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (width >= 56rem) {
+    .about-layout {
+      grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1fr);
+      gap: clamp(4rem, 8vw, 8rem);
+    }
+
+    .about-visual {
+      order: -1;
+    }
+  }
+
+  @media (width < 36rem) {
+    .about-visual {
+      --about-visual-offset: var(--space-3);
+    }
+  }
+</style>

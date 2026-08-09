@@ -1,0 +1,32 @@
+---
+import About from '../components/sections/about.astro';
+import Reveal from '../components/common/reveal.astro';
+import Clients from '../components/sections/clients.astro';
+import FieldGallery from '../components/sections/field-gallery.astro';
+import Hero from '../components/sections/hero.astro';
+import Safety from '../components/sections/safety.astro';
+import Services from '../components/sections/services.astro';
+import Workflow from '../components/sections/workflow.astro';
+import BaseLayout from '../layouts/base-layout.astro';
+
+/**
+ * @description Provides the public title for the initial home page.
+ */
+const pageTitle = 'BQ Baños Químicos | Soluciones sanitarias';
+
+/**
+ * @description Summarises the approved service scope represented by the home page.
+ */
+const pageDescription =
+  'Alquiler, instalación, limpieza y mantenimiento de baños químicos para obras, industrias y proyectos.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Hero />
+  <Reveal direction="up"><Clients /></Reveal>
+  <Reveal direction="left"><Services /></Reveal>
+  <Reveal direction="right"><Workflow /></Reveal>
+  <Reveal direction="left"><Safety /></Reveal>
+  <Reveal direction="right"><About /></Reveal>
+  <Reveal><FieldGallery /></Reveal>
+</BaseLayout>

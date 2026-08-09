@@ -1,0 +1,118 @@
+:root {
+  --colour-brand-teal: #02707a;
+  --colour-brand-grey: #9a9a9c;
+  --colour-text: #0b1b1d;
+  --colour-shadow: #013d43;
+  --colour-border: #d1dcde;
+  --colour-background: #f3f7f8;
+  --colour-accent: #ed9802;
+  --colour-whatsapp: #25d366;
+  --colour-identifier-red: #c84347;
+  --colour-identifier-yellow: #e59b18;
+  --colour-identifier-sanitation: #24a191;
+  --colour-identifier-purple: #835ca3;
+  --colour-ink: var(--colour-text);
+  --colour-muted: #526164;
+  --colour-surface: #fff;
+  --colour-surface-subtle: var(--colour-background);
+  --colour-brand-orange: var(--colour-accent);
+  --colour-brand-orange-dark: color-mix(
+    in srgb,
+    var(--colour-accent) 68%,
+    var(--colour-text)
+  );
+  --colour-brand-orange-light: color-mix(
+    in srgb,
+    var(--colour-accent) 28%,
+    white
+  );
+  --colour-focus: var(--colour-brand-teal);
+  --colour-on-brand: #fff;
+  --colour-on-dark-muted: #d8e5e3;
+  --colour-on-accent: var(--colour-ink);
+  --gradient-sanitation-surface: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colour-brand-teal) 6%, var(--colour-background)),
+    color-mix(
+      in srgb,
+      var(--colour-identifier-sanitation) 30%,
+      var(--colour-background)
+    )
+  );
+  --gradient-sanitation-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-sanitation)
+  );
+  --gradient-logistics-surface: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colour-brand-teal) 8%, var(--colour-background)),
+    color-mix(
+      in srgb,
+      var(--colour-identifier-yellow) 18%,
+      var(--colour-background)
+    )
+  );
+  --gradient-logistics-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-yellow)
+  );
+  --gradient-maintenance-surface: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--colour-brand-teal) 8%, var(--colour-background)),
+    color-mix(
+      in srgb,
+      var(--colour-identifier-red) 14%,
+      var(--colour-background)
+    )
+  );
+  --gradient-maintenance-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-red)
+  );
+  --gradient-planning-accent: linear-gradient(
+    135deg,
+    var(--colour-brand-teal),
+    var(--colour-identifier-purple)
+  );
+  --font-family-body:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'BlinkMacSystemFont',
+    'Segoe UI', sans-serif;
+  --font-family-eyebrow: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-size-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --font-size-lead: clamp(1.125rem, 1.04rem + 0.4vw, 1.375rem);
+  --font-size-heading-1: clamp(2rem, 1.55rem + 2.25vw, 3.75rem);
+  --width-heading-1: min(100%, 18ch);
+  --font-size-heading-2-section: clamp(1.625rem, 1.4rem + 1.1vw, 2.375rem);
+  --width-heading-2-section: min(100%, 30ch);
+  --font-weight-regular: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 750;
+  --line-height-body: 1.6;
+  --line-height-heading: 1.05;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-section: clamp(4rem, 2.5rem + 7vw, 8rem);
+  --container-inline-space: clamp(1rem, 0.5rem + 2vw, 2rem);
+  --container-max-width: 75rem;
+  --radius-small: 0.375rem;
+  --radius-medium: 0.75rem;
+  --radius-large: 1.25rem;
+  --shadow-medium: 0 1rem 2rem rgb(1 61 67 / 14%);
+  --shadow-large: 0 1.5rem 4rem rgb(1 61 67 / 18%);
+  --focus-ring-width: 0.1875rem;
+  --site-header-height: 4.75rem;
+  --motion-duration-fast: 180ms;
+  --motion-duration-base: 320ms;
+  --motion-duration-reveal: 720ms;
+  --motion-easing-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-duration: var(--motion-duration-fast);
+}
