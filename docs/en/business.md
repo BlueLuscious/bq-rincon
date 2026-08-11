@@ -2,7 +2,7 @@
 
 ## Identity
 
-BQ Baños Químicos is a family-run portable sanitation business founded in 2017 in Villa Constitución, Santa Fe. Its initial expansion into the Vaca Muerta region centres on Rincón de los Sauces. The short name `BQ` may be used where the full display name has already been established.
+BQ Baños Químicos is a family-run on-site facilities business founded in 2017 in Villa Constitución, Santa Fe. Its core offering is portable sanitation, complemented by surveillance-cabin hire. Its initial expansion into the Vaca Muerta region centres on Rincón de los Sauces. The short name `BQ` may be used where the full display name has already been established.
 
 The website serves an Argentinian audience and uses Argentinian Spanish (`es-AR`) for customer-facing content. Canonical technical documentation remains in British English.
 
@@ -24,6 +24,8 @@ The approved service categories are:
 - preventive and corrective maintenance.
 
 These categories describe the service scope without promising a particular frequency, capacity or location. Detailed packages and commercial conditions require operational approval before they become public copy.
+
+Surveillance-cabin hire is a separate approved offering. Delivery and on-site installation are coordinated under the same operating model as the portable toilets. Public copy must not claim dimensions, included equipment or technical features until that information is explicitly approved.
 
 ## Operational principles
 
@@ -57,7 +59,7 @@ The approved public telephone and WhatsApp numbers are `3400 415140` and `3400 4
 
 The primary website WhatsApp action uses `+54 3400 415140` without a prefilled message. The second approved number remains available in the footer but is not presented as the primary conversion destination.
 
-The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Trapial 108, Rincón de los Sauces, Neuquén. Both locations may be described as operating bases and linked to their address searches in Google Maps. Coverage is assessed from each project's location rather than represented as province-wide availability. Public copy may name Vaca Muerta in connection with the Rincón de los Sauces base and should invite customers to confirm availability for their specific site.
+The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and the intersection of Trapial and Primeros Pobladores Oeste, Rincón de los Sauces, Neuquén. Both locations may be described as operating bases and linked to their address searches in Google Maps. Coverage is assessed from each project's location rather than represented as province-wide availability. Public copy may name Vaca Muerta in connection with the Rincón de los Sauces base and should invite customers to confirm availability for their specific site.
 
 The approved legal attribution is María Verónica Marinelli, CUIT `27-23047157-1`.
 
