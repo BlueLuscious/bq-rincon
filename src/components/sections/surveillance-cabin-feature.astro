@@ -1,0 +1,205 @@
+---
+import { Image } from 'astro:assets';
+import { ShieldCheck } from '@lucide/astro';
+import fieldInstallationImage from '../../assets/images/surveillance-cabins/surveillance-cabins-field-installation.jpeg';
+import singleCabinImage from '../../assets/images/surveillance-cabins/surveillance-cabin-single.jpeg';
+import Button from '../common/button.astro';
+---
+
+<article class="cabin-feature" aria-labelledby="surveillance-cabins-heading">
+  <div class="cabin-content">
+    <p class="cabin-label">
+      <span class="cabin-icon" aria-hidden="true">
+        <ShieldCheck size={24} stroke-width={1.8} />
+      </span>
+      Alquiler
+    </p>
+    <h3 id="surveillance-cabins-heading">
+      Cabinas de vigilancia para obras y proyectos.
+    </h3>
+    <p>
+      También ofrecemos alquiler de cabinas de vigilancia, con traslado e
+      instalación coordinados según las necesidades de cada operación.
+    </p>
+    <Button
+      href="https://wa.me/543400415140"
+      variant="secondary"
+      ariaLabel="Consultar disponibilidad de cabinas de vigilancia por WhatsApp"
+    >
+      Consultar disponibilidad
+    </Button>
+  </div>
+
+  <div class="cabin-gallery" aria-label="Cabinas de vigilancia de BQ">
+    <figure class="cabin-figure cabin-figure-single">
+      <Image
+        class="cabin-image cabin-image-single"
+        src={singleCabinImage}
+        alt="Cabina de vigilancia individual preparada para su instalación"
+        format="webp"
+        quality={82}
+        widths={[240, 360, 480]}
+        sizes="(min-width: 64rem) 15rem, 45vw"
+        layout="constrained"
+        loading="lazy"
+      />
+    </figure>
+    <figure class="cabin-figure cabin-figure-field">
+      <Image
+        class="cabin-image cabin-image-field"
+        src={fieldInstallationImage}
+        alt="Cabina de vigilancia instalada junto a otro módulo en un proyecto"
+        format="webp"
+        quality={82}
+        widths={[240, 360, 480]}
+        sizes="(min-width: 64rem) 15rem, 45vw"
+        layout="constrained"
+        loading="lazy"
+      />
+    </figure>
+  </div>
+</article>
+
+<style>
+  .cabin-feature {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    gap: var(--space-7);
+    align-items: center;
+    padding: clamp(var(--space-5), 4vw, var(--space-7));
+    margin-block-start: var(--space-7);
+    overflow: hidden;
+    color: var(--colour-on-brand);
+    background:
+      radial-gradient(
+        circle at 92% 8%,
+        color-mix(in srgb, var(--colour-identifier-purple) 48%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(135deg, var(--colour-shadow), var(--colour-brand-teal));
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-large);
+  }
+
+  .cabin-feature::before {
+    position: absolute;
+    width: 12rem;
+    height: 12rem;
+    inset: auto auto -6rem -4rem;
+    background: color-mix(
+      in srgb,
+      var(--colour-identifier-purple) 36%,
+      transparent
+    );
+    border-radius: 50%;
+    content: '';
+    filter: blur(0.125rem);
+  }
+
+  .cabin-content {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    max-width: 36rem;
+  }
+
+  .cabin-label {
+    display: inline-flex;
+    gap: var(--space-2);
+    align-items: center;
+    margin-block-end: var(--space-4);
+    color: var(--colour-on-dark-muted);
+    font-family: var(--font-family-eyebrow);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .cabin-icon {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--colour-on-brand);
+    background: linear-gradient(
+      135deg,
+      var(--colour-brand-teal),
+      var(--colour-identifier-purple)
+    );
+    border: 0.0625rem solid rgb(255 255 255 / 24%);
+    border-radius: var(--radius-medium);
+    box-shadow: 0 0.5rem 1rem rgb(1 61 67 / 24%);
+    place-items: center;
+  }
+
+  h3 {
+    max-width: 22ch;
+    margin-block-end: var(--space-4);
+    color: var(--colour-on-brand);
+    font-size: clamp(1.75rem, 1.45rem + 1.2vw, 2.5rem);
+  }
+
+  .cabin-content > p:not(.cabin-label) {
+    max-width: 34rem;
+    margin-block-end: var(--space-6);
+    color: var(--colour-on-dark-muted);
+  }
+
+  .cabin-gallery {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    min-width: 0;
+    max-width: 100%;
+    width: min(100%, 34rem);
+    margin-inline: auto;
+  }
+
+  .cabin-figure {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .cabin-image {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border: 0.25rem solid rgb(255 255 255 / 82%);
+    border-radius: var(--radius-medium);
+    box-shadow: 0 1rem 2rem rgb(1 61 67 / 30%);
+  }
+
+  .cabin-image-single {
+    object-position: 50% 52%;
+  }
+
+  .cabin-image-field {
+    object-position: 50% 62%;
+  }
+
+  @media (width >= 56rem) {
+    .cabin-feature {
+      grid-template-columns: minmax(0, 0.9fr) minmax(24rem, 1.1fr);
+    }
+  }
+
+  @media (width < 30rem) {
+    .cabin-feature {
+      gap: var(--space-6);
+    }
+
+    .cabin-gallery {
+      gap: var(--space-2);
+    }
+
+    .cabin-image {
+      border-width: 0.1875rem;
+    }
+  }
+</style>

@@ -41,4 +41,4 @@ Headings use strong weight, compact line height and a broader measure than the i
 - Use an empty text alternative when the adjacent text already names the business; otherwise provide the full business name.
 - Prefer scalable vector artwork for interface use. Raster exports are reserved for channels that cannot consume vector assets.
 
-Photographs should show real portable sanitation products and credible operating environments. They must be selected for composition, privacy, publication rights and relevance to the accompanying content before optimisation and release.
+Photographs should show real portable sanitation products, surveillance cabins and credible operating environments. They must be selected for composition, privacy, publication rights and relevance to the accompanying content before optimisation and release.
