@@ -53,11 +53,11 @@ These names provide historical evidence of the business's experience. Their publ
 
 ## Public contact details
 
-The approved public telephone and WhatsApp numbers are `3400 415140` and `3400 441365`. The approved public email address is `marinellive@hotmail.com`, and the approved Instagram account is `@bqrincon`.
+The approved public telephone and WhatsApp numbers are `3400 415140` and `3400 441365`. The approved public email address is `infobqrincon@gmail.com`, and the approved Instagram account is `@bqrincon`.
 
 The primary website WhatsApp action uses `+54 3400 415140` without a prefilled message. The second approved number remains available in the footer but is not presented as the primary conversion destination.
 
-The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Rincón de los Sauces, Neuquén. Both locations may be described as operating bases. Coverage is assessed from each project's location rather than represented as province-wide availability. Public copy may name Vaca Muerta in connection with the Rincón de los Sauces base and should invite customers to confirm availability for their specific site.
+The public locations are Urquiza 1538, Villa Constitución, Santa Fe, and Trapial 108, Rincón de los Sauces, Neuquén. Both locations may be described as operating bases and linked to their address searches in Google Maps. Coverage is assessed from each project's location rather than represented as province-wide availability. Public copy may name Vaca Muerta in connection with the Rincón de los Sauces base and should invite customers to confirm availability for their specific site.
 
 The approved legal attribution is María Verónica Marinelli, CUIT `27-23047157-1`.
 

@@ -20,6 +20,18 @@ const currentYear = new Date().getFullYear();
  * @description Provides the approved public Instagram destination.
  */
 const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
+
+/**
+ * @description Opens the approved Villa Constitución operating-base address in Google Maps.
+ */
+const villaConstitucionMapUrl =
+  'https://www.google.com/maps/search/?api=1&query=Urquiza%201538%2C%20Villa%20Constituci%C3%B3n%2C%20Santa%20Fe';
+
+/**
+ * @description Opens the approved Rincón de los Sauces operating-base address in Google Maps.
+ */
+const rinconDeLosSaucesMapUrl =
+  'https://www.google.com/maps/search/?api=1&query=Trapial%20108%2C%20Rinc%C3%B3n%20de%20los%20Sauces%2C%20Neuqu%C3%A9n';
 ---
 
 <footer class="site-footer">
@@ -59,8 +71,8 @@ const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
             <Mail size={19} aria-hidden="true" />
             <span>
               <span class="footer-label">Correo electrónico</span>
-              <a href="mailto:marinellive@hotmail.com">
-                marinellive@hotmail.com
+              <a href="mailto:infobqrincon@gmail.com">
+                infobqrincon@gmail.com
               </a>
             </span>
           </li>
@@ -82,13 +94,38 @@ const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
           <li>
             <MapPin size={19} aria-hidden="true" />
             <address>
-              Urquiza 1538<br />
-              Villa Constitución, Santa Fe
+              <a
+                class="location-link"
+                href={villaConstitucionMapUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Ver Urquiza 1538, Villa Constitución, Santa Fe en Google Maps"
+              >
+                <span>Urquiza 1538<br />Villa Constitución, Santa Fe</span>
+                <span class="location-link-action">
+                  Ver en Google Maps
+                  <ExternalLink size={14} aria-hidden="true" />
+                </span>
+              </a>
             </address>
           </li>
           <li>
             <MapPin size={19} aria-hidden="true" />
-            <address>Rincón de los Sauces, Neuquén</address>
+            <address>
+              <a
+                class="location-link"
+                href={rinconDeLosSaucesMapUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Ver Trapial 108, Rincón de los Sauces, Neuquén en Google Maps"
+              >
+                <span>Trapial 108<br />Rincón de los Sauces, Neuquén</span>
+                <span class="location-link-action">
+                  Ver en Google Maps
+                  <ExternalLink size={14} aria-hidden="true" />
+                </span>
+              </a>
+            </address>
           </li>
         </ul>
       </section>
@@ -223,6 +260,22 @@ const instagramUrl = 'https://www.instagram.com/bqrincon?igsh=c2dtbmV2d2FkYjVo';
 
   .footer-list a {
     overflow-wrap: anywhere;
+  }
+
+  .location-link {
+    display: grid;
+    gap: var(--space-1);
+    text-decoration: none;
+  }
+
+  .location-link-action {
+    display: inline-flex;
+    gap: var(--space-1);
+    align-items: center;
+    color: var(--colour-on-dark-muted);
+    font-size: 0.75rem;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
   }
 
   .site-footer-legal {

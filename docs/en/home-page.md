@@ -58,7 +58,7 @@ A frame-coalesced scroll controller evaluates ordered section boundaries for whe
 
 The return-to-top action is a native fragment link fixed to the lower-left safe area. It is available without JavaScript; progressive enhancement conceals it while the hero remains useful and exposes it after the hero leaves the viewport. The approved WhatsApp action remains visible in the lower-right safe area and uses the Simple Icons brand path without loading an external asset or browser runtime. The footer reserves enough lower space to keep both actions clear of its content.
 
-The footer contains business identity, legal attribution, both approved operating locations, telephone and WhatsApp numbers, email and Instagram. Its legal row also includes a linked `Developed by Quinoto` credit using the supplied Quinoto artwork. It does not duplicate primary section navigation or claim that the listed locations define an exact service area.
+The footer contains business identity, legal attribution, both approved operating locations, telephone and WhatsApp numbers, email and Instagram. Each approved address links to its Google Maps search without embedding a third-party map or requiring an API credential. The legal row also includes a linked `Developed by Quinoto` credit using the supplied Quinoto artwork. The footer does not duplicate primary section navigation or claim that the listed locations define an exact service area.
 
 ## Motion
 
