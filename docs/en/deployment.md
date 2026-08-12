@@ -40,7 +40,9 @@ Railpack configuration variables are deployment controls rather than website env
 
 The root `render.yaml` file is the canonical infrastructure definition for the client preview. It declares one Static Site named `bq-rincon-preview`, tracks `feature/deploy`, waits for repository checks to pass, installs the pinned pnpm dependency graph with a frozen lockfile and publishes `dist/`. Render already exposes its managed pnpm executable, so the build command must not run `corepack enable` or attempt to replace platform binaries. This Render service remains isolated from the later Railway environments and is not migrated to `develop`.
 
-The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header as a second boundary beyond the generated HTML and `robots.txt`. Hashed Astro assets receive immutable caching. Conservative content-type, referrer and frame headers are applied without introducing a Content Security Policy before browser behaviour has been observed on the real service.
+The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header as a second boundary beyond the generated HTML and `robots.txt`. Hashed Astro assets receive immutable caching. Conservative content-type, referrer and frame headers are applied together with a restrictive `Permissions-Policy` that disables camera, geolocation, microphone, payment and USB capabilities which the website does not use.
+
+Astro's build-time Content Security Policy is part of the portable static artefact rather than a hosting-specific header. Every page authorises only same-origin resources, prohibits embedded frames and object content, and includes generated hashes for the scripts and styles emitted by Astro. Production components must not introduce inline scripts, inline style attributes or remote runtime resources without reviewing and deliberately extending this policy. `X-Frame-Options: DENY` remains a response-header control because a meta-delivered Content Security Policy cannot enforce `frame-ancestors`.
 
 ## Initial provisioning
 
@@ -51,6 +53,7 @@ The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header 
 5. Confirm that the assigned address matches the recorded client-review URL.
 6. Confirm that the page, navigation, carousel, images and contact destinations work from the public preview.
 7. Confirm that `/robots.txt` disallows crawling and that the response includes `X-Robots-Tag: noindex, nofollow`.
+8. Confirm that the generated document contains the expected Content Security Policy and that the response disables unused browser capabilities through `Permissions-Policy`.
 
 No `SITE_URL` value or secret is required during this provisioning flow.
 
@@ -74,7 +77,7 @@ The dashboard rollback reuses the selected build artefact but does not restore c
 
 ## Production activation
 
-Railway deployment remains deferred until its service ownership is confirmed. Its validation environment follows `develop`, retains `SITE_INDEXABLE=false` and does not set `SITE_URL`. Production activation later requires the final HTTPS origin as `SITE_URL`, `SITE_INDEXABLE=true` only in production, a sitemap using that origin and verification that both preview environments remain closed to indexing. Preview and production services must never share an environment group that can enable indexing.
+Railway deployment remains deferred until its service ownership is confirmed. Its validation environment follows `develop`, retains `SITE_INDEXABLE=false` and does not set `SITE_URL`. Production activation later requires the final HTTPS origin as `SITE_URL`, `SITE_INDEXABLE=true` only in production, a sitemap using that origin and verification that both preview environments remain closed to indexing. Preview and production services must never share an environment group that can enable indexing. Railway must reproduce the tracked content-type, referrer, frame and permissions response headers before production traffic is enabled; the generated Content Security Policy remains embedded in the static pages across hosting providers.
 
 ## Sitemap activation
 

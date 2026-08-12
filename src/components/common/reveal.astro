@@ -4,7 +4,7 @@
  */
 interface Props {
   /** @description Delays the entrance transition by the supplied number of milliseconds. */
-  delay?: number;
+  delay?: 0 | 75 | 150 | 225 | 300 | 375;
   /** @description Selects the direction from which concealed content enters. */
   direction?: 'up' | 'left' | 'right';
   /** @description Adds a consumer-owned class without replacing the reveal class. */
@@ -20,8 +20,8 @@ const { delay = 0, direction = 'up', class: className } = Astro.props;
 <div
   class:list={['reveal', className]}
   data-reveal
+  data-reveal-delay={delay === 0 ? undefined : delay}
   data-reveal-direction={direction}
-  style={`--reveal-delay: ${delay}ms;`}
 >
   <slot />
 </div>
@@ -45,6 +45,26 @@ const { delay = 0, direction = 'up', class: className } = Astro.props;
       opacity var(--motion-duration-reveal) var(--motion-easing-standard),
       transform var(--motion-duration-reveal) var(--motion-easing-standard);
     transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-reveal-delay='75'] {
+    --reveal-delay: 75ms;
+  }
+
+  .reveal[data-reveal-delay='150'] {
+    --reveal-delay: 150ms;
+  }
+
+  .reveal[data-reveal-delay='225'] {
+    --reveal-delay: 225ms;
+  }
+
+  .reveal[data-reveal-delay='300'] {
+    --reveal-delay: 300ms;
+  }
+
+  .reveal[data-reveal-delay='375'] {
+    --reveal-delay: 375ms;
   }
 
   .reveal[data-reveal-concealed][data-reveal-direction='left'] {

@@ -12,6 +12,26 @@ const siteUrl = process.env.SITE_URL?.trim() || undefined;
 const astroConfig = defineConfig({
   output: 'static',
   site: siteUrl,
+  markdown: {
+    syntaxHighlight: false,
+  },
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "base-uri 'self'",
+        "connect-src 'self'",
+        "font-src 'self'",
+        "form-action 'self'",
+        "frame-src 'none'",
+        "img-src 'self'",
+        "manifest-src 'self'",
+        "media-src 'self'",
+        "object-src 'none'",
+        "worker-src 'self'",
+      ],
+    },
+  },
   env: {
     schema: {
       SITE_URL: envField.string({

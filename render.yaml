@@ -26,6 +26,9 @@ services:
       - path: /*
         name: X-Frame-Options
         value: DENY
+      - path: /*
+        name: Permissions-Policy
+        value: 'camera=(), geolocation=(), microphone=(), payment=(), usb=()'
       - path: /_astro/*
         name: Cache-Control
         value: 'public, max-age=31536000, immutable'
