@@ -2,31 +2,33 @@
 
 ## Responsibility
 
-This document defines the tracked deployment contract for the static BQ Baños Químicos website. It separates the client-facing preview from the future production service, records which configuration belongs in environment variables and provides the bootstrap and rollback procedures for the Render preview.
+This document defines the tracked deployment contract for the static BQ Baños Químicos website. It separates the client-facing preview, Railway validation and public production service, records which configuration belongs in environment variables and provides the required release and rollback procedures.
 
 The deployed artefact remains the static `dist/` directory produced by Astro. No deployment environment may add a server adapter, request-time rendering or an application backend.
 
 ## Environment boundaries
 
-| Environment        | Source branch          | Delivery target                        | Canonical origin        | Indexing                                             |
-| ------------------ | ---------------------- | -------------------------------------- | ----------------------- | ---------------------------------------------------- |
-| Local development  | Current working branch | Local Astro server                     | Absent                  | Disabled                                             |
-| Client preview     | `feature/deploy`       | Render Static Site                     | Absent                  | Disabled in HTML, `robots.txt` and the HTTP response |
-| Railway validation | `develop`              | Railway static delivery                | Absent                  | Disabled                                             |
-| Production         | `master`               | Railway, subject to final confirmation | Confirmed public domain | Enabled only after release approval                  |
+| Environment        | Source branch          | Delivery target         | Canonical origin       | Indexing                                             |
+| ------------------ | ---------------------- | ----------------------- | ---------------------- | ---------------------------------------------------- |
+| Local development  | Current working branch | Local Astro server      | Absent                 | Disabled                                             |
+| Client preview     | `feature/deploy`       | Render Static Site      | Absent                 | Disabled in HTML, `robots.txt` and the HTTP response |
+| Railway validation | `staging`              | Railway static delivery | Absent                 | Disabled                                             |
+| Production         | `master`               | Railway static delivery | `https://bqrincon.com` | Enabled only in this environment                     |
 
 The Render client-review address is [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). It must not be supplied as `SITE_URL`, treated as the canonical public origin or added to a sitemap.
+
+The public domain is `bqrincon.com`. DonWeb remains its registrar, Cloudflare owns its authoritative DNS zone and Railway terminates public HTTPS for the production service. `https://bqrincon.com` is the only canonical origin. The `www` hostname must route to the same Railway service and redirect permanently to the canonical origin without changing the path or query string.
 
 ## Configuration audit
 
 The website and Render preview require the following deployment configuration:
 
-| Name                | Owner                  | Sensitivity | Purpose                                                                                                                              |
-| ------------------- | ---------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `SITE_URL`          | Production deployment  | Public      | Supplies Astro's owned canonical origin after the final domain is confirmed. It remains absent from local and client-preview builds. |
-| `SITE_INDEXABLE`    | Deployment environment | Public      | Requires an explicit boolean value of `true` before HTML and `robots.txt` allow indexing. Preview configuration fixes it to `false`. |
-| `NODE_VERSION`      | Render preview         | Public      | Pins the preview builder to the repository's supported Node.js version.                                                              |
-| `SKIP_INSTALL_DEPS` | Render preview         | Public      | Prevents Render's automatic dependency installation because the tracked build command performs the frozen pnpm installation.         |
+| Name                | Owner                  | Sensitivity | Purpose                                                                                                                                |
+| ------------------- | ---------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `SITE_URL`          | Production deployment  | Public      | Supplies Astro's owned canonical origin as `https://bqrincon.com`. It remains absent from local, client-preview and validation builds. |
+| `SITE_INDEXABLE`    | Deployment environment | Public      | Requires an explicit boolean value of `true` before HTML and `robots.txt` allow indexing. Preview configuration fixes it to `false`.   |
+| `NODE_VERSION`      | Render preview         | Public      | Pins the preview builder to the repository's supported Node.js version.                                                                |
+| `SKIP_INSTALL_DEPS` | Render preview         | Public      | Prevents Render's automatic dependency installation because the tracked build command performs the frozen pnpm installation.           |
 
 The Discord notification workflow obtains its credential directly from GitHub repository secrets. It does not add a website, Render or Railway environment variable.
 
@@ -34,7 +36,7 @@ No other environment variables are justified by the current website. Telephone n
 
 The schema in `astro.config.mjs` is the type and validation authority for both website variables. `SITE_INDEXABLE` is a server-only boolean with a closed default. `SITE_URL` is an optional, validated URL and is consumed by Astro configuration only when the deployment environment supplies it. The tracked `.env.example` records safe example values, while the ignored local `.env` keeps development non-indexable without claiming a canonical origin.
 
-Railpack configuration variables are deployment controls rather than website environment variables and therefore do not belong in `.env.example`. None is currently required: Railway can detect the pinned package manager, lockfile, build script and Astro static output from the tracked repository. If platform logs later demonstrate that static-output detection needs an override, prefer tracked Railway configuration over a local shell wrapper and keep the published directory fixed to `dist/`.
+Railpack configuration variables are deployment controls rather than website environment variables and therefore do not belong in `.env.example`. None is currently required: Railway detects the pinned package manager, lockfile, build script and Astro static output from the tracked repository. The root `Caddyfile` is the tracked Railway delivery authority and fixes the published directory to `dist/`; no dashboard build or start override may replace it without an architectural review.
 
 ## Render preview authority
 
@@ -44,7 +46,7 @@ The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header 
 
 Astro's build-time Content Security Policy is part of the portable static artefact rather than a hosting-specific header. Every page authorises only same-origin resources, prohibits embedded frames and object content, and includes generated hashes for the scripts and styles emitted by Astro. Production components must not introduce inline scripts, inline style attributes or remote runtime resources without reviewing and deliberately extending this policy. `X-Frame-Options: DENY` remains a response-header control because a meta-delivered Content Security Policy cannot enforce `frame-ancestors`.
 
-The repository-wide `pnpm verify` gate builds the complete static artefact before running `pnpm verify:security`. This security check requires every generated HTML document to contain the configured directives, rejects broad script and style sources, validates every inline script and style hash, rejects inline style and event-handler attributes and confirms that the Render Blueprint uses the canonical root-scoped `Permissions-Policy`. A failed invariant blocks continuous integration and therefore blocks deployment from a protected branch.
+The repository-wide `pnpm verify` gate reconstructs both a closed validation artefact and the public production artefact. It proves that closed builds omit canonical metadata and sitemaps, that production emits only the owned origin in its canonical and sitemap records, and that each crawl policy matches its environment. The security check then requires every generated HTML document to contain the configured directives, rejects broad script and style sources, validates every inline script and style hash, rejects inline style and event-handler attributes and confirms that both Render and Railway use the canonical delivery policies. A failed invariant blocks continuous integration and therefore blocks deployment from a protected branch.
 
 ## Initial provisioning
 
@@ -77,15 +79,17 @@ For an urgent preview rollback:
 
 The dashboard rollback reuses the selected build artefact but does not restore current static-site header configuration. The tracked Blueprint therefore remains the authority for response headers and future deployments.
 
-## Production activation
+## Railway delivery
 
-Railway deployment remains deferred until its service ownership is confirmed. Its validation environment follows `develop`, retains `SITE_INDEXABLE=false` and does not set `SITE_URL`. Production activation later requires the final HTTPS origin as `SITE_URL`, `SITE_INDEXABLE=true` only in production, a sitemap using that origin and verification that both preview environments remain closed to indexing. Preview and production services must never share an environment group that can enable indexing. Railway must reproduce the tracked content-type, referrer, frame and permissions response headers before production traffic is enabled; the generated Content Security Policy remains embedded in the static pages across hosting providers.
+Railway validation follows `staging`, retains `SITE_INDEXABLE=false` and does not set `SITE_URL`. Production follows `master` and receives exactly `SITE_URL=https://bqrincon.com` and `SITE_INDEXABLE=true`. Preview, validation and production services must never share an environment variable group that can enable indexing.
+
+The tracked `Caddyfile` serves `dist/` without an application-route fallback, so an unknown path returns an HTTP `404` rather than a duplicate home page. It compresses responses, assigns immutable caching to generated Astro assets, removes its server signature and applies the required content-type, referrer, frame and permissions response headers. It also owns the permanent `www.bqrincon.com` redirect. Railway must register both custom hostnames before the redirect can receive requests, while Cloudflare must route both names using the DNS values issued by Railway.
+
+The generated Content Security Policy remains embedded in the static pages across hosting providers. Following each production deployment, verify the root response, one generated asset, `robots.txt`, both sitemap files, an unknown path and the `www` redirect against this contract.
 
 ## Sitemap activation
 
-A sitemap is a production-only XML index of the canonical public routes that search engines may crawl. The current single-page website does not require one for navigation, and generating one before the domain is confirmed would publish the wrong origin. It must remain absent from local, Render and Railway validation builds.
-
-After the production domain is confirmed, add Astro's official sitemap integration, supply the owned HTTPS origin through `SITE_URL` and verify that the generated `sitemap-index.xml` and `sitemap-0.xml` contain only production URLs. The index must then be referenced from the production `robots.txt`. Preview crawl rules must continue to omit the sitemap and disallow all routes.
+A sitemap is a production-only XML index of the canonical public routes that search engines may crawl. Astro's official sitemap integration is enabled only when the build receives both the owned `SITE_URL` and the explicit indexing opt-in. Production therefore emits `sitemap-index.xml` and `sitemap-0.xml`, and its `robots.txt` advertises the index. Local, Render and Railway validation builds omit both sitemap files, omit the sitemap directive and disallow every route.
 
 ## Reproducible deployment verification
 
@@ -96,6 +100,6 @@ pnpm install --frozen-lockfile
 pnpm run build
 ```
 
-These commands do not require `build.sh`. The project also requires no `start.sh` because Railway's static delivery owns the file server; adding an application server would violate the static-output boundary.
+These commands do not require `build.sh`. The project also requires no `start.sh`: Railpack starts Caddy from the tracked configuration and serves the static output. Adding an application server would violate the static-output boundary.
 
 The Railway build log is the release evidence. It must show a successful frozen installation and Astro static build from the tracked commit, followed by publication of `dist/`. A deployment that depends on the ignored `.env`, local caches, `node_modules/` or a manually uploaded `dist/` directory does not satisfy this contract.

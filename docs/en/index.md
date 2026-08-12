@@ -12,7 +12,7 @@ The first delivery is a static website. It has no application backend, user acco
 
 Astro is the site generator and must emit static files at build time. Hosting therefore needs only to serve the generated HTML, CSS, JavaScript and media assets. A server adapter is outside the current architecture.
 
-Render hosts the non-indexable client preview from `feature/deploy` at [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). This preview remains independent of the later Railway delivery. Railway will use `develop` for pre-production validation and is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
+Render hosts the non-indexable client preview from `feature/deploy` at [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). This preview remains independent of Railway delivery. Railway uses `staging` for non-indexable validation and `master` for production at [bqrincon.com](https://bqrincon.com/). DonWeb is the domain registrar and Cloudflare owns the authoritative DNS zone. These deployment choices do not alter the static-output boundary.
 
 Pages and components use Astro templates, semantic HTML and CSS. Browser-side JavaScript is reserved for small, progressively enhanced interactions that cannot be expressed adequately with HTML and CSS. A UI framework such as React, Vue or Svelte is not part of the initial stack.
 
@@ -24,8 +24,13 @@ The intended source tree is:
 
 ```text
 bq-rincon/
+├── config/
+│   └── security-policy.config.mjs
 ├── public/
 │   └── favicon.svg
+├── scripts/
+│   ├── verify-deployment.mjs
+│   └── verify-security.mjs
 ├── src/
 │   ├── assets/
 │   │   ├── brand/
@@ -69,6 +74,7 @@ bq-rincon/
 │       ├── global.css
 │       └── variables.css
 ├── astro.config.mjs
+├── Caddyfile
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
@@ -116,11 +122,11 @@ Generated-HTML release checks must also confirm one primary heading, explicit al
 
 The shared layout emits the page title, description, Open Graph identity, X card metadata, theme colour and the stable `/favicon.svg` reference. The default social preview uses approved field photography. Absolute canonical and social-image URLs are emitted only when Astro receives an owned site origin through `SITE_URL`; an absent origin never falls back to localhost or another placeholder host.
 
-Every build is non-indexable by default. Both the HTML robots directive and generated `robots.txt` remain closed unless `SITE_INDEXABLE=true` is supplied and `SITE_URL` configures the canonical origin. Preview and local environments must retain the default closed state. Production may opt in only after domain ownership, final metadata and deployment isolation have been verified.
+Every build is non-indexable by default. Both the HTML robots directive and generated `robots.txt` remain closed unless `SITE_INDEXABLE=true` is supplied and `SITE_URL` configures the canonical origin. Preview, local and Railway validation environments retain the default closed state. The production combination also enables the official sitemap integration, emits only `bqrincon.com` URLs and advertises the sitemap index from `robots.txt`.
 
 ## Automation
 
-Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics, the static production build and the generated Content Security Policy and deployment permissions contract.
+Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics, isolated closed and production builds, generated crawl and canonical metadata, the Content Security Policy and both hosting delivery contracts.
 
 Discord notifications cover configured push, branch lifecycle, pull request and completed continuous-integration events. The notification workflow remains inert when its webhook secret is unavailable. Its continuous-integration trigger depends on the workflow retaining the canonical `Continuous Integration` name.
 
@@ -137,5 +143,4 @@ The following websites are product and presentation references, not dependencies
 
 The following decisions are intentionally outside the current foundation and must be resolved before they become implementation constraints. Deferred capability requirements are documented in [future capabilities](future-capabilities.md).
 
-- production domain, registrar confirmation and deployment workflow;
 - additional routes or content management needs.

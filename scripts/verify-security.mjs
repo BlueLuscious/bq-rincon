@@ -7,6 +7,7 @@ import process from 'node:process';
 import {
   CONTENT_SECURITY_POLICY_DIRECTIVES,
   PERMISSIONS_POLICY,
+  SECURITY_RESPONSE_HEADERS,
 } from '../config/security-policy.config.mjs';
 
 /**
@@ -19,6 +20,13 @@ const BUILD_DIRECTORY = fileURLToPath(new URL('../dist/', import.meta.url));
  */
 const RENDER_BLUEPRINT_FILE = fileURLToPath(
   new URL('../render.yaml', import.meta.url),
+);
+
+/**
+ * @description Identifies the Railway Caddy configuration whose static-delivery policy is verified.
+ */
+const CADDY_CONFIGURATION_FILE = fileURLToPath(
+  new URL('../Caddyfile', import.meta.url),
 );
 
 /**
@@ -244,6 +252,54 @@ export function verifyRenderPermissionsPolicy(blueprint) {
 }
 
 /**
+ * @description Escapes one literal value before it is interpolated into a regular expression.
+ * @param {string} value Literal value represented by the resulting expression.
+ * @returns {string} Regular-expression-safe representation of the literal.
+ */
+function escapeRegularExpression(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+}
+
+/**
+ * @description Verifies Railway's static server, canonical redirect and security response headers.
+ * @param {string} configuration Caddy configuration source.
+ * @returns {void} Nothing when Railway delivery preserves every required invariant.
+ */
+export function verifyRailwayDeliveryPolicy(configuration) {
+  assertSecurityInvariant(
+    /^\s*root\s+\*\s+dist\s*$/mu.test(configuration),
+    'Caddyfile must serve the generated dist/ directory.',
+  );
+  assertSecurityInvariant(
+    /^\s*file_server\s*$/mu.test(configuration),
+    'Caddyfile must enable static file delivery.',
+  );
+  assertSecurityInvariant(
+    !/\btry_files\b[^\r\n]*index\.html/iu.test(configuration),
+    'Caddyfile must not rewrite unknown paths to index.html.',
+  );
+  assertSecurityInvariant(
+    /^\s*@www\s+host\s+www\.bqrincon\.com\s*$/mu.test(configuration) &&
+      /^\s*redir\s+@www\s+https:\/\/bqrincon\.com\{uri\}\s+permanent\s*$/mu.test(
+        configuration,
+      ),
+    'Caddyfile must redirect www.bqrincon.com to the canonical origin.',
+  );
+
+  Object.entries(SECURITY_RESPONSE_HEADERS).forEach(([name, value]) => {
+    const headerPattern = new RegExp(
+      `^\\s*${escapeRegularExpression(name)}\\s+"${escapeRegularExpression(value)}"\\s*$`,
+      'mu',
+    );
+
+    assertSecurityInvariant(
+      headerPattern.test(configuration),
+      `Caddyfile is missing the canonical ${name} response header.`,
+    );
+  });
+}
+
+/**
  * @description Verifies generated pages and deployment policy after the production build completes.
  * @returns {Promise<void>} Completion after every security invariant has been checked.
  */
@@ -265,10 +321,12 @@ async function verifySecurity() {
   );
 
   const renderBlueprint = await readFile(RENDER_BLUEPRINT_FILE, 'utf8');
+  const caddyConfiguration = await readFile(CADDY_CONFIGURATION_FILE, 'utf8');
 
   verifyRenderPermissionsPolicy(renderBlueprint);
+  verifyRailwayDeliveryPolicy(caddyConfiguration);
   console.log(
-    `Security verification passed for ${htmlFiles.length} generated HTML document(s) and the Render permissions policy.`,
+    `Security verification passed for ${htmlFiles.length} generated HTML document(s), Render and Railway delivery policies.`,
   );
 }
 

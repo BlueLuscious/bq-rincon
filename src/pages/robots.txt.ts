@@ -8,8 +8,11 @@ import { SITE_INDEXABLE } from 'astro:env/server';
 export const GET: APIRoute = ({ site }) => {
   const allowsCrawling = SITE_INDEXABLE && site !== undefined;
   const directive = allowsCrawling ? 'Allow: /' : 'Disallow: /';
+  const sitemapDirective = allowsCrawling
+    ? `\nSitemap: ${new URL('sitemap-index.xml', site).href}`
+    : '';
 
-  return new Response(`User-agent: *\n${directive}\n`, {
+  return new Response(`User-agent: *\n${directive}${sitemapDirective}\n`, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
     },
