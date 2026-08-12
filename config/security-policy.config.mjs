@@ -20,3 +20,13 @@ export const CONTENT_SECURITY_POLICY_DIRECTIVES = Object.freeze([
  */
 export const PERMISSIONS_POLICY =
   'camera=(), geolocation=(), microphone=(), payment=(), usb=()';
+
+/**
+ * @description Defines the security response headers required from every public delivery target.
+ */
+export const SECURITY_RESPONSE_HEADERS = Object.freeze({
+  'Permissions-Policy': PERMISSIONS_POLICY,
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+});

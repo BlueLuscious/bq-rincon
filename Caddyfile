@@ -1,0 +1,38 @@
+{
+	admin off
+	persist_config off
+	auto_https off
+
+	log {
+		format json
+	}
+
+	servers {
+		trusted_proxies static private_ranges 100.0.0.0/8
+	}
+}
+
+:{$PORT:3000} {
+	log {
+		format json
+	}
+
+	@www host www.bqrincon.com
+	redir @www https://bqrincon.com{uri} permanent
+
+	root * dist
+	encode zstd gzip
+
+	header {
+		-Server
+		Permissions-Policy "camera=(), geolocation=(), microphone=(), payment=(), usb=()"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+	}
+
+	@immutable path /_astro/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+
+	file_server
+}

@@ -21,10 +21,10 @@ No analytics dependency, environment variable, consent interface or event instru
 
 ## Deployment context
 
-Render provides the tracked, non-indexable client preview from `feature/deploy`. It remains a client-review environment and will not migrate to `develop`. Railway will use `develop` for pre-production validation and remains the intended production hosting platform for the static Astro output, subject to final confirmation when the domain is selected. Neither target changes the static delivery model or authorises a server adapter, on-demand rendering or an application backend.
+Render provides the tracked, non-indexable client preview from `feature/deploy`. It remains a client-review environment. Railway uses `staging` for non-indexable validation and `master` for the public static delivery. Neither target changes the static delivery model or authorises a server adapter, on-demand rendering or an application backend.
 
-The production domain has not been selected. DonWeb is the probable registrar or domain provider, but that choice remains unconfirmed. Canonical URLs, production crawl directives and domain-specific deployment configuration must wait until the final domain and ownership are known.
+The owned production origin is `https://bqrincon.com`. DonWeb remains the registrar, Cloudflare owns the authoritative DNS zone and Railway owns public HTTPS delivery. The root hostname is canonical and `www.bqrincon.com` is a redirect-only alias.
 
-The release foundation accepts the owned HTTPS origin through `SITE_URL` and requires the separate `SITE_INDEXABLE=true` opt-in before allowing crawlers. Local and preview builds remain closed by default. Once the domain is confirmed, production configuration must provide both values, verify that preview deployments do not inherit the indexing flag and add the established route set to a sitemap.
+The release foundation accepts the owned HTTPS origin through `SITE_URL` and requires the separate `SITE_INDEXABLE=true` opt-in before allowing crawlers. Local, preview and validation builds remain closed by default. Production supplies both values and generates the established route set as a canonical sitemap without exposing a preview origin.
 
 The tracked source and workflow configuration has been audited for environment-dependent and sensitive values. The resulting ownership and operational procedures are defined in the [deployment contract](deployment.md). Environment variables remain limited to secrets or values that genuinely vary between preview and production; public business content and stable source-controlled configuration remain explicit in the repository.

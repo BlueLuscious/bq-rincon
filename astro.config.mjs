@@ -1,4 +1,5 @@
 import { defineConfig, envField } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import process from 'node:process';
 import { CONTENT_SECURITY_POLICY_DIRECTIVES } from './config/security-policy.config.mjs';
 
@@ -8,11 +9,18 @@ import { CONTENT_SECURITY_POLICY_DIRECTIVES } from './config/security-policy.con
 const siteUrl = process.env.SITE_URL?.trim() || undefined;
 
 /**
+ * @description Enables public discovery artefacts only for the explicitly indexable production build.
+ */
+const siteIsIndexable =
+  process.env.SITE_INDEXABLE?.trim().toLowerCase() === 'true';
+
+/**
  * @description Configures Astro to generate a wholly static website.
  */
 const astroConfig = defineConfig({
   output: 'static',
   site: siteUrl,
+  integrations: siteUrl && siteIsIndexable ? [sitemap()] : [],
   markdown: {
     syntaxHighlight: false,
   },
