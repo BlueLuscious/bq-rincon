@@ -1,0 +1,187 @@
+---
+import { Image } from 'astro:assets';
+import ruralSiteImage from '../../assets/images/portable-toilet-rural-site.jpeg';
+import sportsSiteImage from '../../assets/images/portable-toilets-sports-site.jpeg';
+import urbanSiteImage from '../../assets/images/portable-toilets-urban-site.jpeg';
+import urbanServiceSiteImage from '../../assets/images/portable-toilet-urban-service-site.jpeg';
+import Section from '../common/section.astro';
+
+/**
+ * @description Defines the approved field photographs and the context each contributes.
+ */
+const galleryItems = [
+  {
+    image: ruralSiteImage,
+    alt: 'Baño químico instalado en un proyecto rural',
+    position: 'centre',
+    layout: 'portrait-rural',
+  },
+  {
+    image: sportsSiteImage,
+    alt: 'Cuatro baños químicos instalados junto a un campo deportivo',
+    position: 'centre',
+    layout: 'landscape-sports',
+  },
+  {
+    image: urbanServiceSiteImage,
+    alt: 'Baño químico instalado durante un servicio en un entorno urbano',
+    position: 'centre',
+    layout: 'landscape-service',
+  },
+  {
+    image: urbanSiteImage,
+    alt: 'Dos baños químicos instalados en un entorno urbano',
+    position: 'centre',
+    layout: 'portrait-urban',
+  },
+] as const;
+---
+
+<Section id="experiencia" labelledBy="gallery-heading" tone="subtle">
+  <div class="gallery-header">
+    <p class="eyebrow">Experiencia en campo</p>
+    <h2 id="gallery-heading">Instalaciones reales en distintos contextos.</h2>
+    <p>
+      Cada proyecto plantea condiciones diferentes para la ubicación y el
+      cuidado de las unidades.
+    </p>
+  </div>
+
+  <div class="gallery-grid">
+    {
+      galleryItems.map(({ image, alt, position, layout }) => (
+        <figure class:list={['gallery-item', `gallery-item-${layout}`]}>
+          <Image
+            class:list={['gallery-image', `gallery-image-${position}`]}
+            src={image}
+            alt={alt}
+            format="webp"
+            quality={80}
+            widths={[360, 560, 720]}
+            sizes="(min-width: 64rem) 23rem, (min-width: 40rem) 45vw, 100vw"
+            layout="constrained"
+            loading="lazy"
+          />
+        </figure>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  .gallery-header {
+    max-width: 50rem;
+    margin-block-end: var(--space-7);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    width: var(--width-heading-2-section);
+    margin-block-end: var(--space-4);
+    margin-inline: auto;
+    font-size: var(--font-size-heading-2-section);
+  }
+
+  .gallery-header > p:last-child {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+  }
+
+  .gallery-grid {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 50rem;
+    margin-inline: auto;
+    grid-auto-flow: dense;
+  }
+
+  .gallery-item {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    background: var(--colour-border);
+    border-radius: var(--radius-large);
+    box-shadow: 0 0.75rem 1.75rem rgb(1 61 67 / 9%);
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .gallery-item[class*='gallery-item-portrait-'] .gallery-image {
+    aspect-ratio: 3 / 4;
+  }
+
+  .gallery-item[class*='gallery-item-landscape-'] .gallery-image {
+    aspect-ratio: 3 / 2;
+  }
+
+  .gallery-image-centre {
+    object-position: center;
+  }
+
+  @media (width >= 40rem) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery-item-portrait-rural {
+      grid-area: 1 / 1;
+    }
+
+    .gallery-item-portrait-urban {
+      grid-area: 1 / 2;
+    }
+
+    .gallery-item-landscape-sports {
+      grid-area: 2 / 1;
+    }
+
+    .gallery-item-landscape-service {
+      grid-area: 2 / 2;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .gallery-grid {
+      max-width: 54rem;
+      grid-template-columns:
+        clamp(13rem, 16vw, 16rem) minmax(21.5rem, 1fr)
+        clamp(13rem, 16vw, 16rem);
+      grid-template-rows: repeat(2, 14rem);
+    }
+
+    .gallery-item-portrait-rural {
+      grid-area: 1 / 1 / span 2 / span 1;
+    }
+
+    .gallery-item-landscape-sports {
+      grid-area: 1 / 2;
+    }
+
+    .gallery-item-landscape-service {
+      grid-area: 2 / 2;
+    }
+
+    .gallery-item-portrait-urban {
+      grid-area: 1 / 3 / span 2 / span 1;
+    }
+
+    .gallery-image {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+  }
+</style>

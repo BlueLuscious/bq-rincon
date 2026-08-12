@@ -1,0 +1,138 @@
+---
+import { GraduationCap, HardHat, ShieldCheck } from '@lucide/astro';
+import Section from '../common/section.astro';
+
+/**
+ * @description Defines the safety principles supported by the operating procedure.
+ */
+const safetyPrinciples = [
+  {
+    icon: HardHat,
+    title: 'Protección personal',
+    description:
+      'El personal utiliza los elementos de protección correspondientes a cada actividad.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Procedimientos seguros',
+    description:
+      'Las tareas de traslado, instalación, limpieza y mantenimiento siguen prácticas definidas.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Capacitación continua',
+    description:
+      'La prevención y la correcta manipulación de equipos forman parte del trabajo cotidiano.',
+  },
+] as const;
+---
+
+<Section id="seguridad" labelledBy="safety-heading">
+  <div class="safety-layout">
+    <div class="safety-introduction">
+      <p class="eyebrow">Seguridad e higiene</p>
+      <h2 id="safety-heading">
+        Cuidamos a las personas y al entorno de trabajo.
+      </h2>
+      <p class="safety-summary">
+        Cada intervención contempla la higiene de las unidades, la prevención de
+        riesgos y la gestión responsable de los residuos.
+      </p>
+    </div>
+
+    <ul class="safety-principles">
+      {
+        safetyPrinciples.map(({ icon: Icon, title, description }) => (
+          <li>
+            <span class="principle-mark" aria-hidden="true">
+              <Icon stroke-width={1.8} />
+            </span>
+            <div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Section>
+
+<style>
+  .safety-layout {
+    display: grid;
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .safety-introduction {
+    max-width: 42rem;
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    width: var(--width-heading-2-section);
+    margin-block-end: var(--space-5);
+    font-size: var(--font-size-heading-2-section);
+  }
+
+  .safety-summary {
+    margin-block-end: 0;
+    color: var(--colour-muted);
+    font-size: var(--font-size-lead);
+  }
+
+  .safety-principles {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    margin: 0;
+    background: var(--colour-shadow);
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-medium);
+    list-style: none;
+  }
+
+  .safety-principles li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .principle-mark {
+    display: inline-grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--colour-on-brand);
+    background: var(--gradient-sanitation-accent);
+    border-radius: var(--radius-medium);
+    place-items: center;
+  }
+
+  h3 {
+    margin-block-end: var(--space-2);
+    color: var(--colour-on-brand);
+    font-size: 1.125rem;
+  }
+
+  .safety-principles p {
+    margin-block-end: 0;
+    color: var(--colour-on-dark-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (width >= 56rem) {
+    .safety-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.8fr);
+      gap: clamp(4rem, 8vw, 8rem);
+    }
+  }
+</style>

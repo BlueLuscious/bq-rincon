@@ -1,0 +1,137 @@
+---
+import type { ImageMetadata } from 'astro';
+import { SITE_INDEXABLE } from 'astro:env/server';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '../styles/global.css';
+import defaultSocialImage from '../assets/images/portable-toilets-sports-site.jpeg';
+import FloatingActions from '../components/layout/floating-actions.astro';
+import SiteFooter from '../components/layout/site-footer.astro';
+import SiteHeader from '../components/layout/site-header.astro';
+
+/**
+ * @description Defines the required document metadata and locale for a public page.
+ */
+interface Props {
+  /** @description Provides the unique browser and search-result title for the page. */
+  title: string;
+  /** @description Summarises the page for search engines and link previews. */
+  description: string;
+  /** @description Declares the primary language and regional convention of the page content. */
+  language?: string;
+  /** @description Provides the approved image represented in large social-sharing previews. */
+  socialImage?: ImageMetadata;
+  /** @description Describes the social-sharing image when a platform exposes alternative text. */
+  socialImageAlt?: string;
+}
+
+/**
+ * @description Provides metadata and the default Argentine Spanish locale for the document shell.
+ */
+const {
+  title,
+  description,
+  language = 'es-AR',
+  socialImage = defaultSocialImage,
+  socialImageAlt = 'Cuatro baños químicos de BQ instalados junto a un campo deportivo',
+} = Astro.props;
+
+/**
+ * @description Provides the canonical URL only when a production site origin has been configured.
+ */
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site)
+  : undefined;
+
+/**
+ * @description Resolves the approved social image against the canonical origin without emitting a placeholder host.
+ */
+const socialImageUrl = Astro.site
+  ? new URL(socialImage.src, Astro.site)
+  : undefined;
+
+/**
+ * @description Allows indexing only when the build explicitly opts in and owns a canonical origin.
+ */
+const siteIsIndexable = SITE_INDEXABLE && Astro.site !== undefined;
+
+/**
+ * @description Converts the document language to the locale syntax required by Open Graph.
+ */
+const openGraphLocale = language.replace('-', '_');
+---
+
+<!doctype html>
+<html id="top" lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content={siteIsIndexable ? 'index, follow' : 'noindex, nofollow'}
+    />
+    <meta name="theme-color" content="#02707a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BQ Baños Químicos" />
+    <meta property="og:locale" content={openGraphLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {
+      socialImageUrl && (
+        <>
+          <meta property="og:image" content={socialImageUrl} />
+          <meta
+            property="og:image:type"
+            content={`image/${socialImage.format}`}
+          />
+          <meta property="og:image:width" content={`${socialImage.width}`} />
+          <meta property="og:image:height" content={`${socialImage.height}`} />
+          <meta property="og:image:alt" content={socialImageAlt} />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content={socialImageUrl} />
+          <meta name="twitter:image:alt" content={socialImageAlt} />
+        </>
+      )
+    }
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <SiteHeader />
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter />
+    <FloatingActions />
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: fixed;
+    z-index: 30;
+    inset-block-start: var(--space-4);
+    inset-inline-start: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border-radius: var(--radius-small);
+    transform: translateY(calc(-100% - var(--space-6)));
+    transition: transform var(--transition-duration) ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skip-link {
+      transition: none;
+    }
+  }
+</style>

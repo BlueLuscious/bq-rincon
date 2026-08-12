@@ -1,0 +1,95 @@
+---
+/**
+ * @description Defines the public inputs accepted by a progressively revealed content boundary.
+ */
+interface Props {
+  /** @description Delays the entrance transition by the supplied number of milliseconds. */
+  delay?: 0 | 75 | 150 | 225 | 300 | 375;
+  /** @description Selects the direction from which concealed content enters. */
+  direction?: 'up' | 'left' | 'right';
+  /** @description Adds a consumer-owned class without replacing the reveal class. */
+  class?: string;
+}
+
+/**
+ * @description Provides the reveal timing and consumer class forwarded to the boundary.
+ */
+const { delay = 0, direction = 'up', class: className } = Astro.props;
+---
+
+<div
+  class:list={['reveal', className]}
+  data-reveal
+  data-reveal-delay={delay === 0 ? undefined : delay}
+  data-reveal-direction={direction}
+>
+  <slot />
+</div>
+
+<script>
+  import { initialiseRevealObserver } from '../../scripts/reveal.observer';
+
+  initialiseRevealObserver();
+</script>
+
+<style>
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal[data-reveal-concealed] {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity var(--motion-duration-reveal) var(--motion-easing-standard),
+      transform var(--motion-duration-reveal) var(--motion-easing-standard);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal[data-reveal-delay='75'] {
+    --reveal-delay: 75ms;
+  }
+
+  .reveal[data-reveal-delay='150'] {
+    --reveal-delay: 150ms;
+  }
+
+  .reveal[data-reveal-delay='225'] {
+    --reveal-delay: 225ms;
+  }
+
+  .reveal[data-reveal-delay='300'] {
+    --reveal-delay: 300ms;
+  }
+
+  .reveal[data-reveal-delay='375'] {
+    --reveal-delay: 375ms;
+  }
+
+  .reveal[data-reveal-concealed][data-reveal-direction='left'] {
+    transform: translateX(-1.5rem);
+  }
+
+  .reveal[data-reveal-concealed][data-reveal-direction='right'] {
+    transform: translateX(1.5rem);
+  }
+
+  .reveal[data-reveal-concealed][data-reveal-preparing] {
+    transition: none;
+  }
+
+  .reveal[data-reveal-concealed][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal[data-reveal-concealed] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

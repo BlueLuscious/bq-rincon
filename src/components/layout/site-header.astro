@@ -1,0 +1,87 @@
+---
+import brandMark from '../../assets/brand/bq-mark-primary.svg';
+import Container from '../common/container.astro';
+import SiteNavigation from './site-navigation.astro';
+---
+
+<header class="site-header">
+  <Container>
+    <div class="site-header-content">
+      <a class="brand" href="/" aria-label="BQ Baños Químicos, inicio">
+        <img
+          src={brandMark.src}
+          alt=""
+          width={48}
+          height={48}
+          decoding="async"
+        />
+        <span class="brand-name">
+          <strong>BQ</strong>
+          <span>Baños Químicos</span>
+        </span>
+      </a>
+
+      <SiteNavigation />
+    </div>
+  </Container>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    z-index: 20;
+    inset-block-start: 0;
+    min-height: var(--site-header-height);
+    padding-block: var(--space-3);
+    background: rgb(255 255 255 / 94%);
+    border-block-end: 0.0625rem solid var(--colour-border);
+    box-shadow: 0 0.5rem 1.5rem rgb(1 61 67 / 7%);
+    backdrop-filter: blur(0.75rem);
+  }
+
+  .site-header-content,
+  .brand {
+    display: flex;
+    align-items: center;
+  }
+
+  .site-header-content {
+    position: relative;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-6);
+    min-height: calc(
+      var(--site-header-height) - (2 * var(--space-3)) - 0.0625rem
+    );
+  }
+
+  .brand {
+    flex: 0 0 auto;
+    gap: var(--space-3);
+    color: var(--colour-ink);
+    text-decoration: none;
+  }
+
+  .brand img {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .brand-name {
+    display: grid;
+    font-size: 0.75rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .brand-name strong {
+    color: var(--colour-brand-teal);
+    font-size: 1.125rem;
+    letter-spacing: 0.08em;
+  }
+
+  @media (width < 30rem) {
+    .brand-name span {
+      display: none;
+    }
+  }
+</style>

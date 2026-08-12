@@ -1,0 +1,175 @@
+---
+import {
+  BadgeCheck,
+  CalendarCheck,
+  PackageCheck,
+  SprayCan,
+} from '@lucide/astro';
+import Section from '../common/section.astro';
+
+/**
+ * @description Defines the approved operational sequence communicated to customers.
+ */
+const workflowSteps = [
+  {
+    icon: CalendarCheck,
+    identifier: 'planning',
+    title: 'Planificación',
+    description:
+      'Coordinamos las condiciones del servicio y el cronograma previsto para cada proyecto.',
+  },
+  {
+    icon: PackageCheck,
+    identifier: 'logistics',
+    title: 'Preparación e instalación',
+    description:
+      'Verificamos las unidades y los equipos antes del traslado y la instalación en el lugar acordado.',
+  },
+  {
+    icon: SprayCan,
+    identifier: 'sanitation',
+    title: 'Servicio programado',
+    description:
+      'Realizamos las tareas coordinadas de limpieza, desagote, sanitización y reposición.',
+  },
+  {
+    icon: BadgeCheck,
+    identifier: 'brand',
+    title: 'Control final',
+    description:
+      'Inspeccionamos las unidades y el área de trabajo al finalizar cada intervención.',
+  },
+] as const;
+---
+
+<Section id="como-trabajamos" labelledBy="workflow-heading" tone="subtle">
+  <div class="workflow-header">
+    <div>
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2 id="workflow-heading">Un proceso claro para cuidar cada detalle.</h2>
+    </div>
+    <p class="workflow-summary">
+      Organizamos cada intervención para acompañar la continuidad, la higiene y
+      las condiciones seguras del servicio.
+    </p>
+  </div>
+
+  <ol class="workflow-list">
+    {
+      workflowSteps.map(({ icon: Icon, identifier, title, description }) => (
+        <li>
+          <div
+            class:list={['step-marker', `step-marker-${identifier}`]}
+            aria-hidden="true"
+          >
+            <Icon size={36} stroke-width={1.8} />
+          </div>
+          <div>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .workflow-header {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 52rem;
+    margin-block-end: var(--space-7);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .eyebrow {
+    margin-block-end: var(--space-3);
+    color: var(--colour-brand-teal);
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    width: var(--width-heading-2-section);
+    margin-block-end: 0;
+    margin-inline: auto;
+    font-size: var(--font-size-heading-2-section);
+  }
+
+  .workflow-summary {
+    max-width: 38rem;
+    margin-block-end: 0;
+    margin-inline: auto;
+    color: var(--colour-muted);
+  }
+
+  .workflow-list {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    border-block-start: 0.0625rem solid var(--colour-border);
+    list-style: none;
+  }
+
+  .workflow-list li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: center;
+    padding-block: var(--space-5);
+    text-align: start;
+    border-block-end: 0.0625rem solid var(--colour-border);
+  }
+
+  .step-marker {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    color: var(--colour-on-brand);
+    background: var(--colour-brand-teal);
+    border-radius: var(--radius-medium);
+    box-shadow: 0 0.5rem 1rem rgb(1 61 67 / 12%);
+  }
+
+  .step-marker-planning {
+    background: var(--gradient-planning-accent);
+  }
+
+  .step-marker-logistics {
+    color: var(--colour-on-brand);
+    background: var(--gradient-logistics-accent);
+  }
+
+  .step-marker-sanitation {
+    background: var(--gradient-sanitation-accent);
+  }
+
+  h3 {
+    margin-block-end: var(--space-2);
+    font-size: 1.25rem;
+  }
+
+  .workflow-list p {
+    max-width: 34rem;
+    margin-block-end: 0;
+    color: var(--colour-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (width >= 48rem) {
+    .workflow-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-inline-start: 0.0625rem solid var(--colour-border);
+    }
+
+    .workflow-list li {
+      padding: var(--space-6);
+      border-inline-end: 0.0625rem solid var(--colour-border);
+    }
+  }
+</style>
