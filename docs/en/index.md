@@ -4,7 +4,7 @@
 
 `bq-rincon` is the source repository for the informational website of BQ Baños Químicos, a family-run portable sanitation business established in 2017. The website presents the business, its services and the means to request further information or a quotation. Its primary public locale is Argentinian Spanish (`es-AR`). Public coverage wording is limited to location-dependent availability from the approved operating bases and may name Vaca Muerta without claiming province-wide service; the primary direct-contact channel is the approved WhatsApp number.
 
-The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website. The [home page](home-page.md) documents how that context is presented in the initial public route. [Future capabilities](future-capabilities.md) records deliberately excluded capabilities and unresolved delivery configuration.
+The [business profile](business.md) and [brand system](brand.md) define the approved product context available to the website. The [home page](home-page.md) documents how that context is presented in the initial public route. The [deployment contract](deployment.md) defines environment ownership and release operations. [Future capabilities](future-capabilities.md) records deliberately excluded capabilities and unresolved delivery configuration.
 
 The first delivery is a static website. It has no application backend, user accounts, database, content management system or transactional workflow.
 
@@ -12,7 +12,7 @@ The first delivery is a static website. It has no application backend, user acco
 
 Astro is the site generator and must emit static files at build time. Hosting therefore needs only to serve the generated HTML, CSS, JavaScript and media assets. A server adapter is outside the current architecture.
 
-Railway is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
+Render hosts the non-indexable client preview from `feature/deploy` at [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). This preview remains independent of the later Railway delivery. Railway will use `develop` for pre-production validation and is the intended production hosting platform. The production domain remains unknown, and DonWeb is a probable but unconfirmed registrar or domain provider. These deployment choices do not alter the static-output boundary.
 
 Pages and components use Astro templates, semantic HTML and CSS. Browser-side JavaScript is reserved for small, progressively enhanced interactions that cannot be expressed adequately with HTML and CSS. A UI framework such as React, Vue or Svelte is not part of the initial stack.
 
@@ -72,6 +72,7 @@ bq-rincon/
 ├── package.json
 ├── pnpm-lock.yaml
 ├── pnpm-workspace.yaml
+├── render.yaml
 └── tsconfig.json
 ```
 
@@ -119,7 +120,7 @@ Every build is non-indexable by default. Both the HTML robots directive and gene
 
 ## Automation
 
-Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics and the static production build.
+Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics, the static production build and the generated Content Security Policy and deployment permissions contract.
 
 Discord notifications cover configured push, branch lifecycle, pull request and completed continuous-integration events. The notification workflow remains inert when its webhook secret is unavailable. Its continuous-integration trigger depends on the workflow retaining the canonical `Continuous Integration` name.
 

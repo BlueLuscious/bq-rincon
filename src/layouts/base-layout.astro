@@ -1,5 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro';
+import { SITE_INDEXABLE } from 'astro:env/server';
 import '@fontsource/barlow-condensed/latin-700.css';
 import '../styles/global.css';
 import defaultSocialImage from '../assets/images/portable-toilets-sports-site.jpeg';
@@ -31,7 +32,7 @@ const {
   description,
   language = 'es-AR',
   socialImage = defaultSocialImage,
-  socialImageAlt = 'Cuatro baÃ±os quÃ­micos de BQ instalados junto a un campo deportivo',
+  socialImageAlt = 'Cuatro baños químicos de BQ instalados junto a un campo deportivo',
 } = Astro.props;
 
 /**
@@ -51,8 +52,7 @@ const socialImageUrl = Astro.site
 /**
  * @description Allows indexing only when the build explicitly opts in and owns a canonical origin.
  */
-const siteIsIndexable =
-  import.meta.env.SITE_INDEXABLE === 'true' && Astro.site !== undefined;
+const siteIsIndexable = SITE_INDEXABLE && Astro.site !== undefined;
 
 /**
  * @description Converts the document language to the locale syntax required by Open Graph.
@@ -74,7 +74,7 @@ const openGraphLocale = language.replace('-', '_');
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="BQ BaÃ±os QuÃ­micos" />
+    <meta property="og:site_name" content="BQ Baños Químicos" />
     <meta property="og:locale" content={openGraphLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

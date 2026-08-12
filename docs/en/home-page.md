@@ -26,7 +26,7 @@ The home page owns one primary heading. Its content then proceeds through:
 
 1. a hero introducing solutions for construction, industrial and project-based work;
 2. a client section containing approved references to previous work, with supplied logos where authorised;
-3. a service section containing the six approved service categories;
+3. a service section containing the six approved portable-sanitation categories followed by a distinct featured block for surveillance-cabin hire;
 4. a workflow section describing planning, preparation, scheduled service and final inspection;
 5. a safety section describing protective equipment, procedures and continuous training;
 6. an about section covering the family business, its history, its operating principles and location-dependent service in Vaca Muerta from the Rincón de los Sauces base;
@@ -44,7 +44,7 @@ The initial home page has no separate contact section. The footer is the canonic
 
 ## Images
 
-The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents four photographs in a compact composition: one rural portrait, two central landscape contexts and one urban portrait. Portrait and landscape slots follow each image's native composition so complete units remain legible. Images dominated by camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
+The hero uses a real installation in an industrial setting. The about section uses a separate installation in an open project setting. The field gallery presents four photographs in a compact composition: one rural portrait, two central landscape contexts and one urban portrait. Portrait and landscape slots follow each image's native composition so complete units remain legible. The surveillance-cabin feature uses supplied photography of an individual unit and a field installation with two modules. Images dominated by camera obstructions or duplicate evidence are excluded. Every photograph contributes context and therefore uses descriptive alternative text.
 
 Photography is imported through the source asset boundary. Astro generates responsive WebP variants during the static build, supplies intrinsic dimensions and defers the below-the-fold photograph until it approaches the viewport. Source photographs remain the canonical inputs and generated variants are rebuildable.
 
@@ -58,7 +58,7 @@ A frame-coalesced scroll controller evaluates ordered section boundaries for whe
 
 The return-to-top action is a native fragment link fixed to the lower-left safe area. It is available without JavaScript; progressive enhancement conceals it while the hero remains useful and exposes it after the hero leaves the viewport. The approved WhatsApp action remains visible in the lower-right safe area and uses the Simple Icons brand path without loading an external asset or browser runtime. The footer reserves enough lower space to keep both actions clear of its content.
 
-The footer contains business identity, legal attribution, both approved operating locations, telephone and WhatsApp numbers, email and Instagram. Its legal row also includes a linked `Developed by Quinoto` credit using the supplied Quinoto artwork. It does not duplicate primary section navigation or claim that the listed locations define an exact service area.
+The footer contains business identity, legal attribution, both approved operating locations, telephone and WhatsApp numbers, email and Instagram. Each approved address links to its Google Maps search without embedding a third-party map or requiring an API credential. The legal row also includes a linked `Developed by Quinoto` credit using the supplied Quinoto artwork. The footer does not duplicate primary section navigation or claim that the listed locations define an exact service area.
 
 ## Motion
 
