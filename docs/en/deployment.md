@@ -17,7 +17,7 @@ The deployed artefact remains the static `dist/` directory produced by Astro. No
 
 The Render client-review address is [bq-rincon-preview.onrender.com](https://bq-rincon-preview.onrender.com/). It must not be supplied as `SITE_URL`, treated as the canonical public origin or added to a sitemap.
 
-The public domain is `bqrincon.com`. DonWeb remains its registrar, Cloudflare owns its authoritative DNS zone and Railway terminates public HTTPS for the production service. `https://bqrincon.com` is the only canonical origin. The `www` hostname must route to the same Railway service and redirect permanently to the canonical origin without changing the path or query string.
+The public domain is `bqrincon.com`. DonWeb remains its registrar and authoritative DNS provider, while Railway terminates public HTTPS for the production service. `https://bqrincon.com` is the only canonical origin. The `www` hostname must route to the same Railway service and redirect permanently to the canonical origin without changing the path or query string.
 
 ## Configuration audit
 
@@ -83,7 +83,7 @@ The dashboard rollback reuses the selected build artefact but does not restore c
 
 Railway validation follows `staging`, retains `SITE_INDEXABLE=false` and does not set `SITE_URL`. Production follows `master` and receives exactly `SITE_URL=https://bqrincon.com` and `SITE_INDEXABLE=true`. Preview, validation and production services must never share an environment variable group that can enable indexing.
 
-The tracked `Caddyfile` serves `dist/` without an application-route fallback, so an unknown path returns an HTTP `404` rather than a duplicate home page. It compresses responses, assigns immutable caching to generated Astro assets, removes its server signature and applies the required content-type, referrer, frame and permissions response headers. It also owns the permanent `www.bqrincon.com` redirect. Railway must register both custom hostnames before the redirect can receive requests, while Cloudflare must route both names using the DNS values issued by Railway.
+The tracked `Caddyfile` serves `dist/` without an application-route fallback, so an unknown path returns an HTTP `404` rather than a duplicate home page. It compresses responses, assigns immutable caching to generated Astro assets, removes its server signature and applies the required content-type, referrer, frame and permissions response headers. It also owns the permanent `www.bqrincon.com` redirect. Railway must register both custom hostnames before the redirect can receive requests, while DonWeb must route both names using the DNS values issued by Railway.
 
 The generated Content Security Policy remains embedded in the static pages across hosting providers. Following each production deployment, verify the root response, one generated asset, `robots.txt`, both sitemap files, an unknown path and the `www` redirect against this contract.
 
