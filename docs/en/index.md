@@ -120,7 +120,7 @@ Every build is non-indexable by default. Both the HTML robots directive and gene
 
 ## Automation
 
-Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics and the static production build.
+Continuous integration runs for every push and pull request. It provisions the pinned pnpm and Node.js versions, performs a frozen dependency installation and executes the repository-wide `verify` script. That gate checks formatting, JavaScript, TypeScript, Astro and CSS lint rules, Astro diagnostics, the static production build and the generated Content Security Policy and deployment permissions contract.
 
 Discord notifications cover configured push, branch lifecycle, pull request and completed continuous-integration events. The notification workflow remains inert when its webhook secret is unavailable. Its continuous-integration trigger depends on the workflow retaining the canonical `Continuous Integration` name.
 

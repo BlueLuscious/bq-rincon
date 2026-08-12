@@ -24,7 +24,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:styles": "stylelint \"src/**/*.{astro,css}\"",
-    "verify": "prettier --check . && eslint . && stylelint \"src/**/*.{astro,css}\" && astro check && astro build"
+    "verify:security": "node scripts/verify-security.mjs",
+    "verify": "prettier --check . && eslint . && stylelint \"src/**/*.{astro,css}\" && astro check && astro build && pnpm run verify:security"
   },
   "dependencies": {
     "@fontsource/barlow-condensed": "5.3.0",

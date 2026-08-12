@@ -44,6 +44,8 @@ The Blueprint also applies an `X-Robots-Tag: noindex, nofollow` response header 
 
 Astro's build-time Content Security Policy is part of the portable static artefact rather than a hosting-specific header. Every page authorises only same-origin resources, prohibits embedded frames and object content, and includes generated hashes for the scripts and styles emitted by Astro. Production components must not introduce inline scripts, inline style attributes or remote runtime resources without reviewing and deliberately extending this policy. `X-Frame-Options: DENY` remains a response-header control because a meta-delivered Content Security Policy cannot enforce `frame-ancestors`.
 
+The repository-wide `pnpm verify` gate builds the complete static artefact before running `pnpm verify:security`. This security check requires every generated HTML document to contain the configured directives, rejects broad script and style sources, validates every inline script and style hash, rejects inline style and event-handler attributes and confirms that the Render Blueprint uses the canonical root-scoped `Permissions-Policy`. A failed invariant blocks continuous integration and therefore blocks deployment from a protected branch.
+
 ## Initial provisioning
 
 1. Confirm that continuous integration succeeds on `feature/deploy`.

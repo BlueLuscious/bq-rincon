@@ -1,5 +1,6 @@
 import { defineConfig, envField } from 'astro/config';
 import process from 'node:process';
+import { CONTENT_SECURITY_POLICY_DIRECTIVES } from './config/security-policy.config.mjs';
 
 /**
  * @description Provides the canonical site origin only when the deployment owns an explicit public URL.
@@ -17,19 +18,7 @@ const astroConfig = defineConfig({
   },
   security: {
     csp: {
-      directives: [
-        "default-src 'self'",
-        "base-uri 'self'",
-        "connect-src 'self'",
-        "font-src 'self'",
-        "form-action 'self'",
-        "frame-src 'none'",
-        "img-src 'self'",
-        "manifest-src 'self'",
-        "media-src 'self'",
-        "object-src 'none'",
-        "worker-src 'self'",
-      ],
+      directives: [...CONTENT_SECURITY_POLICY_DIRECTIVES],
     },
   },
   env: {
