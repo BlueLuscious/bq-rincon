@@ -23,7 +23,7 @@ No analytics dependency, environment variable, consent interface or event instru
 
 Render provides the tracked, non-indexable client preview from `feature/deploy`. It remains a client-review environment. Railway uses `staging` for non-indexable validation and `master` for the public static delivery. Neither target changes the static delivery model or authorises a server adapter, on-demand rendering or an application backend.
 
-The owned production origin is `https://bqrincon.com`. DonWeb remains the registrar, Cloudflare owns the authoritative DNS zone and Railway owns public HTTPS delivery. The root hostname is canonical and `www.bqrincon.com` is a redirect-only alias.
+The owned production origin is `https://bqrincon.com`. DonWeb remains the registrar and authoritative DNS provider, while Railway owns public HTTPS delivery. The root hostname is canonical and `www.bqrincon.com` is a redirect-only alias.
 
 The release foundation accepts the owned HTTPS origin through `SITE_URL` and requires the separate `SITE_INDEXABLE=true` opt-in before allowing crawlers. Local, preview and validation builds remain closed by default. Production supplies both values and generates the established route set as a canonical sitemap without exposing a preview origin.
 

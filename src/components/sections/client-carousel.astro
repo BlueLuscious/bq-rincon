@@ -223,10 +223,15 @@ const sequences = [false, true] as const;
     width: max-content;
   }
 
+  .carousel-sequence {
+    flex: 0 0 auto;
+  }
+
   .client-slide {
     display: grid;
-    flex: 0 0 clamp(15rem, 24vw, 19rem);
+    flex: 0 0 auto;
     min-width: 0;
+    width: clamp(15rem, 24vw, 19rem);
     min-height: 8.75rem;
     padding: var(--space-5);
     color: var(--colour-ink);
@@ -243,7 +248,7 @@ const sequences = [false, true] as const;
   }
 
   .client-slide-compact {
-    flex-basis: 8.75rem;
+    width: 8.75rem;
     min-height: 8.75rem;
     padding: var(--space-4);
     aspect-ratio: 1;
