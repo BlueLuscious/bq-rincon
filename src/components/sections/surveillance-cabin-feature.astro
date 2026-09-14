@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import { ShieldCheck } from '@lucide/astro';
 import fieldInstallationImage from '../../assets/images/surveillance-cabins/surveillance-cabins-field-installation.jpeg';
 import singleCabinImage from '../../assets/images/surveillance-cabins/surveillance-cabin-single.jpeg';
+import { PRIMARY_WHATSAPP_CONTACT } from '../../data/business-contacts';
 import Button from '../common/button.astro';
 ---
 
@@ -22,7 +23,7 @@ import Button from '../common/button.astro';
       instalación coordinados según las necesidades de cada operación.
     </p>
     <Button
-      href="https://wa.me/543400415140"
+      href={PRIMARY_WHATSAPP_CONTACT.whatsappUrl}
       variant="secondary"
       ariaLabel="Consultar disponibilidad de cabinas de vigilancia por WhatsApp"
     >

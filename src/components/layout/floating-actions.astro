@@ -1,6 +1,7 @@
 ---
 import { ArrowUp } from '@lucide/astro';
 import { siWhatsapp } from 'simple-icons';
+import { PRIMARY_WHATSAPP_CONTACT } from '../../data/business-contacts';
 ---
 
 <div class="floating-actions">
@@ -15,7 +16,7 @@ import { siWhatsapp } from 'simple-icons';
 
   <a
     class="floating-action whatsapp-action"
-    href="https://wa.me/543400415140"
+    href={PRIMARY_WHATSAPP_CONTACT.whatsappUrl}
     aria-label="Contactar a BQ por WhatsApp"
   >
     <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">

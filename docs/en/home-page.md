@@ -38,7 +38,7 @@ On wide viewports, the hero occupies the viewport height remaining beneath the s
 
 ## Calls to action
 
-The hero calls to action continue to navigate to relevant information within the page. A persistent WhatsApp action uses the approved `+54 3400 415140` destination as the primary direct-contact channel, without a prefilled message. Approved telephone, secondary WhatsApp, email and Instagram channels remain published in the footer.
+The hero calls to action continue to navigate to relevant information within the page. A persistent WhatsApp action uses the approved `+54 9 299 615-7699` Rincón de los Sauces destination as the primary direct-contact channel, without a prefilled message. The approved Villa Constitución telephone and WhatsApp destination, email and Instagram channels remain published in the footer.
 
 The initial home page has no separate contact section. The footer is the canonical contact boundary; if primary navigation gains a `Contacto` destination later, its fragment must target the footer rather than introduce a duplicate section.
 
