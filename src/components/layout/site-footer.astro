@@ -9,7 +9,16 @@ import {
 } from '@lucide/astro';
 import brandMark from '../../assets/brand/bq-mark-primary.svg';
 import quinotoLogo from '../../assets/partners/quinoto-logo-positive.png';
+import { BUSINESS_CONTACTS } from '../../data/business-contacts';
 import Container from '../common/container.astro';
+
+/**
+ * @description Provides the approved contact order used by the footer.
+ */
+const footerContacts = [
+  BUSINESS_CONTACTS.captainNutsFather,
+  BUSINESS_CONTACTS.bqRinconNeuquen,
+] as const;
 
 /**
  * @description Provides the current year for the site ownership notice.
@@ -51,22 +60,25 @@ const rinconDeLosSaucesMapUrl =
       <section class="footer-column" aria-labelledby="footer-contact-heading">
         <h2 id="footer-contact-heading">Contacto</h2>
         <ul class="footer-list">
-          <li>
-            <Phone size={19} aria-hidden="true" />
-            <span>
-              <span class="footer-label">Teléfonos</span>
-              <a href="tel:+543400415140">3400 415140</a>
-              <a href="tel:+543400441365">3400 441365</a>
-            </span>
-          </li>
-          <li>
-            <MessageCircle size={19} aria-hidden="true" />
-            <span>
-              <span class="footer-label">WhatsApp</span>
-              <a href="https://wa.me/5493400415140">3400 415140</a>
-              <a href="https://wa.me/5493400441365">3400 441365</a>
-            </span>
-          </li>
+          {
+            footerContacts.map((contact) => (
+              <li>
+                <Phone size={19} aria-hidden="true" />
+                <span>
+                  <span class="footer-label">{contact.operatingBaseLabel}</span>
+                  <a href={contact.telephoneUri}>{contact.displayNumber}</a>
+                  <a
+                    class="contact-whatsapp-link"
+                    href={contact.whatsappUrl}
+                    aria-label={`Contactar por WhatsApp a la base de ${contact.operatingBaseLabel}`}
+                  >
+                    <MessageCircle size={14} aria-hidden="true" />
+                    WhatsApp
+                  </a>
+                </span>
+              </li>
+            ))
+          }
           <li>
             <Mail size={19} aria-hidden="true" />
             <span>
@@ -263,6 +275,14 @@ const rinconDeLosSaucesMapUrl =
 
   .footer-list a {
     overflow-wrap: anywhere;
+  }
+
+  .footer-list .contact-whatsapp-link {
+    display: inline-flex;
+    gap: var(--space-1);
+    align-items: center;
+    color: var(--colour-on-dark-muted);
+    font-size: 0.75rem;
   }
 
   .location-link {
