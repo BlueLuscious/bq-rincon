@@ -11,11 +11,12 @@ import municipioSanNicolasLogo from '../../assets/clients/municipio-sn.svg';
 import municipioVillaConstitucionLogo from '../../assets/clients/municipio-vc.png';
 import poseLogo from '../../assets/clients/pose-sa.png';
 import sidersaLogo from '../../assets/clients/sidersa.png';
+import tecsaLogo from '../../assets/clients/tecsa.svg';
 import Section from '../common/section.astro';
 import ClientCarousel from './client-carousel.astro';
 
 /**
- * @description Defines the organisations named in the approved company presentation.
+ * @description Defines the organisations approved as client references.
  */
 const clients = [
   {
@@ -42,6 +43,7 @@ const clients = [
     logo: autodromoSanNicolasLogo,
     tone: 'inverse',
   },
+  { name: 'TECSA', logo: tecsaLogo },
 ] as const;
 ---
 
