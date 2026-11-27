@@ -1,8 +1,10 @@
 ---
 import autodromoSanNicolasLogo from '../../assets/clients/autodromo-sn.svg';
+import ayresDeLeonLogo from '../../assets/clients/ayres-de-leon.png';
 import bahisaLogo from '../../assets/clients/bahisa.png';
 import comunaFighieraLogo from '../../assets/clients/comuna-fighiera.png';
 import comunaPavonLogo from '../../assets/clients/comuna-pavon.png';
+import contrerasLogo from '../../assets/clients/contreras.png';
 import edecaLogo from '../../assets/clients/edeca.png';
 import esesaLogo from '../../assets/clients/esesa.png';
 import grupoPonceLogo from '../../assets/clients/grupo-ponce.png';
@@ -44,6 +46,8 @@ const clients = [
     tone: 'inverse',
   },
   { name: 'TECSA', logo: tecsaLogo },
+  { name: 'Contreras', logo: contrerasLogo, compact: true },
+  { name: 'Ayres de León', logo: ayresDeLeonLogo },
 ] as const;
 ---
 
@@ -60,7 +64,7 @@ const clients = [
   <ClientCarousel
     id="trusted-clients"
     clients={clients}
-    speed={22}
+    speed={64}
     showScrollbar={false}
   />
 </Section>

@@ -50,7 +50,9 @@ The following organisations are approved references to BQ's previous work:
 - Comuna de Fighiera;
 - Chapa Naval;
 - Autódromo San Nicolás;
-- TECSA.
+- TECSA;
+- Contreras;
+- Ayres de León.
 
 These names provide historical evidence of the business's experience. Their publication must not imply a current contract, partnership or endorsement. Supplied logo artwork is approved for every displayed reference. Chapa Naval remains an approved historical reference but is temporarily omitted from the carousel because equivalent artwork has not been supplied.
 
